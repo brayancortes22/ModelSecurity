@@ -50,6 +50,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DbAutogestion.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DbModel.Designer.cs" />
+    <Compile Include="DbModel1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +66,13 @@
     </EntityDeploy>
     <None Include="DbAutogestion.edmx.diagram">
       <DependentUpon>DbAutogestion.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="DbModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DbModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DbModel.edmx.diagram">
+      <DependentUpon>DbModel.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
