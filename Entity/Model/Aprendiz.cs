@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Model
+namespace Entity.model_m
 {
-    internal class ChangeLog
+    public class Aprendiz
     {
         public int Id { get; set; }
-        
-
     }
 }

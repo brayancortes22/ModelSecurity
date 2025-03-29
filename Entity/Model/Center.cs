@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entity.Model
 {
-    public class Module
+    public class Center
     {
-        public int id { get; set; }
+        public int Id { get; set; }
+        public string name { get; set; }
+        public string code_center { get; set; }
         public bool active { get; set; }
         public DateTime create_date { get; set; }
         public DateTime delete_date { get; set; }

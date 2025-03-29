@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Entity.Model
 {
-    public class Module
+    public class Stade
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public bool active { get; set; }
         public DateTime create_date { get; set; }
         public DateTime delete_date { get; set; }
         public DateTime update_date { get; set; }
+        public string description { get; set; }
+        public string type_stade { get; set; }
     }
 }
