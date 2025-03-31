@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOautogestion.pivote
 {
-    internal class RolFormDTOAuto
+    public class RolFormDTOAuto
     {
         public int Id { get; set; }
         public int Permission { get; set; }
