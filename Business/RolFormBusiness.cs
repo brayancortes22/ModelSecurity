@@ -1,5 +1,5 @@
 using Data;
-using Entity.DTOautogestion;
+using Entity.DTOautogestion.pivote;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
@@ -44,13 +44,11 @@ namespace Business
                 {
                     rolFormsDTO.Add(new RolFormDTOAuto
                     {
-                        Id = rolForm.Id,
+                        id = rolForm.id,
                         RolId = rolForm.RolId,
                         FormId = rolForm.FormId,
-                        Active = rolForm.Active,
-                        CreateDate = rolForm.CreateDate,
-                        UpdateDate = rolForm.UpdateDate,
-                        DeleteDate = rolForm.DeleteDate
+                        Permission = rolForm.Permission
+
                     });
                 }
 
@@ -80,7 +78,7 @@ namespace Business
             try
             {
                 // Buscar la relación en la base de datos
-                var rolForm = await _rolFormData.GetByIdAsync(id);
+                var rolForm = await _rolFormData.GetByidAsync(id);
                 if (rolForm == null)
                 {
                     _logger.LogInformation("No se encontró ninguna relación rol-form con ID: {RolFormId}", id);
@@ -90,13 +88,11 @@ namespace Business
                 // Convertir la relación a DTO
                 return new RolFormDTOAuto
                 {
-                    Id = rolForm.Id,
+                    id = rolForm.id,
+                    Permission = rolForm.Permission,
                     RolId = rolForm.RolId,
                     FormId = rolForm.FormId,
-                    Active = rolForm.Active,
-                    CreateDate = rolForm.CreateDate,
-                    UpdateDate = rolForm.UpdateDate,
-                    DeleteDate = rolForm.DeleteDate
+                   
                 };
             }
             catch (Exception ex)
@@ -119,12 +115,14 @@ namespace Business
                 ValidateRolForm(rolFormDto);
 
                 // Crear la entidad RolForm desde el DTO
-                var rolForm = new RolForm
+                var rolForm = new RolFormDTOAuto
                 {
+                    id = rolFormDto.id,
                     RolId = rolFormDto.RolId,
                     FormId = rolFormDto.FormId,
-                    Active = rolFormDto.Active,
-                    CreateDate = DateTime.Now
+                    Permission = rolFormDto.Permission
+
+
                 };
 
                 // Guardar la relación en la base de datos
@@ -133,13 +131,10 @@ namespace Business
                 // Convertir la relación creada a DTO para la respuesta
                 return new RolFormDTOAuto
                 {
-                    Id = rolFormCreado.Id,
+                    id = rolFormCreado.Id,
                     RolId = rolFormCreado.RolId,
                     FormId = rolFormCreado.FormId,
-                    Active = rolFormCreado.Active,
-                    CreateDate = rolFormCreado.CreateDate,
-                    UpdateDate = rolFormCreado.UpdateDate,
-                    DeleteDate = rolFormCreado.DeleteDate
+                    
                 };
             }
             catch (Exception ex)

@@ -44,13 +44,9 @@ namespace Business
                 {
                     modulesDTO.Add(new ModuleDTOAuto
                     {
-                        Id = module.Id,
-                        Code = module.Code,
-                        Name = module.Name,
-                        Active = module.Active,
-                        CreateDate = module.CreateDate,
-                        UpdateDate = module.UpdateDate,
-                        DeleteDate = module.DeleteDate
+                        id = module.id,
+                        active = module.active
+                        
                     });
                 }
 
@@ -80,7 +76,7 @@ namespace Business
             try
             {
                 // Buscar el módulo en la base de datos
-                var module = await _moduleData.GetByIdAsync(id);
+                var module = await _moduleData.GetByidAsync(id);
                 if (module == null)
                 {
                     _logger.LogInformation("No se encontró ningún módulo con ID: {ModuleId}", id);
@@ -90,13 +86,9 @@ namespace Business
                 // Convertir el módulo a DTO
                 return new ModuleDTOAuto
                 {
-                    Id = module.Id,
-                    Code = module.Code,
-                    Name = module.Name,
-                    Active = module.Active,
-                    CreateDate = module.CreateDate,
-                    UpdateDate = module.UpdateDate,
-                    DeleteDate = module.DeleteDate
+                    id = module.id,
+                    active = module.active,
+              
                 };
             }
             catch (Exception ex)
@@ -121,10 +113,10 @@ namespace Business
                 // Crear la entidad Module desde el DTO
                 var module = new Module
                 {
-                    Code = moduleDto.Code,
-                    Name = moduleDto.Name,
-                    Active = moduleDto.Active,
-                    CreateDate = DateTime.Now
+                    id = moduleDto.id,
+                    name = moduleDto.name,
+                    active = moduleDto.active
+                   
                 };
 
                 // Guardar el módulo en la base de datos
@@ -133,18 +125,15 @@ namespace Business
                 // Convertir el módulo creado a DTO para la respuesta
                 return new ModuleDTOAuto
                 {
-                    Id = moduleCreado.Id,
-                    Code = moduleCreado.Code,
-                    Name = moduleCreado.Name,
-                    Active = moduleCreado.Active,
-                    CreateDate = moduleCreado.CreateDate,
-                    UpdateDate = moduleCreado.UpdateDate,
-                    DeleteDate = moduleCreado.DeleteDate
+                    id = moduleCreado.id,
+                    name = moduleCreado.name,
+                    active = moduleCreado.active,
+                    
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo módulo: {ModuleName}", moduleDto?.Name ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo módulo: {ModuleName}", moduleDto?.name ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el módulo", ex);
             }
         }
@@ -162,15 +151,8 @@ namespace Business
                 throw new ValidationException("El objeto módulo no puede ser nulo");
             }
 
-            // Validar que el código no esté vacío
-            if (string.IsNullOrWhiteSpace(moduleDto.Code))
-            {
-                _logger.LogWarning("Se intentó crear/actualizar un módulo con código vacío");
-                throw new ValidationException("Code", "El código del módulo es obligatorio");
-            }
-
             // Validar que el nombre no esté vacío
-            if (string.IsNullOrWhiteSpace(moduleDto.Name))
+            if (string.IsNullOrWhiteSpace(moduleDto.name))
             {
                 _logger.LogWarning("Se intentó crear/actualizar un módulo con nombre vacío");
                 throw new ValidationException("Name", "El nombre del módulo es obligatorio");
