@@ -46,7 +46,7 @@ namespace Business
                 {
                     rolesDTO.Add(new RolDTOAuto
                     {
-                        id = rol.Id,
+                        Id = rol.Id,
                         TypeRol = rol.type_rol,
                         Description = rol.Description,
                         Active = rol.active
@@ -89,7 +89,7 @@ namespace Business
                 // Convertir el rol a DTO
                 return new RolDTOAuto
                 {
-                    id = rol.Id,
+                    Id = rol.Id,
                     TypeRol = rol.type_rol,
                     Description = rol.Description,
                     Active = rol.active
@@ -128,7 +128,7 @@ namespace Business
                 // Convertir el rol creado a DTO para la respuesta
                 return new RolDTOAuto
                 {
-                    id = rolCreado.Id,
+                    Id = rolCreado.Id,
                     TypeRol = rolCreado.type_rol,
                     Description = rolCreado.Description,
                     Active = rolCreado.active

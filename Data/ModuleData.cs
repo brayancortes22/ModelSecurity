@@ -21,19 +21,27 @@ namespace Data
 
         public async Task<IEnumerable<Module>> GetAllAsync()
         {
-            return await _context.Set<Module>().ToListAsync();
-        }
-
-        public async Task<Module?> GetByidAsync(int id)
-        {
             try
             {
-                return await _context.Set<Module>().FindAsync(id);
+                var modules = await _context.Modules.Where(x => x.Active).ToListAsync();
+                return modules;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener módulo con ID{id}");
-                throw;
+                throw new Exception("Error al obtener los módulos", ex);
+            }
+        }
+
+        public async Task<Module> GetByidAsync(int id)
+        {
+            try
+            {
+                var module = await _context.Modules.FirstOrDefaultAsync(x => x.Id == id);
+                return module;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el módulo", ex);
             }
         }
 
@@ -41,14 +49,15 @@ namespace Data
         {
             try
             {
-                await _context.Set<Module>().AddAsync(module);
+                module.CreateDate = DateTime.Now;
+                module.Active = true;
+                _context.Modules.Add(module);
                 await _context.SaveChangesAsync();
                 return module;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el módulo {ex.Message}");
-                throw;
+                throw new Exception("Error al crear el módulo", ex);
             }
         }
 

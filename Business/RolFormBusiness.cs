@@ -44,11 +44,10 @@ namespace Business
                 {
                     rolFormsDTO.Add(new RolFormDTOAuto
                     {
-                        id = rolForm.id,
+                        Id = rolForm.Id,
                         RolId = rolForm.RolId,
                         FormId = rolForm.FormId,
                         Permission = rolForm.Permission
-
                     });
                 }
 
@@ -88,11 +87,10 @@ namespace Business
                 // Convertir la relación a DTO
                 return new RolFormDTOAuto
                 {
-                    id = rolForm.id,
-                    Permission = rolForm.Permission,
+                    Id = rolForm.Id,
                     RolId = rolForm.RolId,
                     FormId = rolForm.FormId,
-                   
+                    Permission = rolForm.Permission
                 };
             }
             catch (Exception ex)
@@ -115,14 +113,12 @@ namespace Business
                 ValidateRolForm(rolFormDto);
 
                 // Crear la entidad RolForm desde el DTO
-                var rolForm = new RolFormDTOAuto
+                var rolForm = new RolForm
                 {
-                    id = rolFormDto.id,
+                    Id = rolFormDto.Id,
                     RolId = rolFormDto.RolId,
                     FormId = rolFormDto.FormId,
                     Permission = rolFormDto.Permission
-
-
                 };
 
                 // Guardar la relación en la base de datos
@@ -131,10 +127,10 @@ namespace Business
                 // Convertir la relación creada a DTO para la respuesta
                 return new RolFormDTOAuto
                 {
-                    id = rolFormCreado.Id,
+                    Id = rolFormCreado.Id,
                     RolId = rolFormCreado.RolId,
                     FormId = rolFormCreado.FormId,
-                    
+                    Permission = rolFormCreado.Permission
                 };
             }
             catch (Exception ex)

@@ -8,8 +8,8 @@ namespace Entity.DTOautogestion.pivote
 {
     public class RolFormDTOAuto
     {
-        public int id { get; set; }
-        public int Permission { get; set; }
+        public int Id { get; set; }
+        public string Permission { get; set; }
         public int RolId { get; set; }
         public int FormId { get; set; }
     }

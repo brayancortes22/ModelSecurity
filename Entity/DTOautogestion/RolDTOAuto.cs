@@ -8,7 +8,7 @@ namespace Entity.DTOautogestion
 {
     public class RolDTOAuto
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string TypeRol { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
