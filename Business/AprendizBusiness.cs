@@ -28,28 +28,14 @@ namespace Business
 
                 foreach (var aprendiz in aprendices)
                 {
-                    var person = await _personData.GetByidAsync(aprendiz.PersonId);
+                    var person = await _personData.GetByIdAsync(aprendiz.PersonId);
                     
                     var aprendizDto = new AprendizDTOAuto
                     {
                         Id = aprendiz.Id,
                         PersonId = aprendiz.PersonId,
                         Active = aprendiz.Active,
-                        Person = person != null ? new PersonDTOAuto
-                        {
-                            Id = person.Id,
-                            Name = person.Name,
-                            FirstName = person.FirstName,
-                            SecondName = person.SecondName,
-                            FirstLastName = person.FirstLastName,
-                            SecondLastName = person.SecondLastName,
-                            PhoneNumber = person.PhoneNumber,
-                            Email = person.Email,
-                            TypeIdentification = person.TypeIdentification,
-                            NumberIdentification = person.NumberIdentification,
-                            Signing = person.Signing,
-                            Active = person.Active
-                        } : null
+                        
                     };
 
                     aprendicesDTO.Add(aprendizDto);
@@ -74,35 +60,21 @@ namespace Business
 
             try
             {
-                var aprendiz = await _aprendizData.GetByidAsync(id);
+                var aprendiz = await _aprendizData.GetByIdAsync(id);
                 if (aprendiz == null)
                 {
                     _logger.LogInformation("No se encontró ningún aprendiz con ID: {AprendizId}", id);
                     throw new EntityNotFoundException("Aprendiz", id);
                 }
 
-                var person = await _personData.GetByidAsync(aprendiz.PersonId);
+                var person = await _personData.GetByIdAsync(aprendiz.PersonId);
 
                 return new AprendizDTOAuto
                 {
                     Id = aprendiz.Id,
                     PersonId = aprendiz.PersonId,
                     Active = aprendiz.Active,
-                    Person = person != null ? new PersonDTOAuto
-                    {
-                        Id = person.Id,
-                        Name = person.Name,
-                        FirstName = person.FirstName,
-                        SecondName = person.SecondName,
-                        FirstLastName = person.FirstLastName,
-                        SecondLastName = person.SecondLastName,
-                        PhoneNumber = person.PhoneNumber,
-                        Email = person.Email,
-                        TypeIdentification = person.TypeIdentification,
-                        NumberIdentification = person.NumberIdentification,
-                        Signing = person.Signing,
-                        Active = person.Active
-                    } : null
+                    
                 };
             }
             catch (Exception ex)
@@ -128,28 +100,14 @@ namespace Business
                 };
 
                 var aprendizCreado = await _aprendizData.CreateAsync(aprendiz);
-                var person = await _personData.GetByidAsync(aprendizCreado.PersonId);
+                var person = await _personData.GetByIdAsync(aprendizCreado.PersonId);
 
                 return new AprendizDTOAuto
                 {
                     Id = aprendizCreado.Id,
                     PersonId = aprendizCreado.PersonId,
                     Active = aprendizCreado.Active,
-                    Person = person != null ? new PersonDTOAuto
-                    {
-                        Id = person.Id,
-                        Name = person.Name,
-                        FirstName = person.FirstName,
-                        SecondName = person.SecondName,
-                        FirstLastName = person.FirstLastName,
-                        SecondLastName = person.SecondLastName,
-                        PhoneNumber = person.PhoneNumber,
-                        Email = person.Email,
-                        TypeIdentification = person.TypeIdentification,
-                        NumberIdentification = person.NumberIdentification,
-                        Signing = person.Signing,
-                        Active = person.Active
-                    } : null
+                    
                 };
             }
             catch (Exception ex)
