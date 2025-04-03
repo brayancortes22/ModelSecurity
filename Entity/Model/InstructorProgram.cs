@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-    namespace Entity.Model
+namespace Entity.Model
 {
     public class InstructorProgram
     {
@@ -13,5 +13,9 @@ using System.Threading.Tasks;
         public Instructor Instructor { get; set; }
         public int ProgramId { get; set; }
         public Program Program { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

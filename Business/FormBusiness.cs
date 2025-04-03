@@ -46,8 +46,8 @@ namespace Business
                     {
                         Id = form.Id,
                         Description = form.Description,
-                        Cuestion = form.Cuestion,
-                        Type_Cuestion = form.Type_Cuestion,
+                        Question = form.Question,
+                        TypeQuestion = form.TypeQuestion,
                         Answer = form.Answer,
                         Active = form.Active
                     });
@@ -91,8 +91,8 @@ namespace Business
                 {
                     Id = form.Id,
                     Description = form.Description,
-                    Cuestion = form.Cuestion,
-                    Type_Cuestion = form.Type_Cuestion,
+                    Question = form.Question,
+                    TypeQuestion = form.TypeQuestion,
                     Answer = form.Answer,
                     Active = form.Active
                 };
@@ -119,12 +119,14 @@ namespace Business
                 // Crear la entidad Form desde el DTO
                 var form = new Form
                 {
-                    Id = formDto.Id,
                     Description = formDto.Description,
-                    Cuestion = formDto.Cuestion,
-                    Type_Cuestion = formDto.Type_Cuestion,
+                    Question = formDto.Question,
+                    TypeQuestion = formDto.TypeQuestion,
                     Answer = formDto.Answer,
-                    Active = formDto.Active
+                    Active = formDto.Active,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
+                    DeleteDate = DateTime.Now
                 };
 
                 // Guardar el formulario en la base de datos
@@ -133,17 +135,17 @@ namespace Business
                 // Convertir el formulario creado a DTO para la respuesta
                 return new FormDTOAuto
                 {
-                    Id = formDto.Id,
-                    Description = formDto.Description,
-                    Cuestion = formDto.Cuestion,
-                    Type_Cuestion = formDto.Type_Cuestion,
-                    Answer = formDto.Answer,
-                    Active = formDto.Active
+                    Id = formCreado.Id,
+                    Description = formCreado.Description,
+                    Question = formCreado.Question,
+                    TypeQuestion = formCreado.TypeQuestion,
+                    Answer = formCreado.Answer,
+                    Active = formCreado.Active
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo formulario: {FormName}", formDto?.Description ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo formulario");
                 throw new ExternalServiceException("Base de datos", "Error al crear el formulario", ex);
             }
         }
@@ -161,18 +163,18 @@ namespace Business
                 throw new ValidationException("El objeto formulario no puede ser nulo");
             }
 
-            // Validar que el código no esté vacío
-            if (string.IsNullOrWhiteSpace(formDto.Description))
+            // Validar que la pregunta no esté vacía
+            if (string.IsNullOrWhiteSpace(formDto.Question))
             {
-                _logger.LogWarning("Se intentó crear/actualizar un formulario con código vacío");
-                throw new ValidationException("Description", "El código del formulario es obligatorio");
+                _logger.LogWarning("Se intentó crear/actualizar un formulario sin pregunta");
+                throw new ValidationException("Question", "La pregunta del formulario es obligatoria");
             }
 
-            // Validar que el nombre no esté vacío
-            if (string.IsNullOrWhiteSpace(formDto.Answer))
+            // Validar que el tipo de pregunta no esté vacío
+            if (string.IsNullOrWhiteSpace(formDto.TypeQuestion))
             {
-                _logger.LogWarning("Se intentó crear/actualizar un formulario con nombre vacío");
-                throw new ValidationException("answer", "El nombre del formulario es obligatorio");
+                _logger.LogWarning("Se intentó crear/actualizar un formulario sin tipo de pregunta");
+                throw new ValidationException("TypeQuestion", "El tipo de pregunta es obligatorio");
             }
         }
     }

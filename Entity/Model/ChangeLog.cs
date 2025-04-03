@@ -8,15 +8,13 @@ namespace Entity.Model
 {
     public class ChangeLog
     {
-
         public int Id { get; set; }
         public string Name { get; set; }
-        public string DeleteAT {  get; set; }
-        public string CreateAT { get; set; }
-        public int IdTable { get; set; }
-        public int IdUser { get; set; }
-        public int IdPermission {get; set; }
-        public string Action { get ; set; }
-
+        public DateTime DeleteAt { get; set; }
+        public DateTime CreateAt { get; set; }
+        public int TableId { get; set; }
+        public int UserId { get; set; }
+        public int PermissionId { get; set; }
+        public string Action { get; set; }
     }
 }

@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.DTOautogestion.pivote
+namespace Entity.DTOautogestion
 {
     public class PersonSedeDTOAuto
     {
         public int Id { get; set; }
         public int SedeId { get; set; }
-        public int StatusProcedure { get; set; }
+        public string StatusProcedure { get; set; }
         public int PersonId { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

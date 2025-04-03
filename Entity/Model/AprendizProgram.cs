@@ -14,5 +14,9 @@ namespace Entity.Model
         public Aprendiz Aprendiz { get; set; }
         public int ProgramId { get; set; }
         public Program Program { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

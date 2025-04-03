@@ -45,9 +45,9 @@ namespace Business
                     usersDTO.Add(new UserDTOAuto
                     {
                         Id = user.Id,
-                        Username = user.username,
-                        Email = user.email,
-                        Password = user.password,
+                        Username = user.Username,
+                        Email = user.Email,
+                        Password = user.Password,
                         PersonId = user.PersonId
                     });
                 }
@@ -89,9 +89,9 @@ namespace Business
                 return new UserDTOAuto
                 {
                     Id = user.Id,
-                    Username = user.username,
-                    Email = user.email,
-                    Password = user.password,
+                    Username = user.Username,
+                    Email = user.Email,
+                    Password = user.Password,
                     PersonId = user.PersonId
                 };
             }
@@ -117,9 +117,9 @@ namespace Business
                 // Crear la entidad User desde el DTO
                 var user = new User
                 {
-                    username = userDto.Username,
-                    email = userDto.Email,
-                    password = userDto.Password,
+                    Username = userDto.Username,
+                    Email = userDto.Email,
+                    Password = userDto.Password,
                     PersonId = userDto.PersonId
                 };
 
@@ -130,9 +130,9 @@ namespace Business
                 return new UserDTOAuto
                 {
                     Id = userCreado.Id,
-                    Username = userCreado.username,
-                    Email = userCreado.email,
-                    Password = userCreado.password,
+                    Username = userCreado.Username,
+                    Email = userCreado.Email,
+                    Password = userCreado.Password,
                     PersonId = userCreado.PersonId
                 };
             }

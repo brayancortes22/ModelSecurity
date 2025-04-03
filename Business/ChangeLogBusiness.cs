@@ -48,8 +48,8 @@ namespace Business
                         Id = changeLog.Id,
                         Name = changeLog.Name,
                         Action = changeLog.Action,
-                        Description = $"Cambio realizado en la tabla {changeLog.IdTable}" +
-                        $" por el usuario {changeLog.IdUser}"
+                        Description = $"Cambio realizado en la tabla {changeLog.TableId}" +
+                        $" por el usuario {changeLog.UserId}"
                     });
                 }
 
@@ -89,7 +89,7 @@ namespace Business
                     Id = changeLog.Id,
                     Name = changeLog.Name,
                     Action = changeLog.Action,
-                    Description = $"Cambio realizado en la tabla {changeLog.IdTable} por el usuario {changeLog.IdUser}"
+                    Description = $"Cambio realizado en la tabla {changeLog.TableId} por el usuario {changeLog.UserId}"
                 };
             }
             catch (Exception ex)
@@ -112,11 +112,10 @@ namespace Business
 
                 var changeLog = new ChangeLog
                 {
-                    CreateAT = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    DeleteAT = null,
-                    IdTable = 0, // Este valor debería ser proporcionado según la tabla específica
-                    IdUser = 0,  // Este valor debería ser proporcionado por el usuario autenticado
-                    IdPermission = 0, // Este valor debería ser proporcionado según los permisos
+                    
+                    TableId = 0, // Este valor debería ser proporcionado según la tabla específica
+                    UserId = 0,  // Este valor debería ser proporcionado por el usuario autenticado
+                    PermissionId = 0, // Este valor debería ser proporcionado según los permisos
                     Action = changeLogDto.Action
                 };
 
@@ -127,8 +126,8 @@ namespace Business
                     Id = changeLogCreado.Id,
                     Name = changeLogCreado.Name,
                     Action = changeLogCreado.Action,
-                    Description = $"Cambio realizado en la tabla {changeLogCreado.IdTable}" +
-                    $" por el usuario {changeLogCreado.IdUser}"
+                    Description = $"Cambio realizado en la tabla {changeLogCreado.TableId}" +
+                    $" por el usuario {changeLogCreado.UserId}"
                 };
             }
             catch (Exception ex)

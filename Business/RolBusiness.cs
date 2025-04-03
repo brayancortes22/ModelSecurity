@@ -1,6 +1,5 @@
 ﻿using Data;
 using Entity.DTOautogestion;
-using Entity.DTOautogestion.pivote;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
@@ -47,9 +46,9 @@ namespace Business
                     rolesDTO.Add(new RolDTOAuto
                     {
                         Id = rol.Id,
-                        TypeRol = rol.type_rol,
+                        TypeRol = rol.TypeRol,
                         Description = rol.Description,
-                        Active = rol.active
+                        Active = rol.Active
                     });
                 }
 
@@ -90,9 +89,9 @@ namespace Business
                 return new RolDTOAuto
                 {
                     Id = rol.Id,
-                    TypeRol = rol.type_rol,
+                    TypeRol = rol.TypeRol,
                     Description = rol.Description,
-                    Active = rol.active
+                    Active = rol.Active
                 };
             }
             catch (Exception ex)
@@ -117,9 +116,9 @@ namespace Business
                 // Crear la entidad Rol desde el DTO
                 var rol = new Rol
                 {
-                    type_rol = rolDto.TypeRol,
+                    TypeRol = rolDto.TypeRol,
                     Description = rolDto.Description,
-                    active = rolDto.Active
+                    Active = rolDto.Active
                 };
 
                 // Guardar el rol en la base de datos
@@ -129,9 +128,9 @@ namespace Business
                 return new RolDTOAuto
                 {
                     Id = rolCreado.Id,
-                    TypeRol = rolCreado.type_rol,
+                    TypeRol = rolCreado.TypeRol,
                     Description = rolCreado.Description,
-                    Active = rolCreado.active
+                    Active = rolCreado.Active
                 };
             }
             catch (Exception ex)

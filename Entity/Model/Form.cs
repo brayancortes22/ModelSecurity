@@ -10,12 +10,12 @@ namespace Entity.Model
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public string Cuestion { get; set; }
-        public string Type_Cuestion { get; set; }
+        public string Question { get; set; }
+        public string TypeQuestion { get; set; }
         public string Answer { get; set; }
         public bool Active { get; set; }
-        public DateTime create_date { get; set; }
-        public DateTime delete_date { get; set; }
-        public DateTime update_date { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }

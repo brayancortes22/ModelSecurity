@@ -9,17 +9,17 @@ namespace Entity.Model
     public class Enterprise
     {
         public int Id { get; set; }
-        public string observation { get; set; }
-        public string name_boss { get; set; }
-        public string name_enterprise { get; set; }
-        public string phone_enterprise { get; set; }
-        public string locate { get; set; }
-        public string email_boss { get; set; }
-        public string nit_enterprise { get; set; }
-        public string email_enterprise { get; set; }
-        public bool active { get; set; }
-        public DateTime create_date { get; set; }
-        public DateTime delete_date { get; set; }
-        public DateTime update_date { get; set; }    
+        public string Observation { get; set; }
+        public string BossName { get; set; }
+        public string EnterpriseName { get; set; }
+        public string EnterprisePhone { get; set; }
+        public string Location { get; set; }
+        public string BossEmail { get; set; }
+        public string EnterpriseNit { get; set; }
+        public string EnterpriseEmail { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }    
     }
 }

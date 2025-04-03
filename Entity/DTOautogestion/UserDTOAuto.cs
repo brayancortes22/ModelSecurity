@@ -13,9 +13,10 @@ namespace Entity.DTOautogestion
         public string Email { get; set; }
         public string Password { get; set; }
         public int PersonId { get; set; }
-        //public DateTime DeleteDate { get; set; }
-        //public DateTime UpdateDate { get; set; }
-        //public DateTime CreateDate { get; set; }
-        //public bool Active { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
     }
 }
+
