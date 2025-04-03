@@ -23,7 +23,7 @@ namespace Data
         {
             try
             {
-                var modules = await _context.Modules.Where(x => x.Active).ToListAsync();
+                var modules = await _context.Set<Module>().Where(x => x.Active).ToListAsync();
                 return modules;
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace Data
         {
             try
             {
-                var module = await _context.Modules.FirstOrDefaultAsync(x => x.Id == id);
+                var module = await _context.Set<Module>().FirstOrDefaultAsync(x => x.Id == id);
                 return module;
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace Data
             {
                 module.CreateDate = DateTime.Now;
                 module.Active = true;
-                _context.Modules.Add(module);
+                _context.Set<Module>().Add(module);
                 await _context.SaveChangesAsync();
                 return module;
             }

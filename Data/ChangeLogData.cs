@@ -8,22 +8,39 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {
+    /// <summary>
+    /// Repository encargado de la gestión de la entidad ChangeLog en la base de datos
+    /// </summary>
     public class ChangeLogData
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Constructor que recibe el contexto de la base de datos
+        /// </summary>
+        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos</param>
+        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de eventos</param>
         public ChangeLogData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todos los registros de cambios almacenados en la base de datos
+        /// </summary>
+        /// <returns>Lista de registros de cambios</returns>
         public async Task<IEnumerable<ChangeLog>> GetAllAsync()
         {
             return await _context.Set<ChangeLog>().ToListAsync();
         }
 
+        /// <summary>
+        /// Obtiene un registro de cambio por su ID
+        /// </summary>
+        /// <param name="id">ID del registro a buscar</param>
+        /// <returns>El registro encontrado o null si no existe</returns>
         public async Task<ChangeLog?> GetByIdAsync(int id)
         {
             try
@@ -32,11 +49,16 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener ChangeLog con ID {ChangeLogId}");
+                _logger.LogError($"Error al obtener registros de cambio: {ex.Message}");
                 throw;
             }
         }
 
+        /// <summary>
+        /// Crea un nuevo registro de cambio en la base de datos
+        /// </summary>
+        /// <param name="changeLog">Instancia del registro a crear</param>
+        /// <returns>El registro creado</returns>
         public async Task<ChangeLog> CreateAsync(ChangeLog changeLog)
         {
             try
@@ -47,7 +69,7 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el ChangeLog {ex.Message}");
+                _logger.LogError($"Error al crear el registro de cambio: {ex.Message}");
                 throw;
             }
         }
@@ -66,8 +88,8 @@ namespace Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar el ChangeLog {ex.Message}");
-                return false;
+                _logger.LogError($"Error al eliminar registros de cambio antiguos: {ex.Message}");
+                throw;
             }
         }
     }

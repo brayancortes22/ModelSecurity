@@ -79,7 +79,7 @@ namespace Business
             try
             {
                 // Buscar el formulario en la base de datos
-                var form = await _formData.GetByidAsync(id);
+                var form = await _formData.GetByIdAsync(id);
                 if (form == null)
                 {
                     _logger.LogInformation("No se encontró ningún formulario con ID: {FormId}", id);

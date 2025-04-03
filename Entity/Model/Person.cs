@@ -17,7 +17,7 @@ namespace Entity.Model
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string TypeIdentification { get; set; }
-        public short NumberIdentification { get; set; }
+        public int NumberIdentification { get; set; }
         public bool Signing { get; set; }
         public bool Active { get; set; }
         public DateTime CreateDate { get; set; }

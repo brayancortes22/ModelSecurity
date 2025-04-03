@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Contexts;
@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repository encargado de la gestión de la entidad Form en la base de datos
+    /// Repository encargado de la gestión de la entidad Aprendiz en la base de datos
     /// </summary>
-    public class FormData
+    public class AprendizData
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
@@ -21,101 +21,101 @@ namespace Data
         /// </summary>
         /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos</param>
         /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de eventos</param>
-        public FormData(ApplicationDbContext context, ILogger logger)
+        public AprendizData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
             _logger = logger;
         }
 
         /// <summary>
-        /// Obtiene todos los formularios almacenados en la base de datos
+        /// Obtiene todos los aprendices almacenados en la base de datos
         /// </summary>
-        /// <returns>Lista de formularios</returns>
-        public async Task<IEnumerable<Form>> GetAllAsync()
+        /// <returns>Lista de aprendices</returns>
+        public async Task<IEnumerable<Aprendiz>> GetAllAsync()
         {
-            return await _context.Set<Form>().ToListAsync();
+            return await _context.Set<Aprendiz>().ToListAsync();
         }
 
         /// <summary>
-        /// Obtiene un formulario por su ID
+        /// Obtiene un aprendiz por su ID
         /// </summary>
-        /// <param name="id">ID del formulario a buscar</param>
-        /// <returns>El formulario encontrado o null si no existe</returns>
-        public async Task<Form?> GetByIdAsync(int id)
+        /// <param name="id">ID del aprendiz a buscar</param>
+        /// <returns>El aprendiz encontrado o null si no existe</returns>
+        public async Task<Aprendiz?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Set<Form>().FindAsync(id);
+                return await _context.Set<Aprendiz>().FindAsync(id);
             }
             catch (Exception ex)
             {
-                _logger.LogError( $"Error al obtener formulario con ID{id}");
+                _logger.LogError($"Error al obtener aprendiz con ID {id}: {ex.Message}");
                 throw;
             }
         }
 
         /// <summary>
-        /// Crea un nuevo formulario en la base de datos
+        /// Crea un nuevo aprendiz en la base de datos
         /// </summary>
-        /// <param name="form">Instancia del formulario a crear</param>
-        /// <returns>El formulario creado</returns>
-        public async Task<Form> CreateAsync(Form form)
+        /// <param name="aprendiz">Instancia del aprendiz a crear</param>
+        /// <returns>El aprendiz creado</returns>
+        public async Task<Aprendiz> CreateAsync(Aprendiz aprendiz)
         {
             try
             {
-                await _context.Set<Form>().AddAsync(form);
+                await _context.Set<Aprendiz>().AddAsync(aprendiz);
                 await _context.SaveChangesAsync();
-                return form;
+                return aprendiz;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el formulario: {ex.Message}");
+                _logger.LogError($"Error al crear el aprendiz: {ex.Message}");
                 throw;
             }
         }
 
         /// <summary>
-        /// Actualiza un formulario existente en la base de datos
+        /// Actualiza un aprendiz existente en la base de datos
         /// </summary>
-        /// <param name="form">Objeto con la información actualizada</param>
+        /// <param name="aprendiz">Objeto con la información actualizada</param>
         /// <returns>True si la operación fue exitosa, False en caso contrario</returns>
-        public async Task<bool> UpdateAsync(Form form)
+        public async Task<bool> UpdateAsync(Aprendiz aprendiz)
         {
             try
             {
-                _context.Set<Form>().Update(form);
+                _context.Set<Aprendiz>().Update(aprendiz);
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar el formulario: {ex.Message}");
+                _logger.LogError($"Error al actualizar el aprendiz: {ex.Message}");
                 return false;
             }
         }
 
         /// <summary>
-        /// Elimina un formulario de la base de datos
+        /// Elimina un aprendiz de la base de datos
         /// </summary>
-        /// <param name="id">Identificador único del formulario a eliminar</param>
+        /// <param name="id">Identificador único del aprendiz a eliminar</param>
         /// <returns>True si la eliminación fue exitosa, False en caso contrario</returns>
         public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                var form = await _context.Set<Form>().FindAsync(id);
-                if (form == null)
+                var aprendiz = await _context.Set<Aprendiz>().FindAsync(id);
+                if (aprendiz == null)
                     return false;
 
-                _context.Set<Form>().Remove(form);
+                _context.Set<Aprendiz>().Remove(aprendiz);
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar el formulario: {ex.Message}");
+                _logger.LogError($"Error al eliminar el aprendiz: {ex.Message}");
                 return false;
             }
         }
     }
-}
+} 
