@@ -29,19 +29,20 @@ namespace Business
             try
             {
                 var roles = await _rolData.GetAllAsync();
-                var rolesDTO = new List<RolDto>();
+                //var rolesDTO = new List<RolDto>();
+                return MapToDTOList(roles);
 
-                foreach (var rol in roles)
-                {
-                    rolesDTO.Add(new RolDto
-                    {
-                        Id = rol.Id,
-                        TypeRol = rol.TypeRol,
-                        Description = rol.Description,
-                        Active = rol.Active //si existe la entidad
-                    });
-                }
-                return rolesDTO;
+                //foreach (var rol in roles)
+                //{
+                //    rolesDTO.Add(new RolDto
+                //    {
+                //        Id = rol.Id,
+                //        TypeRol = rol.TypeRol,
+                //        Description = rol.Description,
+                //        Active = rol.Active //si existe la entidad
+                //    });
+                //}
+                //return rolesDTO;
 
             }
             catch (Exception ex)
@@ -66,13 +67,14 @@ namespace Business
                     _logger.LogInformation("No se encontró el rol con ID {RolId}", id);
                     throw new EntityNotFoundException("Rol", id);
                 }
-                return new RolDto
-                {
-                    Id = rol.Id,
-                    TypeRol = rol.TypeRol,
-                    Description = rol.Description,
-                    Active = rol.Active //si existe la entidad
-                };
+                //return new RolDto
+                //{
+                //    Id = rol.Id,
+                //    TypeRol = rol.TypeRol,
+                //    Description = rol.Description,
+                //    Active = rol.Active //si existe la entidad
+                //};
+                return MapToDTO(rol);
             }
             catch (Exception ex)
             {
@@ -80,31 +82,33 @@ namespace Business
                 throw new ExternalServiceException("Base de datos", $"Error al recuperar el rol con ID {id}", ex);
             }
         }
+
+       
         // Método para crear un rol desde un DTO
         public async Task<RolDto> CreateRolAsync(RolDto RolDto)
         {
             try
             {
                 ValidateRol(RolDto);
-
-                var rol = new Rol
-                {
-                    Id = RolDto.Id,
-                    TypeRol = RolDto.TypeRol,
-                    Description = RolDto.Description,
-                    Active = RolDto.Active //si existe la entidad
-                };
+                var rol = MapToEntity(RolDto);
+                //var rol = new Rol
+                //{
+                //    Id = RolDto.Id,
+                //    TypeRol = RolDto.TypeRol,
+                //    Description = RolDto.Description,
+                //    Active = RolDto.Active //si existe la entidad
+                //};
 
                 var rolCreado = await _rolData.CreateAsync(rol);
+                return MapToDTO(rolCreado);
+                //return new RolDto
+                //{
+                //    Id = rol.Id,
+                //    TypeRol = rol.TypeRol,
+                //    Description = rol.Description,
+                //    Active = rol.Active //si existe la entidad
 
-                return new RolDto
-                {
-                    Id = rol.Id,
-                    TypeRol = rol.TypeRol,
-                    Description = rol.Description,
-                    Active = rol.Active //si existe la entidad
-
-                };
+                //};
               }
             catch (Exception ex)
             {
@@ -126,5 +130,41 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("Name", "El nombre del rol nes obligatorio");
             }
         }
+        //Funciones de mapeos 
+        // Método para mapear de Rol a RolDTO
+        private RolDto MapToDTO(Rol rol)
+        {
+            return new RolDto
+            {
+                Id = rol.Id,
+                TypeRol = rol.TypeRol,
+                Description = rol.Description,
+                Active = rol.Active //si existe la entidad
+            };
+
+        }
+        // Método para mapear de RolDTO a Rol
+        private Rol MapToEntity(RolDto rolDTO)
+        {
+            return new Rol
+            {
+                Id = rolDTO.Id,
+                TypeRol = rolDTO.TypeRol,
+                Description = rolDTO.Description,
+                Active = rolDTO.Active //si existe la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<RolDto> MapToDTOList(IEnumerable<Rol> roles)
+        {
+            var rolesDTO = new List<RolDto>();
+            foreach (var rol in roles)
+            {
+                rolesDTO.Add(MapToDTO(rol));
+            }
+            return rolesDTO;
+        }
+
     }
 }
