@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entity.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Entity.Model
         public string Email { get; set; }
         public string TypeIdentification { get; set; }
         public int NumberIdentification { get; set; }
-        public bool Signing { get; set; }
+        public bool Signig { get; set; }
         public bool Active { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime DeleteDate { get; set; }

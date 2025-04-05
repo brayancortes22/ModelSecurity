@@ -1,9 +1,11 @@
 ﻿using Business;
+using Data;
 using Entity.DTOautogestion;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Utilities.Exceptions;
-
 
 namespace Web.Controllers
 {
@@ -36,7 +38,7 @@ namespace Web.Controllers
         /// <response code="200">Retorna la lista de permisos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<RolDTOAuto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<RolDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllRols()
         {
@@ -62,7 +64,7 @@ namespace Web.Controllers
         /// <response code="404">Permiso no encontrado</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(RolDTOAuto), 200)]
+        [ProducesResponseType(typeof(RolData), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -73,7 +75,7 @@ namespace Web.Controllers
                 var Rol = await _RolBusiness.GetRolByIdAsync(id);
                 return Ok(Rol);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida para el permiso con ID: {RolId}", id);
                 return BadRequest(new { message = ex.Message });
@@ -99,17 +101,17 @@ namespace Web.Controllers
         /// <response code="400">Datos del permiso no válidos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpPost]
-        [ProducesResponseType(typeof(RolDTOAuto), 201)]
+        [ProducesResponseType(typeof(RolDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateRol([FromBody] RolDTOAuto RolDto)
+        public async Task<IActionResult> CreateRol([FromBody] RolDto RolDto)
         {
             try
             {
                 var createdRol = await _RolBusiness.CreateRolAsync(RolDto);
-                return CreatedAtAction(nameof(GetRolById), new { Id = createdRol.Id }, createdRol);
+                return CreatedAtAction(nameof(GetRolById), new { id = createdRol.Id }, createdRol);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida al crear permiso");
                 return BadRequest(new { message = ex.Message });

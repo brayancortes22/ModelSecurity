@@ -14,9 +14,6 @@ namespace Entity.Model
         public Rol Rol { get; set; }
         public int FormId { get; set; }
         public Form Form { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+
     }
 }

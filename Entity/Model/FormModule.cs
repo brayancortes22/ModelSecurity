@@ -14,9 +14,5 @@ namespace Entity.Model
         public Form Form { get; set; }
         public int ModuleId { get; set; }
         public Module Module { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
     }
 }

@@ -1,11 +1,15 @@
-using Data;
+﻿using Data;
 using Entity.DTOautogestion;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using Utilities.Exceptions;
 
 namespace Business
 {
+    /// <summary>
+    /// Clase de negocio encargada de la lógica relacionada con las personas en el sistema.
+    /// </summary>
     public class PersonBusiness
     {
         private readonly PersonData _personData;
@@ -17,16 +21,17 @@ namespace Business
             _logger = logger;
         }
 
-        public async Task<IEnumerable<PersonDTOAuto>> GetAllPersonsAsync()
+        // Método para obtener todas las personas como DTOs
+        public async Task<IEnumerable<PersonDto>> GetAllPersonsAsync()
         {
             try
             {
                 var persons = await _personData.GetAllAsync();
-                var personsDTO = new List<PersonDTOAuto>();
+                var personsDTO = new List<PersonDto>();
 
                 foreach (var person in persons)
                 {
-                    personsDTO.Add(new PersonDTOAuto
+                    personsDTO.Add(new PersonDto
                     {
                         Id = person.Id,
                         Name = person.Name,
@@ -38,7 +43,7 @@ namespace Business
                         Email = person.Email,
                         TypeIdentification = person.TypeIdentification,
                         NumberIdentification = person.NumberIdentification,
-                        Signing = person.Signing,
+                        Signig = person.Signig,
                         Active = person.Active
                     });
                 }
@@ -52,12 +57,13 @@ namespace Business
             }
         }
 
-        public async Task<PersonDTOAuto> GetPersonByIdAsync(int id)
+        // Método para obtener una persona por ID como DTO
+        public async Task<PersonDto> GetPersonByIdAsync(int id)
         {
             if (id <= 0)
             {
                 _logger.LogWarning("Se intentó obtener una persona con ID inválido: {PersonId}", id);
-                throw new ValidationException("id", "El ID de la persona debe ser mayor que cero");
+                throw new Utilities.Exceptions.ValidationException("id", "El ID de la persona debe ser mayor que cero");
             }
 
             try
@@ -69,7 +75,7 @@ namespace Business
                     throw new EntityNotFoundException("Person", id);
                 }
 
-                return new PersonDTOAuto
+                return new PersonDto
                 {
                     Id = person.Id,
                     Name = person.Name,
@@ -81,7 +87,7 @@ namespace Business
                     Email = person.Email,
                     TypeIdentification = person.TypeIdentification,
                     NumberIdentification = person.NumberIdentification,
-                    Signing = person.Signing,
+                    Signig = person.Signig,
                     Active = person.Active
                 };
             }
@@ -92,7 +98,8 @@ namespace Business
             }
         }
 
-        public async Task<PersonDTOAuto> CreatePersonAsync(PersonDTOAuto personDto)
+        // Método para crear una persona desde un DTO
+        public async Task<PersonDto> CreatePersonAsync(PersonDto personDto)
         {
             try
             {
@@ -109,62 +116,48 @@ namespace Business
                     Email = personDto.Email,
                     TypeIdentification = personDto.TypeIdentification,
                     NumberIdentification = personDto.NumberIdentification,
-                    Signing = personDto.Signing,
-                    Active = personDto.Active,
-                    CreateDate = DateTime.Now,
-                    UpdateDate = DateTime.Now,
-                    DeleteDate = DateTime.Now
+                    Signig = personDto.Signig,
+                    Active = personDto.Active
                 };
 
                 var personCreada = await _personData.CreateAsync(person);
 
-                return new PersonDTOAuto
+                return new PersonDto
                 {
-                    Id = personCreada.Id,
-                    Name = personCreada.Name,
-                    FirstName = personCreada.FirstName,
-                    SecondName = personCreada.SecondName,
-                    FirstLastName = personCreada.FirstLastName,
-                    SecondLastName = personCreada.SecondLastName,
-                    PhoneNumber = personCreada.PhoneNumber,
-                    Email = personCreada.Email,
-                    TypeIdentification = personCreada.TypeIdentification,
-                    NumberIdentification = personCreada.NumberIdentification,
-                    Signing = personCreada.Signing,
-                    Active = personCreada.Active
+                    Id = person.Id,
+                    Name = person.Name,
+                    FirstName = person.FirstName,
+                    SecondName = person.SecondName,
+                    FirstLastName = person.FirstLastName,
+                    SecondLastName = person.SecondLastName,
+                    PhoneNumber = person.PhoneNumber,
+                    Email = person.Email,
+                    TypeIdentification = person.TypeIdentification,
+                    NumberIdentification = person.NumberIdentification,
+                    Signig = person.Signig,
+                    Active = person.Active
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nueva persona");
+                _logger.LogError(ex, "Error al crear nueva persona: {Name}", personDto?.Name ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear la persona", ex);
             }
         }
 
-        private void ValidatePerson(PersonDTOAuto personDto)
+        // Método para validar el DTO
+        private void ValidatePerson(PersonDto personDto)
         {
             if (personDto == null)
             {
-                throw new ValidationException("El objeto persona no puede ser nulo");
+                throw new Utilities.Exceptions.ValidationException("El objeto persona no puede ser nulo");
             }
 
             if (string.IsNullOrWhiteSpace(personDto.Name))
             {
-                _logger.LogWarning("Se intentó crear/actualizar una persona sin nombre");
-                throw new ValidationException("Name", "El nombre de la persona es obligatorio");
-            }
-
-            if (string.IsNullOrWhiteSpace(personDto.TypeIdentification))
-            {
-                _logger.LogWarning("Se intentó crear/actualizar una persona sin tipo de identificación");
-                throw new ValidationException("TypeIdentification", "El tipo de identificación es obligatorio");
-            }
-
-            if (personDto.NumberIdentification <= 0)
-            {
-                _logger.LogWarning("Se intentó crear/actualizar una persona con número de identificación inválido");
-                throw new ValidationException("NumberIdentification", "El número de identificación debe ser mayor que cero");
+                _logger.LogWarning("Se intentó crear/actualizar una persona con Name vacío");
+                throw new Utilities.Exceptions.ValidationException("Name", "El Name de la persona es obligatorio");
             }
         }
     }
-} 
+}

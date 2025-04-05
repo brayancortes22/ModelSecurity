@@ -1,67 +1,73 @@
-using Business;
+﻿using Business;
+using Data;
+using Entity.DTOautogestion;
 using Entity.DTOautogestion.pivote;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Utilities.Exceptions;
+using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Web.Controllers
 {
     /// <summary>
-    /// Controlador para la gestión de relaciones entre formularios y módulos en el sistema
+    /// Controlador para la gestión de módulos de formularios en el sistema
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
     public class FormModuleController : ControllerBase
     {
-        private readonly FormModuleBusiness _formModuleBusiness;
+        private readonly FormModuleBusiness _FormModuleBusiness;
         private readonly ILogger<FormModuleController> _logger;
 
         /// <summary>
-        /// Constructor del controlador de relaciones formulario-módulo
+        /// Constructor del controlador de módulos de formularios
         /// </summary>
-        /// <param name="formModuleBusiness">Capa de negocio de relaciones formulario-módulo</param>
+        /// <param name="formModuleBusiness">Capa de negocio de módulos de formularios</param>
         /// <param name="logger">Logger para registro de eventos</param>
         public FormModuleController(FormModuleBusiness formModuleBusiness, ILogger<FormModuleController> logger)
         {
-            _formModuleBusiness = formModuleBusiness;
+            _FormModuleBusiness = formModuleBusiness;
             _logger = logger;
         }
 
         /// <summary>
-        /// Obtiene todas las relaciones formulario-módulo del sistema
+        /// Obtiene todos los módulos de formularios del sistema
         /// </summary>
-        /// <returns>Lista de relaciones formulario-módulo</returns>
-        /// <response code="200">Retorna la lista de relaciones</response>
+        /// <returns>Lista de módulos de formularios</returns>
+        /// <response code="200">Retorna la lista de módulos de formularios</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<FormModuleDTOAuto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<FormModuleDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllFormModules()
         {
             try
             {
-                var formModules = await _formModuleBusiness.GetAllFormModulesAsync();
+                var formModules = await _FormModuleBusiness.GetAllFormModulesAsync();
                 return Ok(formModules);
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener relaciones formulario-módulo");
+                _logger.LogError(ex, "Error al obtener módulos de formularios");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Obtiene una relación formulario-módulo específica por su ID
+        /// Obtiene un módulo de formulario específico por su ID
         /// </summary>
-        /// <param name="id">ID de la relación</param>
-        /// <returns>Relación formulario-módulo solicitada</returns>
-        /// <response code="200">Retorna la relación solicitada</response>
+        /// <param name="id">ID del módulo de formulario</param>
+        /// <returns>Módulo de formulario solicitado</returns>
+        /// <response code="200">Retorna el módulo de formulario solicitado</response>
         /// <response code="400">ID proporcionado no válido</response>
-        /// <response code="404">Relación no encontrada</response>
+        /// <response code="404">Módulo de formulario no encontrado</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(FormModuleDTOAuto), 200)]
+        [ProducesResponseType(typeof(FormModuleDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -69,55 +75,55 @@ namespace Web.Controllers
         {
             try
             {
-                var formModule = await _formModuleBusiness.GetFormModuleByIdAsync(id);
+                var formModule = await _FormModuleBusiness.GetFormModuleByIdAsync(id);
                 return Ok(formModule);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida para la relación con ID: {FormModuleId}", id);
+                _logger.LogWarning(ex, "Validación fallida para el módulo de formulario con ID: {FormModuleId}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Relación no encontrada con ID: {FormModuleId}", id);
+                _logger.LogInformation(ex, "Módulo de formulario no encontrado con ID: {FormModuleId}", id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener relación con ID: {FormModuleId}", id);
+                _logger.LogError(ex, "Error al obtener módulo de formulario con ID: {FormModuleId}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Crea una nueva relación formulario-módulo en el sistema
+        /// Crea un nuevo módulo de formulario en el sistema
         /// </summary>
-        /// <param name="formModuleDto">Datos de la relación a crear</param>
-        /// <returns>Relación formulario-módulo creada</returns>
-        /// <response code="201">Retorna la relación creada</response>
-        /// <response code="400">Datos de la relación no válidos</response>
+        /// <param name="formModuleDto">Datos del módulo de formulario a crear</param>
+        /// <returns>Módulo de formulario creado</returns>
+        /// <response code="201">Retorna el módulo de formulario creado</response>
+        /// <response code="400">Datos del módulo de formulario no válidos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpPost]
-        [ProducesResponseType(typeof(FormModuleDTOAuto), 201)]
+        [ProducesResponseType(typeof(FormModuleDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateFormModule([FromBody] FormModuleDTOAuto formModuleDto)
+        public async Task<IActionResult> CreateFormModule([FromBody] FormModuleDto formModuleDto)
         {
             try
             {
-                var createdFormModule = await _formModuleBusiness.CreateFormModuleAsync(formModuleDto);
-                return CreatedAtAction(nameof(GetFormModuleById), new { Id = createdFormModule.Id }, createdFormModule);
+                var createdFormModule = await _FormModuleBusiness.CreateFormModuleAsync(formModuleDto);
+                return CreatedAtAction(nameof(GetFormModuleById), new { id = createdFormModule.Id }, createdFormModule);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al crear relación formulario-módulo");
+                _logger.LogWarning(ex, "Validación fallida al crear módulo de formulario");
                 return BadRequest(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al crear relación formulario-módulo");
+                _logger.LogError(ex, "Error al crear módulo de formulario");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
     }
-} 
+}

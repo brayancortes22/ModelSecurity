@@ -1,8 +1,13 @@
-using Business;
+﻿using Business;
+using Data;
 using Entity.DTOautogestion;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Utilities.Exceptions;
+using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Web.Controllers
 {
@@ -14,34 +19,29 @@ namespace Web.Controllers
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly UserBusiness _userBusiness;
+        private readonly UserBusiness _UserBusiness;
         private readonly ILogger<UserController> _logger;
 
         /// <summary>
         /// Constructor del controlador de usuarios
         /// </summary>
-        /// <param name="userBusiness">Capa de negocio de usuarios</param>
-        /// <param name="logger">Logger para registro de eventos</param>
-        public UserController(UserBusiness userBusiness, ILogger<UserController> logger)
+        public UserController(UserBusiness UserBusiness, ILogger<UserController> logger)
         {
-            _userBusiness = userBusiness;
+            _UserBusiness = UserBusiness;
             _logger = logger;
         }
 
         /// <summary>
         /// Obtiene todos los usuarios del sistema
         /// </summary>
-        /// <returns>Lista de usuarios</returns>
-        /// <response code="200">Retorna la lista de usuarios</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<UserDTOAuto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = await _userBusiness.GetAllUsersAsync();
+                var users = await _UserBusiness.GetAllUsersAsync();
                 return Ok(users);
             }
             catch (ExternalServiceException ex)
@@ -54,14 +54,8 @@ namespace Web.Controllers
         /// <summary>
         /// Obtiene un usuario específico por su ID
         /// </summary>
-        /// <param name="id">ID del usuario</param>
-        /// <returns>Usuario solicitado</returns>
-        /// <response code="200">Retorna el usuario solicitado</response>
-        /// <response code="400">ID proporcionado no válido</response>
-        /// <response code="404">Usuario no encontrado</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserDTOAuto), 200)]
+        [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -69,10 +63,10 @@ namespace Web.Controllers
         {
             try
             {
-                var user = await _userBusiness.GetUserByIdAsync(id);
+                var user = await _UserBusiness.GetUserByIdAsync(id);
                 return Ok(user);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida para el usuario con ID: {UserId}", id);
                 return BadRequest(new { message = ex.Message });
@@ -92,23 +86,18 @@ namespace Web.Controllers
         /// <summary>
         /// Crea un nuevo usuario en el sistema
         /// </summary>
-        /// <param name="userDto">Datos del usuario a crear</param>
-        /// <returns>Usuario creado</returns>
-        /// <response code="201">Retorna el usuario creado</response>
-        /// <response code="400">Datos del usuario no válidos</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpPost]
-        [ProducesResponseType(typeof(UserDTOAuto), 201)]
+        [ProducesResponseType(typeof(UserDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTOAuto userDto)
+        public async Task<IActionResult> CreateUser([FromBody] UserDto UserDto)
         {
             try
             {
-                var createdUser = await _userBusiness.CreateUserAsync(userDto);
-                return CreatedAtAction(nameof(GetUserById), new { Id = createdUser.Id }, createdUser);
+                var createdUser = await _UserBusiness.CreateUserAsync(UserDto);
+                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida al crear usuario");
                 return BadRequest(new { message = ex.Message });
@@ -120,4 +109,4 @@ namespace Web.Controllers
             }
         }
     }
-} 
+}

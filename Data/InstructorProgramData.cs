@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Contexts;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repository encargado de la gestión de la entidad InstructorProgram en la base de datos
+    /// Repository encargado de la gestión de la entidad InstructorProgram en la base de datos.
     /// </summary>
     public class InstructorProgramData
     {
@@ -17,10 +17,10 @@ namespace Data
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Constructor que recibe el contexto de la base de datos
+        /// Constructor que recibe el contexto de la base de datos.
         /// </summary>
-        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos</param>
-        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de eventos</param>
+        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos.</param>
+        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de logs.</param>
         public InstructorProgramData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
@@ -28,19 +28,19 @@ namespace Data
         }
 
         /// <summary>
-        /// Obtiene todas las relaciones instructor-programa almacenadas en la base de datos
+        /// Obtiene todos los programas de instructores almacenados en la base de datos.
         /// </summary>
-        /// <returns>Lista de relaciones instructor-programa</returns>
+        /// <returns>Lista de programas de instructores.</returns>
         public async Task<IEnumerable<InstructorProgram>> GetAllAsync()
         {
             return await _context.Set<InstructorProgram>().ToListAsync();
         }
 
         /// <summary>
-        /// Obtiene una relación instructor-programa por su ID
+        /// Obtiene un programa de instructor por su ID.
         /// </summary>
-        /// <param name="id">ID de la relación a buscar</param>
-        /// <returns>La relación encontrada o null si no existe</returns>
+        /// <param name="id">Identificador único del programa de instructor.</param>
+        /// <returns>El programa de instructor con el ID especificado.</returns>
         public async Task<InstructorProgram?> GetByIdAsync(int id)
         {
             try
@@ -49,16 +49,16 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener relación instructor-programa con ID {id}: {ex.Message}");
-                throw;
+                _logger.LogError($"Error al obtener programa de instructor con ID {id}: {ex.Message}");
+                throw; // Re-lanza la excepción para que sea manejada en capas superiores
             }
         }
 
         /// <summary>
-        /// Crea una nueva relación instructor-programa en la base de datos
+        /// Crea un nuevo programa de instructor en la base de datos.
         /// </summary>
-        /// <param name="instructorProgram">Instancia de la relación a crear</param>
-        /// <returns>La relación creada</returns>
+        /// <param name="instructorProgram">Instancia del programa de instructor a crear.</param>
+        /// <returns>El programa de instructor creado.</returns>
         public async Task<InstructorProgram> CreateAsync(InstructorProgram instructorProgram)
         {
             try
@@ -69,16 +69,16 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear la relación instructor-programa: {ex.Message}");
+                _logger.LogError($"Error al crear el programa de instructor: {ex.Message}");
                 throw;
             }
         }
 
         /// <summary>
-        /// Actualiza una relación instructor-programa existente en la base de datos
+        /// Actualiza un programa de instructor existente en la base de datos.
         /// </summary>
-        /// <param name="instructorProgram">Objeto con la información actualizada</param>
-        /// <returns>True si la operación fue exitosa, False en caso contrario</returns>
+        /// <param name="instructorProgram">Objeto con la información actualizada.</param>
+        /// <returns>True si la operación fue exitosa, False en caso contrario.</returns>
         public async Task<bool> UpdateAsync(InstructorProgram instructorProgram)
         {
             try
@@ -89,16 +89,16 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar la relación instructor-programa: {ex.Message}");
+                _logger.LogError($"Error al actualizar el programa de instructor: {ex.Message}");
                 return false;
             }
         }
 
         /// <summary>
-        /// Elimina una relación instructor-programa de la base de datos
+        /// Elimina un programa de instructor en la base de datos.
         /// </summary>
-        /// <param name="id">Identificador único de la relación a eliminar</param>
-        /// <returns>True si la eliminación fue exitosa, False en caso contrario</returns>
+        /// <param name="id">Identificador único del programa de instructor a eliminar.</param>
+        /// <returns>True si la eliminación fue exitosa, False en caso contrario.</returns>
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -113,9 +113,10 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar la relación instructor-programa: {ex.Message}");
+                _logger.LogError($"Error al eliminar el programa de instructor: {ex.Message}");
                 return false;
             }
         }
     }
-} 
+}
+    

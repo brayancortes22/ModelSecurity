@@ -12,12 +12,9 @@ namespace Entity.Model
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-
+        public bool Active { get; set; }
         public int PersonId { get; set; }
         public Person Person { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+
     }
 }

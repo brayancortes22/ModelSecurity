@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repository encargado de la gestión de la entidad ChangeLog en la base de datos
+    /// Repository encargado de la gestión de la entidad ChangeLog en la base de datos.
     /// </summary>
     public class ChangeLogData
     {
@@ -17,10 +17,10 @@ namespace Data
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Constructor que recibe el contexto de la base de datos
+        /// Constructor que recibe el contexto de la base de datos.
         /// </summary>
-        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos</param>
-        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de eventos</param>
+        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos.</param>
+        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de logs.</param>
         public ChangeLogData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
@@ -28,19 +28,19 @@ namespace Data
         }
 
         /// <summary>
-        /// Obtiene todos los registros de cambios almacenados en la base de datos
+        /// Obtiene todos los ChangeLog almacenados en la base de datos.
         /// </summary>
-        /// <returns>Lista de registros de cambios</returns>
+        /// <returns>Lista de ChangeLog.</returns>
         public async Task<IEnumerable<ChangeLog>> GetAllAsync()
         {
             return await _context.Set<ChangeLog>().ToListAsync();
         }
 
         /// <summary>
-        /// Obtiene un registro de cambio por su ID
+        /// Obtiene un ChangeLog por su ID.
         /// </summary>
-        /// <param name="id">ID del registro a buscar</param>
-        /// <returns>El registro encontrado o null si no existe</returns>
+        /// <param name="id">Identificador único del ChangeLog.</param>
+        /// <returns>El ChangeLog con el ID especificado.</returns>
         public async Task<ChangeLog?> GetByIdAsync(int id)
         {
             try
@@ -49,16 +49,16 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al obtener registros de cambio: {ex.Message}");
-                throw;
+                _logger.LogError(ex, $"Error al obtener ChangeLog con ID {id}");
+                throw; // Re-lanza la excepción para que sea manejada en capas superiores
             }
         }
 
         /// <summary>
-        /// Crea un nuevo registro de cambio en la base de datos
+        /// Crea un nuevo ChangeLog en la base de datos.
         /// </summary>
-        /// <param name="changeLog">Instancia del registro a crear</param>
-        /// <returns>El registro creado</returns>
+        /// <param name="changeLog">Instancia del ChangeLog a crear.</param>
+        /// <returns>El ChangeLog creado.</returns>
         public async Task<ChangeLog> CreateAsync(ChangeLog changeLog)
         {
             try
@@ -69,11 +69,36 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el registro de cambio: {ex.Message}");
+                _logger.LogError($"Error al crear el ChangeLog {ex.Message}");
                 throw;
             }
         }
 
+        /// <summary>
+        /// Actualiza un ChangeLog existente en la base de datos.
+        /// </summary>
+        /// <param name="changeLog">Objeto con la información actualizada.</param>
+        /// <returns>True si la operación fue exitosa, False en caso contrario.</returns>
+        public async Task<bool> UpdateAsync(ChangeLog changeLog)
+        {
+            try
+            {
+                _context.Set<ChangeLog>().Update(changeLog);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al actualizar el ChangeLog {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Elimina un ChangeLog en la base de datos.
+        /// </summary>
+        /// <param name="id">Identificador único del ChangeLog a eliminar.</param>
+        /// <returns>True si la eliminación fue exitosa, False en caso contrario.</returns>
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -88,9 +113,11 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar registros de cambio antiguos: {ex.Message}");
-                throw;
+                _logger.LogError($"Error al eliminar el ChangeLog {ex.Message}");
+                return false;
             }
         }
     }
 }
+
+

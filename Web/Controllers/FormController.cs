@@ -1,8 +1,12 @@
-using Business;
+﻿using Business;
 using Entity.DTOautogestion;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Utilities.Exceptions;
+using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Web.Controllers
 {
@@ -14,7 +18,7 @@ namespace Web.Controllers
     [Produces("application/json")]
     public class FormController : ControllerBase
     {
-        private readonly FormBusiness _formBusiness;
+        private readonly FormBusiness _FormBusiness;
         private readonly ILogger<FormController> _logger;
 
         /// <summary>
@@ -24,7 +28,7 @@ namespace Web.Controllers
         /// <param name="logger">Logger para registro de eventos</param>
         public FormController(FormBusiness formBusiness, ILogger<FormController> logger)
         {
-            _formBusiness = formBusiness;
+            _FormBusiness = formBusiness;
             _logger = logger;
         }
 
@@ -35,13 +39,13 @@ namespace Web.Controllers
         /// <response code="200">Retorna la lista de formularios</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<FormDTOAuto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<FormDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllForms()
         {
             try
             {
-                var forms = await _formBusiness.GetAllFormsAsync();
+                var forms = await _FormBusiness.GetAllFormsAsync();
                 return Ok(forms);
             }
             catch (ExternalServiceException ex)
@@ -61,7 +65,7 @@ namespace Web.Controllers
         /// <response code="404">Formulario no encontrado</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(FormDTOAuto), 200)]
+        [ProducesResponseType(typeof(FormDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -69,10 +73,10 @@ namespace Web.Controllers
         {
             try
             {
-                var form = await _formBusiness.GetFormByIdAsync(id);
+                var form = await _FormBusiness.GetFormByIdAsync(id);
                 return Ok(form);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida para el formulario con ID: {FormId}", id);
                 return BadRequest(new { message = ex.Message });
@@ -98,17 +102,17 @@ namespace Web.Controllers
         /// <response code="400">Datos del formulario no válidos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpPost]
-        [ProducesResponseType(typeof(FormDTOAuto), 201)]
+        [ProducesResponseType(typeof(FormDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateForm([FromBody] FormDTOAuto formDto)
+        public async Task<IActionResult> CreateForm([FromBody] FormDto formDto)
         {
             try
             {
-                var createdForm = await _formBusiness.CreateFormAsync(formDto);
-                return CreatedAtAction(nameof(GetFormById), new { Id = createdForm.Id }, createdForm);
+                var createdForm = await _FormBusiness.CreateFormAsync(formDto);
+                return CreatedAtAction(nameof(GetFormById), new { id = createdForm.Id }, createdForm);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida al crear formulario");
                 return BadRequest(new { message = ex.Message });
@@ -120,4 +124,4 @@ namespace Web.Controllers
             }
         }
     }
-} 
+}

@@ -1,4 +1,4 @@
-using Data;
+﻿using Data;
 using Entity.DTOautogestion;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -6,42 +6,39 @@ using Utilities.Exceptions;
 
 namespace Business
 {
+    /// <summary>
+    /// Clase de negocio encargada de la lógica relacionada con los instructores en el sistema.
+    /// </summary>
     public class InstructorBusiness
     {
         private readonly InstructorData _instructorData;
-        private readonly PersonData _personData;
         private readonly ILogger _logger;
 
-        public InstructorBusiness(InstructorData instructorData, PersonData personData, ILogger logger)
+        public InstructorBusiness(InstructorData instructorData, ILogger logger)
         {
             _instructorData = instructorData;
-            _personData = personData;
             _logger = logger;
         }
 
-        public async Task<IEnumerable<InstructorDTOAuto>> GetAllInstructoresAsync()
+        // Método para obtener todos los instructores como DTOs
+        public async Task<IEnumerable<InstructorDto>> GetAllInstructorsAsync()
         {
             try
             {
-                var instructores = await _instructorData.GetAllAsync();
-                var instructoresDTO = new List<InstructorDTOAuto>();
+                var instructors = await _instructorData.GetAllAsync();
+                var instructorsDTO = new List<InstructorDto>();
 
-                foreach (var instructor in instructores)
+                foreach (var instructor in instructors)
                 {
-                    var person = await _personData.GetByIdAsync(instructor.PersonId);
-                    
-                    var instructorDto = new InstructorDTOAuto
+                    instructorsDTO.Add(new InstructorDto
                     {
                         Id = instructor.Id,
-                        PersonId = instructor.PersonId,
                         Active = instructor.Active,
-                        
-                    };
-
-                    instructoresDTO.Add(instructorDto);
+                        UserId = instructor.UserId // Relación con la entidad User
+                    });
                 }
 
-                return instructoresDTO;
+                return instructorsDTO;
             }
             catch (Exception ex)
             {
@@ -50,12 +47,13 @@ namespace Business
             }
         }
 
-        public async Task<InstructorDTOAuto> GetInstructorByIdAsync(int id)
+        // Método para obtener un instructor por ID como DTO
+        public async Task<InstructorDto> GetInstructorByIdAsync(int id)
         {
             if (id <= 0)
             {
-                _logger.LogWarning("Se intentó obtener un instructor con ID inválido: {InstructorId}", id);
-                throw new ValidationException("id", "El ID del instructor debe ser mayor que cero");
+                _logger.LogWarning("Se intentó obtener un instructor con ID inválido: {Id}", id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID del instructor debe ser mayor que cero");
             }
 
             try
@@ -63,27 +61,26 @@ namespace Business
                 var instructor = await _instructorData.GetByIdAsync(id);
                 if (instructor == null)
                 {
-                    _logger.LogInformation("No se encontró ningún instructor con ID: {InstructorId}", id);
-                    throw new EntityNotFoundException("Instructor", id);
+                    _logger.LogInformation("No se encontró ningún instructor con ID: {Id}", id);
+                    throw new EntityNotFoundException("instructor", id);
                 }
 
-                var person = await _personData.GetByIdAsync(instructor.PersonId);
-
-                return new InstructorDTOAuto
+                return new InstructorDto
                 {
                     Id = instructor.Id,
-                    PersonId = instructor.PersonId,
                     Active = instructor.Active,
+                    UserId = instructor.UserId // Relación con la entidad User
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener el instructor con ID: {InstructorId}", id);
+                _logger.LogError(ex, "Error al obtener el instructor con ID: {Id}", id);
                 throw new ExternalServiceException("Base de datos", $"Error al recuperar el instructor con ID {id}", ex);
             }
         }
 
-        public async Task<InstructorDTOAuto> CreateInstructorAsync(InstructorDTOAuto instructorDto)
+        // Método para crear un instructor desde un DTO
+        public async Task<InstructorDto> CreateInstructorAsync(InstructorDto instructorDto)
         {
             try
             {
@@ -91,21 +88,17 @@ namespace Business
 
                 var instructor = new Instructor
                 {
-                    PersonId = instructorDto.PersonId,
-                    Active = true,
-                    CreateDate = DateTime.Now,
-                    UpdateDate = DateTime.Now,
-                    DeleteDate = DateTime.Now
+                    Active = instructorDto.Active,
+                    UserId = instructorDto.UserId // Relación con la entidad User
                 };
 
                 var instructorCreado = await _instructorData.CreateAsync(instructor);
-                    var person = await _personData.GetByIdAsync(instructorCreado.PersonId);
 
-                return new InstructorDTOAuto
+                return new InstructorDto
                 {
-                    Id = instructorCreado.Id,
-                    PersonId = instructorCreado.PersonId,
-                    Active = instructorCreado.Active,
+                    Id = instructor.Id,
+                    Active = instructor.Active,
+                    UserId = instructor.UserId // Relación con la entidad User
                 };
             }
             catch (Exception ex)
@@ -115,18 +108,19 @@ namespace Business
             }
         }
 
-        private void ValidateInstructor(InstructorDTOAuto instructorDto)
+        // Método para validar el DTO
+        private void ValidateInstructor(InstructorDto instructorDto)
         {
             if (instructorDto == null)
             {
-                throw new ValidationException("El objeto instructor no puede ser nulo");
+                throw new Utilities.Exceptions.ValidationException("El objeto Instructor no puede ser nulo");
             }
 
-            if (instructorDto.PersonId <= 0)
+            if (instructorDto.UserId <= 0)
             {
-                _logger.LogWarning("Se intentó crear/actualizar un instructor con PersonId inválido");
-                throw new ValidationException("PersonId", "El ID de la persona es obligatorio y debe ser mayor que cero");
+                _logger.LogWarning("Se intentó crear/actualizar un instructor con UserId inválido");
+                throw new Utilities.Exceptions.ValidationException("UserId", "El UserId del instructor es obligatorio y debe ser mayor que cero");
             }
         }
     }
-} 
+}

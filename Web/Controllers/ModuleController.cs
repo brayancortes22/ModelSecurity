@@ -1,8 +1,13 @@
-using Business;
+﻿using Business;
+using Data;
 using Entity.DTOautogestion;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Utilities.Exceptions;
+using ValidationException = Utilities.Exceptions.ValidationException;
 
 namespace Web.Controllers
 {
@@ -14,7 +19,7 @@ namespace Web.Controllers
     [Produces("application/json")]
     public class ModuleController : ControllerBase
     {
-        private readonly ModuleBusiness _moduleBusiness;
+        private readonly ModuleBusiness _ModuleBusiness;
         private readonly ILogger<ModuleController> _logger;
 
         /// <summary>
@@ -24,7 +29,7 @@ namespace Web.Controllers
         /// <param name="logger">Logger para registro de eventos</param>
         public ModuleController(ModuleBusiness moduleBusiness, ILogger<ModuleController> logger)
         {
-            _moduleBusiness = moduleBusiness;
+            _ModuleBusiness = moduleBusiness;
             _logger = logger;
         }
 
@@ -35,13 +40,13 @@ namespace Web.Controllers
         /// <response code="200">Retorna la lista de módulos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ModuleDTOAuto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<ModuleDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetAllModules()
         {
             try
             {
-                var modules = await _moduleBusiness.GetAllModulesAsync();
+                var modules = await _ModuleBusiness.GetAllModulesAsync();
                 return Ok(modules);
             }
             catch (ExternalServiceException ex)
@@ -61,7 +66,7 @@ namespace Web.Controllers
         /// <response code="404">Módulo no encontrado</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ModuleDTOAuto), 200)]
+        [ProducesResponseType(typeof(ModuleDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -69,10 +74,10 @@ namespace Web.Controllers
         {
             try
             {
-                var module = await _moduleBusiness.GetModuleByIdAsync(id);
+                var module = await _ModuleBusiness.GetModuleByIdAsync(id);
                 return Ok(module);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida para el módulo con ID: {ModuleId}", id);
                 return BadRequest(new { message = ex.Message });
@@ -98,17 +103,17 @@ namespace Web.Controllers
         /// <response code="400">Datos del módulo no válidos</response>
         /// <response code="500">Error interno del servidor</response>
         [HttpPost]
-        [ProducesResponseType(typeof(ModuleDTOAuto), 201)]
+        [ProducesResponseType(typeof(ModuleDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateModule([FromBody] ModuleDTOAuto moduleDto)
+        public async Task<IActionResult> CreateModule([FromBody] ModuleDto moduleDto)
         {
             try
             {
-                var createdModule = await _moduleBusiness.CreateModuleAsync(moduleDto);
-                return CreatedAtAction(nameof(GetModuleById), new { Id = createdModule.Id }, createdModule);
+                var createdModule = await _ModuleBusiness.CreateModuleAsync(moduleDto);
+                return CreatedAtAction(nameof(GetModuleById), new { id = createdModule.Id }, createdModule);
             }
-            catch (Utilities.Exceptions.ValidationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogWarning(ex, "Validación fallida al crear módulo");
                 return BadRequest(new { message = ex.Message });
@@ -120,4 +125,4 @@ namespace Web.Controllers
             }
         }
     }
-} 
+}

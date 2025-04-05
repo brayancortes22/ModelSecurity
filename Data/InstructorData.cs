@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Contexts;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repository encargado de la gestión de la entidad Instructor en la base de datos
+    /// Repository encargado de la gestión de la entidad Instructor en la base de datos.
     /// </summary>
     public class InstructorData
     {
@@ -17,10 +17,10 @@ namespace Data
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Constructor que recibe el contexto de la base de datos
+        /// Constructor que recibe el contexto de la base de datos.
         /// </summary>
-        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos</param>
-        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de eventos</param>
+        /// <param name="context">Instancia de <see cref="ApplicationDbContext"/> para la conexión con la base de datos.</param>
+        /// <param name="logger">Instancia de <see cref="ILogger"/> para el registro de logs.</param>
         public InstructorData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
@@ -28,19 +28,19 @@ namespace Data
         }
 
         /// <summary>
-        /// Obtiene todos los instructores almacenados en la base de datos
+        /// Obtiene todos los instructores almacenados en la base de datos.
         /// </summary>
-        /// <returns>Lista de instructores</returns>
+        /// <returns>Lista de instructores.</returns>
         public async Task<IEnumerable<Instructor>> GetAllAsync()
         {
             return await _context.Set<Instructor>().ToListAsync();
         }
 
         /// <summary>
-        /// Obtiene un instructor por su ID
+        /// Obtiene un instructor por su ID.
         /// </summary>
-        /// <param name="id">ID del instructor a buscar</param>
-        /// <returns>El instructor encontrado o null si no existe</returns>
+        /// <param name="id">Identificador único del instructor.</param>
+        /// <returns>El instructor con el ID especificado.</returns>
         public async Task<Instructor?> GetByIdAsync(int id)
         {
             try
@@ -50,15 +50,15 @@ namespace Data
             catch (Exception ex)
             {
                 _logger.LogError($"Error al obtener instructor con ID {id}: {ex.Message}");
-                throw;
+                throw; // Re-lanza la excepción para que sea manejada en capas superiores
             }
         }
 
         /// <summary>
-        /// Crea un nuevo instructor en la base de datos
+        /// Crea un nuevo instructor en la base de datos.
         /// </summary>
-        /// <param name="instructor">Instancia del instructor a crear</param>
-        /// <returns>El instructor creado</returns>
+        /// <param name="instructor">Instancia del instructor a crear.</param>
+        /// <returns>El instructor creado.</returns>
         public async Task<Instructor> CreateAsync(Instructor instructor)
         {
             try
@@ -75,10 +75,10 @@ namespace Data
         }
 
         /// <summary>
-        /// Actualiza un instructor existente en la base de datos
+        /// Actualiza un instructor existente en la base de datos.
         /// </summary>
-        /// <param name="instructor">Objeto con la información actualizada</param>
-        /// <returns>True si la operación fue exitosa, False en caso contrario</returns>
+        /// <param name="instructor">Objeto con la información actualizada.</param>
+        /// <returns>True si la operación fue exitosa, False en caso contrario.</returns>
         public async Task<bool> UpdateAsync(Instructor instructor)
         {
             try
@@ -95,10 +95,10 @@ namespace Data
         }
 
         /// <summary>
-        /// Elimina un instructor de la base de datos
+        /// Elimina un instructor en la base de datos.
         /// </summary>
-        /// <param name="id">Identificador único del instructor a eliminar</param>
-        /// <returns>True si la eliminación fue exitosa, False en caso contrario</returns>
+        /// <param name="id">Identificador único del instructor a eliminar.</param>
+        /// <returns>True si la eliminación fue exitosa, False en caso contrario.</returns>
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -118,4 +118,4 @@ namespace Data
             }
         }
     }
-} 
+}

@@ -14,9 +14,5 @@ namespace Entity.Model
         public User User { get; set; }
         public int SedeId { get; set; }
         public Sede Sede { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
     }
 }

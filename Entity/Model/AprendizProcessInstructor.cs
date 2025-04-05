@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entity.model_m;
 
 namespace Entity.Model
 {
@@ -24,13 +23,9 @@ namespace Entity.Model
         public Aprendiz Aprendiz { get; set; }
         public int InstructorId { get; set; }
         public Instructor Instructor { get; set; }
-        public int StadeId { get; set; }
-        public Stade Stade { get; set; }
+        public int StateId { get; set; }
+        public State State { get; set; }
         public int VerificationId { get; set; }
-        public Verification Verification { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public Verification Verification { get; set; }  
     }
 }
