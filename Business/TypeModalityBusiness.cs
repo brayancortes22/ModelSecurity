@@ -27,20 +27,7 @@ namespace Business
             try
             {
                 var typeModalities = await _typeModalityData.GetAllAsync();
-                var typeModalitiesDTO = new List<TypeModalityDto>();
-
-                foreach (var typeModality in typeModalities)
-                {
-                    typeModalitiesDTO.Add(new TypeModalityDto
-                    {
-                        Id = typeModality.Id,
-                        Name = typeModality.Name,
-                        Description = typeModality.Description,
-                        Active = typeModality.Active // si existe la entidad
-                    });
-                }
-
-                return typeModalitiesDTO;
+                return MapToDTOList(typeModalities);
             }
             catch (Exception ex)
             {
@@ -67,13 +54,7 @@ namespace Business
                     throw new EntityNotFoundException("typeModality", id);
                 }
 
-                return new TypeModalityDto
-                {
-                    Id = typeModality.Id,
-                    Name = typeModality.Name,
-                    Description = typeModality.Description,
-                    Active = typeModality.Active // si existe la entidad
-                };
+                return MapToDTO(typeModality);
             }
             catch (Exception ex)
             {
@@ -88,23 +69,9 @@ namespace Business
             try
             {
                 ValidateTypeModality(typeModalityDto);
-
-                var typeModality = new TypeModality
-                {
-                    Name = typeModalityDto.Name,
-                    Description = typeModalityDto.Description,
-                    Active = typeModalityDto.Active // si existe la entidad
-                };
-
+                var typeModality = MapToEntity(typeModalityDto);
                 var typeModalityCreado = await _typeModalityData.CreateAsync(typeModality);
-
-                return new TypeModalityDto
-                {
-                    Id = typeModality.Id,
-                    Name = typeModality.Name,
-                    Description = typeModality.Description,
-                    Active = typeModality.Active // si existe la entidad
-                };
+                return MapToDTO(typeModalityCreado);
             }
             catch (Exception ex)
             {
@@ -126,6 +93,42 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar una modalidad con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name de la modalidad es obligatorio");
             }
+        }
+
+        //Funciones de mapeos 
+        // Método para mapear de TypeModality a TypeModalityDto
+        private TypeModalityDto MapToDTO(TypeModality typeModality)
+        {
+            return new TypeModalityDto
+            {
+                Id = typeModality.Id,
+                Name = typeModality.Name,
+                Description = typeModality.Description,
+                Active = typeModality.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear de TypeModalityDto a TypeModality
+        private TypeModality MapToEntity(TypeModalityDto typeModalityDto)
+        {
+            return new TypeModality
+            {
+                Id = typeModalityDto.Id,
+                Name = typeModalityDto.Name,
+                Description = typeModalityDto.Description,
+                Active = typeModalityDto.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear una lista de TypeModality a una lista de TypeModalityDto
+        private IEnumerable<TypeModalityDto> MapToDTOList(IEnumerable<TypeModality> typeModalities)
+        {
+            var typeModalitiesDTO = new List<TypeModalityDto>();
+            foreach (var typeModality in typeModalities)
+            {
+                typeModalitiesDTO.Add(MapToDTO(typeModality));
+            }
+            return typeModalitiesDTO;
         }
     }
 }

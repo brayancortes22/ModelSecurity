@@ -28,20 +28,7 @@ namespace Business
             try
             {
                 var formModules = await _formModuleData.GetAllAsync();
-                var formModulesDTO = new List<FormModuleDto>();
-
-                foreach (var formModule in formModules)
-                {
-                    formModulesDTO.Add(new FormModuleDto
-                    {
-                        Id = formModule.Id,
-                        StatusProcedure = formModule.StatusProcedure,
-                        FormId = formModule.FormId,
-                        ModuleId = formModule.ModuleId
-                    });
-                }
-
-                return formModulesDTO;
+                return MapToDTOList(formModules);
             }
             catch (Exception ex)
             {
@@ -68,13 +55,7 @@ namespace Business
                     throw new EntityNotFoundException("FormModule", id);
                 }
 
-                return new FormModuleDto
-                {
-                    Id = formModule.Id,
-                    StatusProcedure = formModule.StatusProcedure,
-                    FormId = formModule.FormId,
-                    ModuleId = formModule.ModuleId
-                };
+                return MapToDTO(formModule);
             }
             catch (Exception ex)
             {
@@ -89,23 +70,9 @@ namespace Business
             try
             {
                 ValidateFormModule(formModuleDto);
-
-                var formModule = new FormModule
-                {
-                    StatusProcedure = formModuleDto.StatusProcedure,
-                    FormId = formModuleDto.FormId,
-                    ModuleId = formModuleDto.ModuleId
-                };
-
+                var formModule = MapToEntity(formModuleDto);
                 var formModuleCreado = await _formModuleData.CreateAsync(formModule);
-
-                return new FormModuleDto
-                {
-                    Id = formModule.Id,
-                    StatusProcedure = formModule.StatusProcedure,
-                    FormId = formModule.FormId,
-                    ModuleId = formModule.ModuleId
-                };
+                return MapToDTO(formModuleCreado);
             }
             catch (Exception ex)
             {
@@ -127,6 +94,42 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un módulo de formulario con FormId o ModuleId inválidos");
                 throw new Utilities.Exceptions.ValidationException("FormId/ModuleId", "El FormId y el ModuleId del módulo de formulario son obligatorios y deben ser mayores que cero");
             }
+        }
+
+        //Funciones de mapeos 
+        // Método para mapear de FormModule a FormModuleDto
+        private FormModuleDto MapToDTO(FormModule formModule)
+        {
+            return new FormModuleDto
+            {
+                Id = formModule.Id,
+                StatusProcedure = formModule.StatusProcedure,
+                FormId = formModule.FormId,
+                ModuleId = formModule.ModuleId
+            };
+        }
+
+        // Método para mapear de FormModuleDto a FormModule
+        private FormModule MapToEntity(FormModuleDto formModuleDto)
+        {
+            return new FormModule
+            {
+                Id = formModuleDto.Id,
+                StatusProcedure = formModuleDto.StatusProcedure,
+                FormId = formModuleDto.FormId,
+                ModuleId = formModuleDto.ModuleId
+            };
+        }
+
+        // Método para mapear una lista de FormModule a una lista de FormModuleDto
+        private IEnumerable<FormModuleDto> MapToDTOList(IEnumerable<FormModule> formModules)
+        {
+            var formModulesDTO = new List<FormModuleDto>();
+            foreach (var formModule in formModules)
+            {
+                formModulesDTO.Add(MapToDTO(formModule));
+            }
+            return formModulesDTO;
         }
     }
 }

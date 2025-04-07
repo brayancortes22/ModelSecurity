@@ -27,22 +27,7 @@ namespace Business
             try
             {
                 var programs = await _programData.GetAllAsync();
-                var programsDTO = new List<ProgramDto>();
-
-                foreach (var program in programs)
-                {
-                    programsDTO.Add(new ProgramDto
-                    {
-                        Id = program.Id,
-                        Name = program.Name,
-                        Description = program.Description,
-                        CodeProgram = program.CodeProgram,
-                        TypeProgram = program.TypeProgram,
-                        Active = program.Active // si existe la entidad
-                    });
-                }
-
-                return programsDTO;
+                return MapToDTOList(programs);
             }
             catch (Exception ex)
             {
@@ -69,15 +54,7 @@ namespace Business
                     throw new EntityNotFoundException("program", id);
                 }
 
-                return new ProgramDto
-                {
-                    Id = program.Id,
-                    Name = program.Name,
-                    Description = program.Description,
-                    CodeProgram = program.CodeProgram,
-                    TypeProgram = program.TypeProgram,
-                    Active = program.Active // si existe la entidad
-                };
+                return MapToDTO(program);
             }
             catch (Exception ex)
             {
@@ -92,27 +69,9 @@ namespace Business
             try
             {
                 ValidateProgram(programDto);
-
-                var program = new Program
-                {
-                    Name = programDto.Name,
-                    Description = programDto.Description,
-                    CodeProgram = programDto.CodeProgram,
-                    TypeProgram = programDto.TypeProgram,
-                    Active = programDto.Active // si existe la entidad
-                };
-
+                var program = MapToEntity(programDto);
                 var programCreado = await _programData.CreateAsync(program);
-
-                return new ProgramDto
-                {
-                    Id = program.Id,
-                    Name = program.Name,
-                    Description = program.Description,
-                    CodeProgram = program.CodeProgram,
-                    TypeProgram = program.TypeProgram,
-                    Active = program.Active // si existe la entidad
-                };
+                return MapToDTO(programCreado);
             }
             catch (Exception ex)
             {
@@ -134,6 +93,46 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un programa con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del programa es obligatorio");
             }
+        }
+
+        //Funciones de mapeos 
+        // Método para mapear de Program a ProgramDto
+        private ProgramDto MapToDTO(Program program)
+        {
+            return new ProgramDto
+            {
+                Id = program.Id,
+                Name = program.Name,
+                Description = program.Description,
+                CodeProgram = program.CodeProgram,
+                TypeProgram = program.TypeProgram,
+                Active = program.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear de ProgramDto a Program
+        private Program MapToEntity(ProgramDto programDto)
+        {
+            return new Program
+            {
+                Id = programDto.Id,
+                Name = programDto.Name,
+                Description = programDto.Description,
+                CodeProgram = programDto.CodeProgram,
+                TypeProgram = programDto.TypeProgram,
+                Active = programDto.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear una lista de Program a una lista de ProgramDto
+        private IEnumerable<ProgramDto> MapToDTOList(IEnumerable<Program> programs)
+        {
+            var programsDTO = new List<ProgramDto>();
+            foreach (var program in programs)
+            {
+                programsDTO.Add(MapToDTO(program));
+            }
+            return programsDTO;
         }
     }
 }

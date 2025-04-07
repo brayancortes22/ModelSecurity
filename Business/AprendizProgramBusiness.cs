@@ -27,19 +27,7 @@ namespace Business
             try
             {
                 var programs = await _aprendizProgramData.GetAllAsync();
-                var programsDTO = new List<AprendizProgramDto>();
-
-                foreach (var program in programs)
-                {
-                    programsDTO.Add(new AprendizProgramDto
-                    {
-                        Id = program.Id,                        
-                        AprendizId = program.Id,
-                        ProgramId = program.ProgramId,                            
-                    });
-                }
-
-                return programsDTO;
+                return MapToDTOList(programs);
             }
             catch (Exception ex)
             {
@@ -66,12 +54,7 @@ namespace Business
                     throw new EntityNotFoundException("aprendizProgram", id);
                 }
 
-                return new AprendizProgramDto
-                {
-                    Id = program.Id,
-                    AprendizId = program.Id,
-                    ProgramId = program.ProgramId,
-                };
+                return MapToDTO(program);
             }
             catch (Exception ex)
             {
@@ -86,21 +69,9 @@ namespace Business
             try
             {
                 ValidateAprendizProgram(aprendizProgramDto);
-
-                var program = new AprendizProgram
-                {
-                    AprendizId = aprendizProgramDto.Id,
-                    ProgramId = aprendizProgramDto.ProgramId,
-                };
-
+                var program = MapToEntity(aprendizProgramDto);
                 var programCreado = await _aprendizProgramData.CreateAsync(program);
-
-                return new AprendizProgramDto
-                {
-                    Id = program.Id,
-                    AprendizId = program.Id,
-                    ProgramId = program.ProgramId,
-                };
+                return MapToDTO(programCreado);
             }
             catch (Exception ex)
             {
@@ -116,8 +87,40 @@ namespace Business
             {
                 throw new Utilities.Exceptions.ValidationException("El objeto AprendizProgram no puede ser nulo");
             }
+        }
 
-           
+        //Funciones de mapeos 
+        // Método para mapear de AprendizProgram a AprendizProgramDto
+        private AprendizProgramDto MapToDTO(AprendizProgram program)
+        {
+            return new AprendizProgramDto
+            {
+                Id = program.Id,
+                AprendizId = program.AprendizId,
+                ProgramId = program.ProgramId,
+            };
+        }
+
+        // Método para mapear de AprendizProgramDto a AprendizProgram
+        private AprendizProgram MapToEntity(AprendizProgramDto programDto)
+        {
+            return new AprendizProgram
+            {
+                Id = programDto.Id,
+                AprendizId = programDto.AprendizId,
+                ProgramId = programDto.ProgramId,
+            };
+        }
+
+        // Método para mapear una lista de AprendizProgram a una lista de AprendizProgramDto
+        private IEnumerable<AprendizProgramDto> MapToDTOList(IEnumerable<AprendizProgram> programs)
+        {
+            var programsDTO = new List<AprendizProgramDto>();
+            foreach (var program in programs)
+            {
+                programsDTO.Add(MapToDTO(program));
+            }
+            return programsDTO;
         }
     }
 }

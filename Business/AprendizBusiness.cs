@@ -27,20 +27,21 @@ namespace Business
             try
             {
                 var aprendices = await _aprendizData.GetAllAsync();
-                var aprendicesDTO = new List<AprendizDto>();
+                return MapToDTOList(aprendices);
+                //var aprendicesDTO = new List<AprendizDto>();
 
-                foreach (var aprendiz in aprendices)
-                {
-                    aprendicesDTO.Add(new AprendizDto
-                    {
-                        Id = aprendiz.Id,
-                        PreviuosProgram = aprendiz.PreviuosProgram,
-                        UserId = aprendiz.UserId,
-                        Active = aprendiz.Active //si existe la entidad
-                    });
-                }
+                //foreach (var aprendiz in aprendices)
+                //{
+                //    aprendicesDTO.Add(new AprendizDto
+                //    {
+                //        Id = aprendiz.Id,
+                //        PreviuosProgram = aprendiz.PreviuosProgram,
+                //        UserId = aprendiz.UserId,
+                //        Active = aprendiz.Active //si existe la entidad
+                //    });
+                //}
 
-                return aprendicesDTO;
+                //return aprendicesDTO;
             }
             catch (Exception ex)
             {
@@ -66,14 +67,14 @@ namespace Business
                     _logger.LogInformation("No se encontró ningún aprendiz con ID: {Id}", id);
                     throw new EntityNotFoundException("Aprendiz", id);
                 }
-
-                return new AprendizDto
-                {
-                    Id = aprendiz.Id,
-                    PreviuosProgram = aprendiz.PreviuosProgram,
-                    UserId = aprendiz.UserId,
-                    Active = aprendiz.Active //si existe la entidad
-                };
+                return MapToDTO(aprendiz);
+                //return new AprendizDto
+                //{
+                //    Id = aprendiz.Id,
+                //    PreviuosProgram = aprendiz.PreviuosProgram,
+                //    UserId = aprendiz.UserId,
+                //    Active = aprendiz.Active //si existe la entidad
+                //};
             }
             catch (Exception ex)
             {
@@ -88,23 +89,26 @@ namespace Business
             try
             {
                 ValidateAprendiz(aprendizDto);
-
-                var aprendiz = new Aprendiz
-                {
-                    PreviuosProgram = aprendizDto.PreviuosProgram,
-                    UserId = aprendizDto.UserId,
-                    Active = aprendizDto.Active //si existe la entidad
-                };
+                var aprendiz = MapToEntity(aprendizDto);
 
                 var aprendizCreado = await _aprendizData.CreateAsync(aprendiz);
+                return MapToDTO(aprendizCreado);
+                //var aprendiz = new Aprendiz
+                //{
+                //    PreviuosProgram = aprendizDto.PreviuosProgram,
+                //    UserId = aprendizDto.UserId,
+                //    Active = aprendizDto.Active //si existe la entidad
+                //};
 
-                return new AprendizDto
-                {
-                    Id = aprendiz.Id,
-                    PreviuosProgram = aprendiz.PreviuosProgram,
-                    UserId = aprendiz.UserId,
-                    Active = aprendiz.Active //si existe la entidad
-                };
+                
+
+                //return new AprendizDto
+                //{
+                //    Id = aprendiz.Id,
+                //    PreviuosProgram = aprendiz.PreviuosProgram,
+                //    UserId = aprendiz.UserId,
+                //    Active = aprendiz.Active //si existe la entidad
+                //};
             }
             catch (Exception ex)
             {
@@ -120,9 +124,43 @@ namespace Business
             {
                 throw new Utilities.Exceptions.ValidationException("El objeto aprendiz no puede ser nulo");
             }
-
-
-            
         }
+
+        //Funciones de mapeos 
+        // Método para mapear de Aprendiz a AprendizDto
+        private AprendizDto MapToDTO(Aprendiz aprendiz)
+        {
+            return new AprendizDto
+            {
+                Id = aprendiz.Id,
+                PreviuosProgram = aprendiz.PreviuosProgram,
+                UserId = aprendiz.UserId,
+                Active = aprendiz.Active // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de AprendizDto a Aprendiz
+        private Aprendiz MapToEntity(AprendizDto aprendizDto)
+        {
+            return new Aprendiz
+            {
+                Id = aprendizDto.Id,
+                PreviuosProgram = aprendizDto.PreviuosProgram,
+                UserId = aprendizDto.UserId,
+                Active = aprendizDto.Active // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Aprendiz a una lista de AprendizDto
+        private IEnumerable<AprendizDto> MapToDTOList(IEnumerable<Aprendiz> aprendices)
+        {
+            var aprendicesDTO = new List<AprendizDto>();
+            foreach (var aprendiz in aprendices)
+            {
+                aprendicesDTO.Add(MapToDTO(aprendiz));
+            }
+            return aprendicesDTO;
+        }
+
     }
 }

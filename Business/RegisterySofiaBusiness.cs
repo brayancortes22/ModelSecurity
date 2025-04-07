@@ -27,21 +27,7 @@ namespace Business
             try
             {
                 var registerySofias = await _registerySofiaData.GetAllAsync();
-                var registerySofiasDTO = new List<RegisterySofiaDto>();
-
-                foreach (var registerySofia in registerySofias)
-                {
-                    registerySofiasDTO.Add(new RegisterySofiaDto
-                    {
-                        Id = registerySofia.Id,
-                        Name = registerySofia.Name,
-                        Description = registerySofia.Description,
-                        Document = registerySofia.Document,
-                        Active = registerySofia.Active // si existe la entidad
-                    });
-                }
-
-                return registerySofiasDTO;
+                return MapToDTOList(registerySofias);
             }
             catch (Exception ex)
             {
@@ -68,14 +54,7 @@ namespace Business
                     throw new EntityNotFoundException("registerySofia", id);
                 }
 
-                return new RegisterySofiaDto
-                {
-                    Id = registerySofia.Id,
-                    Name = registerySofia.Name,
-                    Description = registerySofia.Description,
-                    Document = registerySofia.Document,
-                    Active = registerySofia.Active // si existe la entidad
-                };
+                return MapToDTO(registerySofia);
             }
             catch (Exception ex)
             {
@@ -90,25 +69,9 @@ namespace Business
             try
             {
                 ValidateRegisterySofia(registerySofiaDto);
-
-                var registerySofia = new RegisterySofia
-                {
-                    Name = registerySofiaDto.Name,
-                    Description = registerySofiaDto.Description,
-                    Document = registerySofiaDto.Document,
-                    Active = registerySofiaDto.Active // si existe la entidad
-                };
-
+                var registerySofia = MapToEntity(registerySofiaDto);
                 var registerySofiaCreado = await _registerySofiaData.CreateAsync(registerySofia);
-
-                return new RegisterySofiaDto
-                {
-                    Id = registerySofia.Id,
-                    Name = registerySofia.Name,
-                    Description = registerySofia.Description,
-                    Document = registerySofia.Document,
-                    Active = registerySofia.Active // si existe la entidad
-                };
+                return MapToDTO(registerySofiaCreado);
             }
             catch (Exception ex)
             {
@@ -130,6 +93,44 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un registro de Sofia con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del registro de Sofia es obligatorio");
             }
+        }
+
+        //Funciones de mapeos 
+        // Método para mapear de RegisterySofia a RegisterySofiaDto
+        private RegisterySofiaDto MapToDTO(RegisterySofia registerySofia)
+        {
+            return new RegisterySofiaDto
+            {
+                Id = registerySofia.Id,
+                Name = registerySofia.Name,
+                Description = registerySofia.Description,
+                Document = registerySofia.Document,
+                Active = registerySofia.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear de RegisterySofiaDto a RegisterySofia
+        private RegisterySofia MapToEntity(RegisterySofiaDto registerySofiaDto)
+        {
+            return new RegisterySofia
+            {
+                Id = registerySofiaDto.Id,
+                Name = registerySofiaDto.Name,
+                Description = registerySofiaDto.Description,
+                Document = registerySofiaDto.Document,
+                Active = registerySofiaDto.Active // si existe la entidad
+            };
+        }
+
+        // Método para mapear una lista de RegisterySofia a una lista de RegisterySofiaDto
+        private IEnumerable<RegisterySofiaDto> MapToDTOList(IEnumerable<RegisterySofia> registerySofias)
+        {
+            var registerySofiasDTO = new List<RegisterySofiaDto>();
+            foreach (var registerySofia in registerySofias)
+            {
+                registerySofiasDTO.Add(MapToDTO(registerySofia));
+            }
+            return registerySofiasDTO;
         }
     }
 }
