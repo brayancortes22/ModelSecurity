@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,9 @@ namespace Entity.Model
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public int RegionalId { get; set; }
+
+        // Propiedades de navegación
         public Regional Regional { get; set; }
+        public ICollection<Sede> Sedes { get; set; }
     }
 }

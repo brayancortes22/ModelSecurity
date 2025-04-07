@@ -27,5 +27,9 @@ namespace Entity.Model
         public State State { get; set; }
         public int VerificationId { get; set; }
         public Verification Verification { get; set; }  
+
+        // Propiedades de navegación
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
+        public ICollection<AprendizProgram> AprendizPrograms { get; set; }
     }
 }

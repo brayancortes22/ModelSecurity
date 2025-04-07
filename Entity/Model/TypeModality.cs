@@ -12,5 +12,9 @@ namespace Entity.Model
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
+        public ICollection<InstructorProgram> InstructorPrograms { get; set; }
     }
 }

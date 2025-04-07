@@ -16,5 +16,9 @@ namespace Entity.Model
         public DateTime CreateDate { get; set; }
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
+        public ICollection<InstructorProgram> InstructorPrograms { get; set; }
     }
 }

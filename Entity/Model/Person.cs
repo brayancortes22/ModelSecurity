@@ -24,5 +24,8 @@ namespace Entity.Model
         public DateTime CreateDate { get; set; }
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
+
+        // Propiedad de navegación
+        public User User { get; set; }
     }
 }

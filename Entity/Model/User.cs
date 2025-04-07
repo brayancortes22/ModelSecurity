@@ -14,7 +14,12 @@ namespace Entity.Model
         public string Password { get; set; }
         public bool Active { get; set; }
         public int PersonId { get; set; }
-        public Person Person { get; set; }
 
+        // Propiedades de navegación
+        public Person Person { get; set; }
+        public ICollection<UserRol> UserRols { get; set; }
+        public ICollection<UserSede> UserSedes { get; set; }
+        public Aprendiz Aprendiz { get; set; }
+        public Instructor Instructor { get; set; }
     }
 }

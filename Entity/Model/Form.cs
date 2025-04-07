@@ -18,5 +18,10 @@ namespace Entity.Model
         public DateTime CreateDate { get; set; }
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<RolForm> RolForms { get; set; }
+        public ICollection<FormModule> FormModules { get; set; }
+        
     }
 }

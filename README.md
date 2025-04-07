@@ -74,6 +74,61 @@ Capa de presentación y API de la aplicación.
 - **Form**: Formularios y módulos del sistema
 - **Module**: Módulos funcionales de la aplicación
 
+## Relaciones entre Entidades
+
+El sistema implementa las siguientes relaciones entre entidades:
+
+### Relaciones Uno a Uno (1:1)
+- **User - Person**: Cada usuario está asociado a una persona
+- **Aprendiz - User**: Cada aprendiz tiene un usuario asociado
+- **Instructor - User**: Cada instructor tiene un usuario asociado
+
+### Relaciones Uno a Muchos (1:N)
+- **Center - Sede**: Un centro puede tener múltiples sedes
+- **Regional - Center**: Una regional puede tener múltiples centros
+- **Center - Regional**: Cada centro pertenece a una regional
+
+### Relaciones Muchos a Muchos (N:N)
+- **User - Rol**: A través de la entidad intermedia UserRol
+- **User - Sede**: A través de la entidad intermedia UserSede
+- **Aprendiz - Program**: A través de la entidad intermedia AprendizProgram
+- **Instructor - Program**: A través de la entidad intermedia InstructorProgram
+- **Form - Module**: A través de la entidad intermedia FormModule
+- **Rol - Form**: A través de la entidad intermedia RolForm
+
+### Relaciones Complejas
+- **AprendizProcessInstructor**: Relación compleja que conecta aprendices, instructores, procesos y otros elementos relacionados
+
+## Propiedades de Navegación
+
+Cada entidad incluye propiedades de navegación que permiten acceder a las entidades relacionadas:
+
+### Ejemplos de Implementación
+
+```csharp
+// Relación 1:1
+public class User
+{
+    public int Id { get; set; }
+    public Person Person { get; set; }
+}
+
+// Relación 1:N
+public class Center
+{
+    public int Id { get; set; }
+    public ICollection<Sede> Sedes { get; set; }
+}
+
+// Relación N:N
+public class UserRol
+{
+    public int Id { get; set; }
+    public User User { get; set; }
+    public Rol Rol { get; set; }
+}
+```
+
 ## Tecnologías Utilizadas
 
 - .NET 8.0

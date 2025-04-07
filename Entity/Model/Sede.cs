@@ -19,6 +19,9 @@ namespace Entity.Model
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public int CenterId { get; set; }
+
+        // Propiedades de navegación
         public Center Center { get; set; }
+        public ICollection<UserSede> UserSedes { get; set; }
     }
 }

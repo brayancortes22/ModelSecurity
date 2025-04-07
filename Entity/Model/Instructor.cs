@@ -11,6 +11,10 @@ namespace Entity.Model
         public int Id { get; set; }
         public bool Active { get; set; }
         public int UserId { get; set; }
+
+        // Propiedades de navegación
         public User User { get; set; }
+        public ICollection<InstructorProgram> InstructorPrograms { get; set; }
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
     }
 }

@@ -12,5 +12,12 @@ namespace Entity.Model
         public string TypeRol { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<UserRol> UserRols { get; set; }
+        public ICollection<RolForm> RolForms { get; set; }
     }
 }

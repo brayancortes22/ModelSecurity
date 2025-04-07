@@ -14,5 +14,9 @@ namespace Entity.Model
         public string Description { get; set; }
         public string Address { get; set; }
         public bool Active { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<Center> Centers { get; set; }
+        public ICollection<RolForm> RolForms { get; set; }
     }
 }

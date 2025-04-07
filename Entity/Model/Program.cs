@@ -17,5 +17,10 @@ namespace Entity.Model
         public DateTime DeleteDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public bool Active { get; set; }
+
+        // Propiedades de navegación
+        public ICollection<AprendizProgram> AprendizPrograms { get; set; }
+        public ICollection<InstructorProgram> InstructorPrograms { get; set; }
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
     }
 }

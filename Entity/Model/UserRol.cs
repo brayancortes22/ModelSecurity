@@ -10,8 +10,15 @@ namespace Entity.Model
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User Name { get; set; } = new User();
+        
         public int RolId { get; set; }
+        public bool Active { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime DeleteDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+
+        // Propiedades de navegación
+        public User User { get; set; } = new User();
         public Rol Rol { get; set; } = new Rol();
     }
 }

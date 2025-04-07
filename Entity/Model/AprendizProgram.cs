@@ -10,8 +10,13 @@ namespace Entity.Model
     {
         public int Id { get; set; }
         public int AprendizId { get; set; }
-        public Aprendiz Aprendiz { get; set; }
         public int ProgramId { get; set; }
+
+        // Propiedades de navegación
         public Program Program { get; set; }
+        public Aprendiz Aprendiz { get; set; }
+        public ICollection<AprendizProgram> AprendizPrograms { get; set; }
+        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
+        
     }
 }
