@@ -147,3 +147,7 @@ El sistema implementa un completo modelo de seguridad basado en:
 - Roles con permisos específicos para operaciones CRUD
 - Asignación de usuarios a sedes específicas
 - Control de acceso a formularios y módulos según el rol 
+
+## Documentación Detallada
+
+- [Estructura de Base de Datos](Entity/DDL/README.md)
