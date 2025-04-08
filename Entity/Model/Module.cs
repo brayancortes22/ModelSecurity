@@ -18,6 +18,6 @@ namespace Entity.Model
 
         // Propiedades de navegación
         public ICollection<FormModule> FormModules { get; set; }
-        public ICollection<RolForm> RolForms { get; set; }
+       
     }
 }

@@ -30,6 +30,46 @@ namespace Entity.Contexts
         {
             _configuration = configuration;
         }
+        ///DB SETS
+        /// <summary>
+        /// Conjunto de entidades para la gestión de roles en el sistema.
+        /// </summary>
+        public DbSet<Rol> Rol { get; set; }
+        public DbSet<Verification> Verification { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<UserRol> UserRol { get; set; }
+        public DbSet<Sede> Sede { get; set; }
+        public DbSet<UserSede> UserSede { get; set; }
+        public DbSet<Aprendiz> Aprendiz { get; set; }
+        public DbSet<Instructor> Instructor { get; set; }
+        public DbSet<Process> Process { get; set; }
+        public DbSet<Program> Program { get; set; }
+        public DbSet<InstructorProgram> InstructorProgram { get; set; }
+        public DbSet<AprendizProgram> AprendizProgram { get; set; }
+        public DbSet<AprendizProcessInstructor> AprendizProcessInstructor { get; set; }
+        /// <summary>
+        /// Conjunto de entidades para la gestión de formularios en el sistema.
+        /// </summary>
+        public DbSet<Form> Form { get; set; }
+        /// <summary>
+        /// Conjunto de entidades para la gestión de módulos en el sistema.
+        /// Nota: Se utiliza el nombre completo Entity.Model.Module para evitar ambigüedad con System.Reflection.Module
+        /// </summary>
+        public DbSet<Entity.Model.Module> Module { get; set; }
+        /// <summary>
+        /// Conjunto de entidades para la gestión de la relación entre formularios y módulos.
+        /// </summary>
+        public DbSet<FormModule> FormModule { get; set; }
+        public DbSet<RolForm> RolForm { get; set; }
+        public DbSet<TypeModality> TypeModality { get; set; }
+        public DbSet<State> State { get; set; }
+        public DbSet<RegisterySofia> RegisterySofia { get; set; }
+        public DbSet<Regional> Regional { get; set; }
+        public DbSet<Center> Center { get; set; }
+        public DbSet<Enterprise> Enterprise { get; set; }
+        public DbSet<ChangeLog> ChangeLog { get; set; }
+        public DbSet<Concept> Concept { get; set; }
 
         /// <summary>
         /// Configura los modelos de la base de datos aplicando configuraciones desde ensamblados.

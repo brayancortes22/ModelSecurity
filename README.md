@@ -151,3 +151,59 @@ El sistema implementa un completo modelo de seguridad basado en:
 ## Documentación Detallada
 
 - [Estructura de Base de Datos](Entity/DDL/README.md)
+
+# ModelSecurity - Documentación de Cambios
+
+## Cambios en el Contexto de Base de Datos
+
+### Resolución de Ambigüedad en Module
+
+Se ha realizado una modificación importante en el archivo `Entity/Context/ApplicationDbContext.cs` para resolver un problema de ambigüedad en la referencia al tipo `Module`.
+
+#### Problema Original
+Existía una ambigüedad en la referencia al tipo `Module` debido a que este nombre puede referirse tanto a:
+- `Entity.Model.Module` (nuestro modelo de dominio)
+- `System.Reflection.Module` (tipo del framework .NET)
+
+#### Solución Implementada
+Se modificó la declaración del DbSet para usar el nombre completo del tipo:
+
+```csharp
+// Antes
+public DbSet<Module> Module { get; set; }
+
+// Después
+public DbSet<Entity.Model.Module> Module { get; set; }
+```
+
+#### Impacto
+- Se resolvió el error de compilación relacionado con la ambigüedad
+- No hay impacto en la funcionalidad existente
+- Mejora la claridad del código al especificar explícitamente el namespace del tipo
+
+### Estructura del Contexto
+
+El `ApplicationDbContext` mantiene las siguientes características principales:
+
+1. **Configuración de Entidades**
+   - Gestión de roles y usuarios
+   - Manejo de formularios y módulos
+   - Control de procesos y programas
+   - Administración de sedes y centros
+
+2. **Relaciones Configuradas**
+   - Relaciones uno a uno (1:1)
+   - Relaciones uno a muchos (1:N)
+   - Relaciones muchos a muchos (N:M)
+
+3. **Características Adicionales**
+   - Soporte para consultas personalizadas con Dapper
+   - Auditoría automática de cambios
+   - Configuración de precisión decimal
+   - Logging de datos sensibles
+
+## Notas de Implementación
+
+- Se mantiene la compatibilidad con el código existente
+- No se requieren cambios en las migraciones de base de datos
+- La documentación XML se mantiene actualizada
