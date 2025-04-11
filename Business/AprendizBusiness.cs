@@ -13,9 +13,9 @@ namespace Business
     public class AprendizBusiness
     {
         private readonly AprendizData _aprendizData;
-        private readonly ILogger _logger;
+        private readonly ILogger<AprendizBusiness> _logger;
 
-        public AprendizBusiness(AprendizData aprendizData, ILogger logger)
+        public AprendizBusiness(AprendizData aprendizData, ILogger<AprendizBusiness> logger)
         {
             _aprendizData = aprendizData;
             _logger = logger;
