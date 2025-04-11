@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Entity.Contexts;
 using Business;
 using Data;
-using Entity.Contexts;
-using Entity.DTOs;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,28 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configurar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Configurar DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("La cadena de conexión 'DefaultConnection' no está configurada.");
+    }
+    options.UseSqlServer(connectionString);
+});
 
 //Registrar clases de Rol
 builder.Services.AddScoped<RolData>();
@@ -34,7 +57,6 @@ builder.Services.AddScoped<CenterBusiness>();
 
 // Registrar clases de ChangeLog
 builder.Services.AddScoped<ChangeLogData>();
-builder.Services.AddScoped<ChangeLogDto>();
 
 // Registrar clases de Concept
 builder.Services.AddScoped<ConceptData>();
@@ -84,7 +106,6 @@ builder.Services.AddScoped<RegionalBusiness>();
 builder.Services.AddScoped<RegisterySofiaData>();
 builder.Services.AddScoped<RegisterySofiaBusiness>();
 
-
 // Registrar clases de RolForm
 builder.Services.AddScoped<RolFormData>();
 builder.Services.AddScoped<RolFormBusiness>();
@@ -117,38 +138,26 @@ builder.Services.AddScoped<UserSedeBusiness>();
 builder.Services.AddScoped<VerificationData>();
 builder.Services.AddScoped<VerificationBusiness>();
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-//Agregar CORS 
-var OrigenesPermitidos = builder.Configuration.GetValue<string>
-    ("Origenes permitidos ")!.Split(',');
-builder.Services.AddCors(Opciones =>
+try
 {
-    Opciones.AddDefaultPolicy(politica =>
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
     {
-        politica.WithOrigins(OrigenesPermitidos).AllowAnyHeader().AllowAnyMethod();
-    });
-});
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-//Agregar DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
-    opciones.UseSqlServer("name=DefaultConnection"));
+    app.UseHttpsRedirection();
+    app.UseCors();
+    app.UseAuthorization();
+    app.MapControllers();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Console.WriteLine($"Error al iniciar la aplicación: {ex.Message}");
+    throw;
+}
