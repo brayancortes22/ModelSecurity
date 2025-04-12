@@ -37,7 +37,7 @@ CREATE TABLE Person (
     UpdateDate DATETIME
 );
 
-CREATE TABLE User (
+CREATE TABLE [User] (
     Id INT IDENTITY PRIMARY KEY,
     Username VARCHAR(255) NOT NULL UNIQUE,
     Email VARCHAR(255) NOT NULL UNIQUE,
@@ -51,7 +51,7 @@ CREATE TABLE UserRol (
     Id INT IDENTITY PRIMARY KEY,
     UserId INT NOT NULL,
     RolId INT NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User(Id),
+    FOREIGN KEY (UserId) REFERENCES [User](Id),
     FOREIGN KEY (RolId) REFERENCES Rol(Id)
 );
 
@@ -98,7 +98,7 @@ CREATE TABLE UserSede (
     StatusProcedure VARCHAR(255),
     UserId INT NOT NULL,
     SedeId INT NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User(Id),
+    FOREIGN KEY (UserId) REFERENCES [User](Id),
     FOREIGN KEY (SedeId) REFERENCES Sede(Id)
 );
 
@@ -108,14 +108,14 @@ CREATE TABLE Aprendiz (
     PreviousProgram VARCHAR(255),
     Active BIT NOT NULL,
     UserId INT NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User(Id)
+    FOREIGN KEY (UserId) REFERENCES [User](Id)
 );
 
 CREATE TABLE Instructor (
     Id INT PRIMARY KEY IDENTITY,
     Active BIT NOT NULL,
     UserId INT NOT NULL,
-    FOREIGN KEY (UserId) REFERENCES User(Id)
+    FOREIGN KEY (UserId) REFERENCES [User](Id)
 );
 
 -- Creación de tablas de programas y procesos
