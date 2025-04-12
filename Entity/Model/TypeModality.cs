@@ -15,6 +15,5 @@ namespace Entity.Model
 
         // Propiedades de navegación
         public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
-        public ICollection<InstructorProgram> InstructorPrograms { get; set; }
     }
 }
