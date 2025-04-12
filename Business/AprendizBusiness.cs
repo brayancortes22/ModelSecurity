@@ -112,7 +112,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo aprendiz: {Name}", aprendizDto?.PreviuosProgram ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo aprendiz: {Name}", aprendizDto?.PreviousProgram ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el aprendiz", ex);
             }
         }
@@ -133,7 +133,7 @@ namespace Business
             return new AprendizDto
             {
                 Id = aprendiz.Id,
-                PreviuosProgram = aprendiz.PreviuosProgram,
+                PreviousProgram = aprendiz.PreviousProgram,
                 UserId = aprendiz.UserId,
                 Active = aprendiz.Active // Si existe en la entidad
             };
@@ -145,7 +145,7 @@ namespace Business
             return new Aprendiz
             {
                 Id = aprendizDto.Id,
-                PreviuosProgram = aprendizDto.PreviuosProgram,
+                PreviousProgram = aprendizDto.PreviousProgram,
                 UserId = aprendizDto.UserId,
                 Active = aprendizDto.Active // Si existe en la entidad
             };

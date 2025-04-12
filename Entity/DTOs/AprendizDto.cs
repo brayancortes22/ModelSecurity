@@ -9,7 +9,7 @@ namespace Entity.DTOautogestion
     public class AprendizDto
     {
         public int Id { get; set; }
-        public string PreviuosProgram { get; set; }
+        public string PreviousProgram { get; set; }
         public bool Active { get; set; }
         public int UserId { get; set; }
     }

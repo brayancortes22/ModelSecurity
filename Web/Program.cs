@@ -32,7 +32,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         throw new InvalidOperationException("La cadena de conexión 'DefaultConnection' no está configurada.");
     }
-    options.UseSqlServer(connectionString);
+    options.UseSqlServer(connectionString)
+           .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
 //Registrar clases de Rol
