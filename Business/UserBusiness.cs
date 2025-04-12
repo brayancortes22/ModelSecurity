@@ -4,6 +4,7 @@ using Entity.Model;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Exceptions;
+using BCrypt.Net;
 
 namespace Business
 {
@@ -70,6 +71,12 @@ namespace Business
             {
                 ValidateUser(userDto);
                 var user = MapToEntity(userDto);
+
+                // Hashear la contraseña antes de guardarla
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+                // Considera añadir user.CreateDate = DateTime.UtcNow; si tu tabla User tiene esa columna NOT NULL
+
                 var userCreado = await _userData.CreateAsync(user);
                 return MapToDTO(userCreado);
             }
@@ -122,7 +129,9 @@ namespace Business
                 Id = userDto.Id,
                 Username = userDto.Username,
                 Email = userDto.Email,
-                Active = userDto.Active //si existe la entidad
+                Password = userDto.Password,
+                PersonId = userDto.PersonId,
+                Active = userDto.Active
             };
         }
 

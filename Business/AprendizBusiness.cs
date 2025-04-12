@@ -90,25 +90,9 @@ namespace Business
             {
                 ValidateAprendiz(aprendizDto);
                 var aprendiz = MapToEntity(aprendizDto);
-
+                
                 var aprendizCreado = await _aprendizData.CreateAsync(aprendiz);
                 return MapToDTO(aprendizCreado);
-                //var aprendiz = new Aprendiz
-                //{
-                //    PreviuosProgram = aprendizDto.PreviuosProgram,
-                //    UserId = aprendizDto.UserId,
-                //    Active = aprendizDto.Active //si existe la entidad
-                //};
-
-                
-
-                //return new AprendizDto
-                //{
-                //    Id = aprendiz.Id,
-                //    PreviuosProgram = aprendiz.PreviuosProgram,
-                //    UserId = aprendiz.UserId,
-                //    Active = aprendiz.Active //si existe la entidad
-                //};
             }
             catch (Exception ex)
             {

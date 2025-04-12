@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateRegional(regionalDto);
                 var regional = MapToEntity(regionalDto);
+                regional.CreateDate = DateTime.UtcNow;
                 var regionalCreado = await _regionalData.CreateAsync(regional);
                 return MapToDTO(regionalCreado);
             }
