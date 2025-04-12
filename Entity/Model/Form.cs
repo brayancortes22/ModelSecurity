@@ -16,8 +16,8 @@ namespace Entity.Model
         public string Answer { get; set; }
         public bool Active { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         // Propiedades de navegación
         public ICollection<RolForm> RolForms { get; set; }

@@ -16,7 +16,6 @@ namespace Entity.Model
         // Propiedades de navegación
         public Sede Sede { get; set; }
         public User User { get; set; }
-        public ICollection<UserSede> UserSedes { get; set; }
         
     }
 }

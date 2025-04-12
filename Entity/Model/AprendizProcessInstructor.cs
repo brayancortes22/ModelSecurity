@@ -28,8 +28,8 @@ namespace Entity.Model
         public int VerificationId { get; set; }
         public Verification Verification { get; set; }  
 
-        // Propiedades de navegación
-        public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; }
-        public ICollection<AprendizProgram> AprendizPrograms { get; set; }
+        // Propiedades de navegación - Eliminando colecciones incorrectas
+        // public ICollection<AprendizProcessInstructor> AprendizProcessInstructors { get; set; } // Auto-referencia eliminada
+        // public ICollection<AprendizProgram> AprendizPrograms { get; set; } // Relación incorrecta eliminada
     }
 }

@@ -14,8 +14,8 @@ namespace Entity.Model
         public string Address { get; set; }
         public bool Active { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
         public int RegionalId { get; set; }
 
         // Propiedades de navegación

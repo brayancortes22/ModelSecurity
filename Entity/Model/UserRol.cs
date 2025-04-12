@@ -14,8 +14,8 @@ namespace Entity.Model
         public int RolId { get; set; }
         public bool Active { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         // Propiedades de navegación
         public User User { get; set; } = new User();
