@@ -123,5 +123,181 @@ namespace Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Actualiza un permiso existente en el sistema.
+        /// </summary>
+        /// <param name="id">ID del permiso a actualizar.</param>
+        /// <param name="rolDto">Datos actualizados del permiso.</param>
+        /// <returns>No Content si la actualización fue exitosa.</returns>
+        /// <response code="200">Retorna el permiso actualizado.</response>
+        /// <response code="400">ID inválido o datos del permiso no válidos.</response>
+        /// <response code="404">Permiso no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(RolDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateRol(int id, [FromBody] RolDto rolDto)
+        {
+            if (id != rolDto.Id)
+            {
+                 _logger.LogWarning("El ID de la ruta ({RouteId}) no coincide con el ID del cuerpo ({BodyId}) para la actualización.", id, rolDto.Id);
+                 return BadRequest(new { message = "El ID de la ruta no coincide con el ID del cuerpo." });
+            }
+
+            try
+            {
+                var updatedRol = await _RolBusiness.UpdateRolAsync(id, rolDto);
+                return Ok(updatedRol); // Devolvemos el rol actualizado
+            }
+             catch (ValidationException ex)
+             {
+                 _logger.LogWarning(ex, "Validación fallida al actualizar permiso con ID: {RolId}", id);
+                 return BadRequest(new { message = ex.Message });
+             }
+             catch (EntityNotFoundException ex)
+             {
+                 _logger.LogInformation(ex, "Permiso no encontrado para actualizar con ID: {RolId}", id);
+                 return NotFound(new { message = ex.Message });
+             }
+             catch (ExternalServiceException ex)
+             {
+                 _logger.LogError(ex, "Error al actualizar permiso con ID: {RolId}", id);
+                 return StatusCode(500, new { message = ex.Message });
+             }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente un permiso existente en el sistema.
+        /// </summary>
+        /// <remarks>
+        /// Nota: La implementación actual de negocio actualiza todos los campos proporcionados.
+        /// </remarks>
+        /// <param name="id">ID del permiso a actualizar parcialmente.</param>
+        /// <param name="rolDto">Datos a actualizar del permiso.</param>
+        /// <returns>El permiso actualizado.</returns>
+        /// <response code="200">Retorna el permiso parcialmente actualizado.</response>
+        /// <response code="400">ID inválido o datos del permiso no válidos.</response>
+        /// <response code="404">Permiso no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(RolDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+         public async Task<IActionResult> PatchRol(int id, [FromBody] RolDto rolDto)
+         {
+             // Considerar si es necesario validar que el ID en el DTO coincida (si se envía)
+             // if (rolDto.Id != 0 && id != rolDto.Id) { ... }
+             // Por ahora, se asume que el DTO podría no tener el ID o que el ID de ruta prevalece.
+             // Sin embargo, la capa de negocio *sí* espera que rolDto.Id coincida para la implementación actual de PatchRolAsync.
+             // Forzamos la coincidencia para cumplir con la capa de negocio actual.
+             if (id != rolDto.Id)
+             {
+                 _logger.LogWarning("El ID de la ruta ({RouteId}) no coincide con el ID del cuerpo ({BodyId}) para el patch.", id, rolDto.Id);
+                  return BadRequest(new { message = "El ID de la ruta no coincide con el ID del cuerpo para PATCH." });
+             }
+
+            try
+            {
+                // Asumiendo que rolDto podría contener solo campos parciales
+                // La lógica en RolBusiness.PatchRolAsync maneja la actualización parcial (o completa en la implementación actual)
+                var patchedRol = await _RolBusiness.PatchRolAsync(id, rolDto);
+                return Ok(patchedRol);
+            }
+             catch (ValidationException ex)
+             {
+                 _logger.LogWarning(ex, "Validación fallida al aplicar patch al permiso con ID: {RolId}", id);
+                 return BadRequest(new { message = ex.Message });
+             }
+             catch (EntityNotFoundException ex)
+             {
+                 _logger.LogInformation(ex, "Permiso no encontrado para aplicar patch con ID: {RolId}", id);
+                 return NotFound(new { message = ex.Message });
+             }
+             catch (ExternalServiceException ex)
+             {
+                 _logger.LogError(ex, "Error al aplicar patch al permiso con ID: {RolId}", id);
+                 return StatusCode(500, new { message = ex.Message });
+             }
+         }
+
+        /// <summary>
+        /// Elimina un permiso del sistema (eliminación persistente).
+        /// </summary>
+        /// <param name="id">ID del permiso a eliminar.</param>
+        /// <returns>No Content si la eliminación fue exitosa.</returns>
+        /// <response code="204">Permiso eliminado exitosamente.</response>
+        /// <response code="400">ID proporcionado no válido.</response>
+        /// <response code="404">Permiso no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteRol(int id)
+        {
+             try
+             {
+                 await _RolBusiness.DeleteRolAsync(id);
+                 return NoContent(); // 204 No Content es apropiado para DELETE exitoso
+             }
+             catch (ValidationException ex) // Aunque DeleteRolAsync valida ID > 0, mantenemos por consistencia
+             {
+                 _logger.LogWarning(ex, "Validación fallida al intentar eliminar permiso con ID: {RolId}", id);
+                 return BadRequest(new { message = ex.Message });
+             }
+             catch (EntityNotFoundException ex)
+             {
+                 _logger.LogInformation(ex, "Permiso no encontrado para eliminar con ID: {RolId}", id);
+                 return NotFound(new { message = ex.Message }); // 404 si no existe
+             }
+             catch (ExternalServiceException ex)
+             {
+                 _logger.LogError(ex, "Error al eliminar permiso con ID: {RolId}", id);
+                 return StatusCode(500, new { message = ex.Message });
+             }
+        }
+
+         /// <summary>
+        /// Desactiva un permiso en el sistema (eliminación lógica).
+        /// </summary>
+        /// <param name="id">ID del permiso a desactivar.</param>
+        /// <returns>No Content si la desactivación fue exitosa.</returns>
+        /// <response code="204">Permiso desactivado exitosamente.</response>
+        /// <response code="400">ID proporcionado no válido.</response>
+        /// <response code="404">Permiso no encontrado.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [HttpPatch("soft-delete/{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> SoftDeleteRol(int id)
+        {
+             try
+             {
+                 await _RolBusiness.SoftDeleteRolAsync(id);
+                 return NoContent(); // 204 No Content indica éxito sin devolver cuerpo
+             }
+             catch (ValidationException ex) // SoftDeleteRolAsync valida ID > 0
+             {
+                 _logger.LogWarning(ex, "Validación fallida al intentar desactivar permiso con ID: {RolId}", id);
+                 return BadRequest(new { message = ex.Message });
+             }
+             catch (EntityNotFoundException ex)
+             {
+                 _logger.LogInformation(ex, "Permiso no encontrado para desactivar con ID: {RolId}", id);
+                 return NotFound(new { message = ex.Message });
+             }
+             catch (ExternalServiceException ex)
+             {
+                 _logger.LogError(ex, "Error al desactivar permiso con ID: {RolId}", id);
+                 return StatusCode(500, new { message = ex.Message });
+             }
+        }
+
     }
 }
