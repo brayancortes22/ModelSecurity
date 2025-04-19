@@ -123,5 +123,140 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza un formulario existente (reemplazo completo)
+        /// </summary>
+        /// <param name="id">ID del formulario a actualizar</param>
+        /// <param name="formDto">Datos completos del formulario para actualizar</param>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(FormDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateForm(int id, [FromBody] FormDto formDto)
+        {
+            try
+            {
+                var updatedForm = await _FormBusiness.UpdateFormAsync(id, formDto);
+                return Ok(updatedForm);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar formulario con ID: {FormId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Formulario no encontrado para actualizar con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar formulario con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente un formulario existente
+        /// </summary>
+        /// <param name="id">ID del formulario a actualizar</param>
+        /// <param name="formDto">Datos parciales a aplicar (Name, Description, Cuestion, TypeCuestion, Answer)</param>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(FormDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> PatchForm(int id, [FromBody] FormDto formDto)
+        {
+            try
+            {
+                var patchedForm = await _FormBusiness.PatchFormAsync(id, formDto);
+                return Ok(patchedForm);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al aplicar patch a formulario con ID: {FormId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Formulario no encontrado para aplicar patch con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al aplicar patch a formulario con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina permanentemente un formulario
+        /// </summary>
+        /// <remarks>Precaución: Esta operación es irreversible y fallará si existen entidades dependientes.</remarks>
+        /// <param name="id">ID del formulario a eliminar</param>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)] // No Content
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)] // O 409 Conflict
+        public async Task<IActionResult> DeleteForm(int id)
+        {
+            try
+            {
+                await _FormBusiness.DeleteFormAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar formulario con ID: {FormId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Formulario no encontrado para eliminar con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex) // Puede ser error de FK
+            {
+                _logger.LogError(ex, "Error al eliminar formulario con ID: {FormId}. Posible dependencia.", id);
+                return StatusCode(500, new { message = "Error al eliminar el formulario. Verifique si hay dependencias." });
+            }
+        }
+
+        /// <summary>
+        /// Desactiva (elimina lógicamente) un formulario
+        /// </summary>
+        /// <param name="id">ID del formulario a desactivar</param>
+        [HttpDelete("{id}/soft")]
+        [ProducesResponseType(204)] // No Content
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> SoftDeleteForm(int id)
+        {
+            try
+            {
+                await _FormBusiness.SoftDeleteFormAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al realizar soft-delete de formulario con ID: {FormId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Formulario no encontrado para soft-delete con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al realizar soft-delete de formulario con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

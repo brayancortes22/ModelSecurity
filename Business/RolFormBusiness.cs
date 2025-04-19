@@ -81,6 +81,146 @@ namespace Business
             }
         }
 
+        // Método para actualizar una relación rol-formulario existente (reemplazo completo)
+        public async Task<RolFormDto> UpdateRolFormAsync(int id, RolFormDto rolFormDto)
+        {
+            if (id <= 0 || id != rolFormDto.Id)
+            {
+                _logger.LogWarning("Se intentó actualizar una relación rol-formulario con ID inválido o no coincidente: {RolFormId}, DTO ID: {DtoId}", id, rolFormDto.Id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID proporcionado es inválido o no coincide con el ID del DTO.");
+            }
+            ValidateRolForm(rolFormDto); // Reutilizamos la validación
+
+            try
+            {
+                var existingRolForm = await _rolFormData.GetByIdAsync(id);
+                if (existingRolForm == null)
+                {
+                    _logger.LogInformation("No se encontró la relación rol-formulario con ID {RolFormId} para actualizar", id);
+                    throw new EntityNotFoundException("RolForm", id);
+                }
+
+                // Mapear el DTO a la entidad existente (actualización completa)
+                existingRolForm.RolId = rolFormDto.RolId;
+                existingRolForm.FormId = rolFormDto.FormId;
+                existingRolForm.Permission = rolFormDto.Permission;
+
+                await _rolFormData.UpdateAsync(existingRolForm);
+                return MapToDTO(existingRolForm);
+            }
+            catch (EntityNotFoundException)
+            {
+                throw; // Relanzar
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx) // Podría ser violación de FK
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al actualizar la relación rol-formulario con ID {RolFormId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al actualizar la relación rol-formulario con ID {id}. Verifique la existencia de Rol y Form.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error general al actualizar la relación rol-formulario con ID {RolFormId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al actualizar la relación rol-formulario con ID {id}", ex);
+            }
+        }
+
+        // Método para actualizar parcialmente una relación rol-formulario (PATCH)
+        // Principalmente para actualizar Permission
+        public async Task<RolFormDto> PatchRolFormAsync(int id, RolFormDto rolFormDto)
+        {
+            if (id <= 0)
+            {
+                _logger.LogWarning("Se intentó aplicar patch a una relación rol-formulario con ID inválido: {RolFormId}", id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID de la relación rol-formulario debe ser mayor que cero.");
+            }
+
+            try
+            {
+                var existingRolForm = await _rolFormData.GetByIdAsync(id);
+                if (existingRolForm == null)
+                {
+                    _logger.LogInformation("No se encontró la relación rol-formulario con ID {RolFormId} para aplicar patch", id);
+                    throw new EntityNotFoundException("RolForm", id);
+                }
+
+                bool updated = false;
+
+                // Actualizar Permission si se proporciona y es diferente
+                if (!string.IsNullOrWhiteSpace(rolFormDto.Permission) && rolFormDto.Permission != existingRolForm.Permission)
+                {
+                    // Aquí también se podría validar el valor de Permission si hay un conjunto específico permitido
+                    existingRolForm.Permission = rolFormDto.Permission;
+                    updated = true;
+                }
+
+                // No actualizamos RolId o FormId en PATCH
+
+                if (updated)
+                {
+                    await _rolFormData.UpdateAsync(existingRolForm);
+                }
+                else
+                {
+                     _logger.LogInformation("No se realizaron cambios en la relación rol-formulario con ID {RolFormId} durante el patch.", id);
+                }
+
+                return MapToDTO(existingRolForm);
+            }
+            catch (EntityNotFoundException)
+            {
+                throw;
+            }
+             catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al aplicar patch a la relación rol-formulario con ID {RolFormId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al actualizar parcialmente la relación rol-formulario con ID {id}", dbEx);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error general al aplicar patch a la relación rol-formulario con ID {RolFormId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al actualizar parcialmente la relación rol-formulario con ID {id}", ex);
+            }
+        }
+
+        // Método para eliminar una relación rol-formulario (DELETE persistente)
+        public async Task DeleteRolFormAsync(int id)
+        {
+            if (id <= 0)
+            {
+                 _logger.LogWarning("Se intentó eliminar una relación rol-formulario con ID inválido: {RolFormId}", id);
+                 throw new Utilities.Exceptions.ValidationException("id", "El ID de la relación rol-formulario debe ser mayor a 0");
+            }
+            try
+            {
+                 var existingRolForm = await _rolFormData.GetByIdAsync(id); // Verificar existencia
+                if (existingRolForm == null)
+                {
+                     _logger.LogInformation("No se encontró la relación rol-formulario con ID {RolFormId} para eliminar", id);
+                    throw new EntityNotFoundException("RolForm", id);
+                }
+
+                bool deleted = await _rolFormData.DeleteAsync(id);
+                if (deleted)
+                {
+                    _logger.LogInformation("Relación rol-formulario con ID {RolFormId} eliminada exitosamente", id);
+                }
+                else
+                {
+                     _logger.LogWarning("No se pudo eliminar la relación rol-formulario con ID {RolFormId}.", id);
+                    throw new EntityNotFoundException("RolForm", id); 
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+                throw;
+            }
+             catch (Exception ex)
+            {
+                 _logger.LogError(ex,"Error general al eliminar la relación rol-formulario con ID {RolFormId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al eliminar la relación rol-formulario con ID {id}", ex);
+            }
+        }
+
         // Método para validar el DTO
         private void ValidateRolForm(RolFormDto rolFormDto)
         {
@@ -133,3 +273,4 @@ namespace Business
         }
     }
 }
+

@@ -125,5 +125,81 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza una relación rol-usuario existente
+        /// </summary>
+        /// <param name="id">ID de la relación a actualizar</param>
+        /// <param name="RolUserDto">Datos de la relación para actualizar</param>
+        /// <returns>Relación actualizada</returns>
+        /// <response code="200">Retorna la relación actualizada</response>
+        /// <response code="400">ID o datos proporcionados no válidos</response>
+        /// <response code="404">Relación no encontrada</response>
+        /// <response code="500">Error interno del servidor</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserRolDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateRolUser(int id, [FromBody] UserRolDto RolUserDto)
+        {
+            try
+            {
+                var updatedRolUser = await _RolUserBusiness.UpdateRolUserAsync(id, RolUserDto);
+                return Ok(updatedRolUser);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar relación rol-usuario con ID: {RolUserId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación rol-usuario no encontrada para actualizar con ID: {RolUserId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar relación rol-usuario con ID: {RolUserId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina una relación rol-usuario existente
+        /// </summary>
+        /// <param name="id">ID de la relación a eliminar</param>
+        /// <response code="204">Relación eliminada exitosamente</response>
+        /// <response code="400">ID proporcionado no válido</response>
+        /// <response code="404">Relación no encontrada</response>
+        /// <response code="500">Error interno del servidor</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteRolUser(int id)
+        {
+            try
+            {
+                await _RolUserBusiness.DeleteRolUserAsync(id);
+                return NoContent(); // 204 No Content
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar relación rol-usuario con ID: {RolUserId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación rol-usuario no encontrada para eliminar con ID: {RolUserId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al eliminar relación rol-usuario con ID: {RolUserId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

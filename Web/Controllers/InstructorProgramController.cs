@@ -107,5 +107,73 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza una relación instructor-programa existente
+        /// </summary>
+        /// <param name="id">ID de la relación a actualizar</param>
+        /// <param name="instructorProgramDto">Datos de la relación para actualizar</param>
+        /// <returns>Relación actualizada</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(InstructorProgramDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateInstructorProgram(int id, [FromBody] InstructorProgramDto instructorProgramDto)
+        {
+            try
+            {
+                var updatedRelation = await _instructorProgramBusiness.UpdateInstructorProgramAsync(id, instructorProgramDto);
+                return Ok(updatedRelation);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar relación instructor-programa con ID: {InstructorProgramId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación instructor-programa no encontrada para actualizar con ID: {InstructorProgramId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar relación instructor-programa con ID: {InstructorProgramId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina una relación instructor-programa existente
+        /// </summary>
+        /// <param name="id">ID de la relación a eliminar</param>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteInstructorProgram(int id)
+        {
+            try
+            {
+                await _instructorProgramBusiness.DeleteInstructorProgramAsync(id);
+                return NoContent(); // 204 No Content
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar relación instructor-programa con ID: {InstructorProgramId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación instructor-programa no encontrada para eliminar con ID: {InstructorProgramId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al eliminar relación instructor-programa con ID: {InstructorProgramId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

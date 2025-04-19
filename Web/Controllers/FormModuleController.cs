@@ -125,5 +125,108 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza una relación formulario-módulo existente
+        /// </summary>
+        /// <param name="id">ID de la relación a actualizar</param>
+        /// <param name="formModuleDto">Datos completos de la relación para actualizar</param>
+        /// <returns>Relación actualizada</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(FormModuleDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateFormModule(int id, [FromBody] FormModuleDto formModuleDto)
+        {
+            try
+            {
+                var updatedRelation = await _FormModuleBusiness.UpdateFormModuleAsync(id, formModuleDto);
+                return Ok(updatedRelation);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar relación formulario-módulo con ID: {FormModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación formulario-módulo no encontrada para actualizar con ID: {FormModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar relación formulario-módulo con ID: {FormModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente una relación formulario-módulo (ej. StatusProcedure)
+        /// </summary>
+        /// <param name="id">ID de la relación a actualizar</param>
+        /// <param name="formModuleDto">Datos parciales a aplicar (principalmente StatusProcedure)</param>
+        /// <returns>Relación actualizada</returns>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(FormModuleDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> PatchFormModule(int id, [FromBody] FormModuleDto formModuleDto)
+        {
+            try
+            {
+                var patchedRelation = await _FormModuleBusiness.PatchFormModuleAsync(id, formModuleDto);
+                return Ok(patchedRelation);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al aplicar patch a relación formulario-módulo con ID: {FormModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación formulario-módulo no encontrada para aplicar patch con ID: {FormModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al aplicar patch a relación formulario-módulo con ID: {FormModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina una relación formulario-módulo existente
+        /// </summary>
+        /// <param name="id">ID de la relación a eliminar</param>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteFormModule(int id)
+        {
+            try
+            {
+                await _FormModuleBusiness.DeleteFormModuleAsync(id);
+                return NoContent(); // 204 No Content
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar relación formulario-módulo con ID: {FormModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Relación formulario-módulo no encontrada para eliminar con ID: {FormModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al eliminar relación formulario-módulo con ID: {FormModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

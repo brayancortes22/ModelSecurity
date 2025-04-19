@@ -124,5 +124,140 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza un módulo existente (reemplazo completo)
+        /// </summary>
+        /// <param name="id">ID del módulo a actualizar</param>
+        /// <param name="moduleDto">Datos completos del módulo para actualizar</param>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ModuleDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateModule(int id, [FromBody] ModuleDto moduleDto)
+        {
+            try
+            {
+                var updatedModule = await _ModuleBusiness.UpdateModuleAsync(id, moduleDto);
+                return Ok(updatedModule);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar módulo con ID: {ModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Módulo no encontrado para actualizar con ID: {ModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar módulo con ID: {ModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente un módulo existente
+        /// </summary>
+        /// <param name="id">ID del módulo a actualizar</param>
+        /// <param name="moduleDto">Datos parciales a aplicar (Name, Description)</param>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(ModuleDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> PatchModule(int id, [FromBody] ModuleDto moduleDto)
+        {
+            try
+            {
+                var patchedModule = await _ModuleBusiness.PatchModuleAsync(id, moduleDto);
+                return Ok(patchedModule);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al aplicar patch a módulo con ID: {ModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Módulo no encontrado para aplicar patch con ID: {ModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al aplicar patch a módulo con ID: {ModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina permanentemente un módulo
+        /// </summary>
+        /// <remarks>Precaución: Esta operación es irreversible y fallará si existen entidades dependientes.</remarks>
+        /// <param name="id">ID del módulo a eliminar</param>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)] // No Content
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)] // O 409 Conflict
+        public async Task<IActionResult> DeleteModule(int id)
+        {
+            try
+            {
+                await _ModuleBusiness.DeleteModuleAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar módulo con ID: {ModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Módulo no encontrado para eliminar con ID: {ModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex) // Puede ser error de FK
+            {
+                _logger.LogError(ex, "Error al eliminar módulo con ID: {ModuleId}. Posible dependencia.", id);
+                return StatusCode(500, new { message = "Error al eliminar el módulo. Verifique si hay dependencias." });
+            }
+        }
+
+        /// <summary>
+        /// Desactiva (elimina lógicamente) un módulo
+        /// </summary>
+        /// <param name="id">ID del módulo a desactivar</param>
+        [HttpDelete("{id}/soft")]
+        [ProducesResponseType(204)] // No Content
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> SoftDeleteModule(int id)
+        {
+            try
+            {
+                await _ModuleBusiness.SoftDeleteModuleAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al realizar soft-delete de módulo con ID: {ModuleId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Módulo no encontrado para soft-delete con ID: {ModuleId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al realizar soft-delete de módulo con ID: {ModuleId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

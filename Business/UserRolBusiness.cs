@@ -102,6 +102,88 @@ namespace Business
             }
         }
 
+        // Método para actualizar una relación rol-usuario existente (reemplazo completo)
+        // Permite cambiar el rol de un usuario o el usuario de un rol, manteniendo el ID de la relación
+        public async Task<UserRolDto> UpdateRolUserAsync(int id, UserRolDto rolUserDto)
+        {
+            if (id <= 0 || id != rolUserDto.Id)
+            {
+                _logger.LogWarning("Se intentó actualizar una relación rol-usuario con ID inválido o no coincidente: {RolUserId}, DTO ID: {DtoId}", id, rolUserDto.Id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID proporcionado es inválido o no coincide con el ID del DTO.");
+            }
+            ValidateRolUser(rolUserDto); // Reutilizamos la validación
+
+            try
+            {
+                var existingRolUser = await _rolUserData.GetByIdAsync(id);
+                if (existingRolUser == null)
+                {
+                    _logger.LogInformation("No se encontró la relación rol-usuario con ID {RolUserId} para actualizar", id);
+                    throw new EntityNotFoundException("RolUser", id);
+                }
+
+                // Mapear el DTO a la entidad existente (actualización completa)
+                existingRolUser.UserId = rolUserDto.UserId;
+                existingRolUser.RolId = rolUserDto.RolId;
+
+                await _rolUserData.UpdateAsync(existingRolUser);
+                return MapToDTO(existingRolUser);
+            }
+            catch (EntityNotFoundException)
+            {
+                throw; // Relanzar
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx) // Podría ser violación de FK si UserId o RolId no existen
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al actualizar la relación rol-usuario con ID {RolUserId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al actualizar la relación rol-usuario con ID {id}. Verifique la existencia de User y Rol.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error general al actualizar la relación rol-usuario con ID {RolUserId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al actualizar la relación rol-usuario con ID {id}", ex);
+            }
+        }
+
+        // Método para eliminar una relación rol-usuario (DELETE persistente)
+        public async Task DeleteRolUserAsync(int id)
+        {
+            if (id <= 0)
+            {
+                 _logger.LogWarning("Se intentó eliminar una relación rol-usuario con ID inválido: {RolUserId}", id);
+                 throw new Utilities.Exceptions.ValidationException("id", "El ID de la relación rol-usuario debe ser mayor a 0");
+            }
+            try
+            {
+                 var existingRolUser = await _rolUserData.GetByIdAsync(id); // Verificar existencia
+                if (existingRolUser == null)
+                {
+                     _logger.LogInformation("No se encontró la relación rol-usuario con ID {RolUserId} para eliminar", id);
+                    throw new EntityNotFoundException("RolUser", id);
+                }
+
+                bool deleted = await _rolUserData.DeleteAsync(id);
+                if (deleted)
+                {
+                    _logger.LogInformation("Relación rol-usuario con ID {RolUserId} eliminada exitosamente", id);
+                }
+                else
+                {
+                     _logger.LogWarning("No se pudo eliminar la relación rol-usuario con ID {RolUserId}.", id);
+                    throw new EntityNotFoundException("RolUser", id); 
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+                throw;
+            }
+             catch (Exception ex)
+            {
+                 _logger.LogError(ex,"Error general al eliminar la relación rol-usuario con ID {RolUserId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al eliminar la relación rol-usuario con ID {id}", ex);
+            }
+        }
+
         //Funciones de mapeos 
         // Método para mapear de UserRol a UserRolDto
         private UserRolDto MapToDTO(UserRol rolUser)

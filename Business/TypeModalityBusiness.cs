@@ -95,6 +95,189 @@ namespace Business
             }
         }
 
+        // Método para actualizar una modalidad existente (reemplazo completo)
+        public async Task<TypeModalityDto> UpdateTypeModalityAsync(int id, TypeModalityDto typeModalityDto)
+        {
+            if (id <= 0 || id != typeModalityDto.Id)
+            {
+                _logger.LogWarning("Se intentó actualizar una modalidad con ID inválido o no coincidente: {ModalityId}, DTO ID: {DtoId}", id, typeModalityDto.Id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID proporcionado es inválido o no coincide con el ID del DTO.");
+            }
+            ValidateTypeModality(typeModalityDto); // Reutilizamos la validación
+
+            try
+            {
+                var existingModality = await _typeModalityData.GetByIdAsync(id);
+                if (existingModality == null)
+                {
+                    _logger.LogInformation("No se encontró la modalidad con ID {ModalityId} para actualizar", id);
+                    throw new EntityNotFoundException("TypeModality", id);
+                }
+
+                // Mapear el DTO a la entidad existente (actualización completa)
+                existingModality.Name = typeModalityDto.Name;
+                existingModality.Description = typeModalityDto.Description;
+                existingModality.Active = typeModalityDto.Active; // Asegurarse de que Active se actualice
+
+                await _typeModalityData.UpdateAsync(existingModality);
+                return MapToDTO(existingModality);
+            }
+            catch (EntityNotFoundException)
+            {
+                throw; // Relanzar para que el controlador la maneje
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al actualizar la modalidad con ID {ModalityId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al actualizar la modalidad con ID {id}", dbEx);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error general al actualizar la modalidad con ID {ModalityId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al actualizar la modalidad con ID {id}", ex);
+            }
+        }
+
+        // Método para actualizar parcialmente una modalidad existente (PATCH)
+        public async Task<TypeModalityDto> PatchTypeModalityAsync(int id, TypeModalityDto typeModalityDto)
+        {
+             if (id <= 0)
+            {
+                _logger.LogWarning("Se intentó aplicar patch a una modalidad con ID inválido: {ModalityId}", id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID de la modalidad debe ser mayor que cero.");
+            }
+
+            try
+            {
+                var existingModality = await _typeModalityData.GetByIdAsync(id);
+                if (existingModality == null)
+                {
+                    _logger.LogInformation("No se encontró la modalidad con ID {ModalityId} para aplicar patch", id);
+                    throw new EntityNotFoundException("TypeModality", id);
+                }
+
+                // Aplicar cambios parciales desde el DTO si los valores no son nulos/vacíos
+                if (!string.IsNullOrWhiteSpace(typeModalityDto.Name))
+                {
+                    existingModality.Name = typeModalityDto.Name;
+                }
+                // Description puede ser nulo o vacío, así que actualizamos si se proporciona explícitamente
+                if (typeModalityDto.Description != null)
+                {
+                     existingModality.Description = typeModalityDto.Description;
+                }
+                 // No actualizamos Active en PATCH usualmente, a menos que sea explícito.
+                 // Si se necesita actualizar Active con PATCH, se podría añadir una lógica específica o requerir que el DTO incluya el campo.
+                 // Por ahora, lo omitimos en la actualización parcial.
+
+                await _typeModalityData.UpdateAsync(existingModality);
+                return MapToDTO(existingModality);
+            }
+            catch (EntityNotFoundException)
+            {
+                throw;
+            }
+             catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al aplicar patch a la modalidad con ID {ModalityId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al actualizar parcialmente la modalidad con ID {id}", dbEx);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error general al aplicar patch a la modalidad con ID {ModalityId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al actualizar parcialmente la modalidad con ID {id}", ex);
+            }
+        }
+
+        // Método para eliminar una modalidad (DELETE persistente)
+        public async Task DeleteTypeModalityAsync(int id)
+        {
+            if (id <= 0)
+            {
+                 _logger.LogWarning("Se intentó eliminar una modalidad con ID inválido: {ModalityId}", id);
+                 throw new Utilities.Exceptions.ValidationException("id", "El ID de la modalidad debe ser mayor a 0");
+            }
+            try
+            {
+                 var existingModality = await _typeModalityData.GetByIdAsync(id);
+                if (existingModality == null)
+                {
+                     _logger.LogInformation("No se encontró la modalidad con ID {ModalityId} para eliminar", id);
+                    throw new EntityNotFoundException("TypeModality", id);
+                }
+
+                bool deleted = await _typeModalityData.DeleteAsync(id);
+                if (deleted)
+                {
+                    _logger.LogInformation("Modalidad con ID {ModalityId} eliminada exitosamente", id);
+                }
+                else
+                {
+                    _logger.LogWarning("No se pudo eliminar la modalidad con ID {ModalityId}. Posiblemente no encontrada por la capa de datos.", id);
+                     // Podríamos lanzar EntityNotFoundException aquí también si DeleteAsync devuelve false consistentemente cuando no encuentra la entidad.
+                    throw new EntityNotFoundException("TypeModality", id);
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+                throw;
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx) // Captura errores de FK
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al eliminar la modalidad con ID {ModalityId}. Posible violación de FK.", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al eliminar la modalidad con ID {id}. Verifique dependencias.", dbEx);
+            }
+             catch (Exception ex)
+            {
+                 _logger.LogError(ex,"Error general al eliminar la modalidad con ID {ModalityId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al eliminar la modalidad con ID {id}", ex);
+            }
+        }
+
+         // Método para desactivar (eliminar lógicamente) una modalidad
+        public async Task SoftDeleteTypeModalityAsync(int id)
+        {
+             if (id <= 0)
+            {
+                 _logger.LogWarning("Se intentó realizar soft-delete a una modalidad con ID inválido: {ModalityId}", id);
+                 throw new Utilities.Exceptions.ValidationException("id", "El ID de la modalidad debe ser mayor a 0");
+            }
+
+             try
+            {
+                var existingModality = await _typeModalityData.GetByIdAsync(id);
+                if (existingModality == null)
+                {
+                    _logger.LogInformation("No se encontró la modalidad con ID {ModalityId} para soft-delete", id);
+                    throw new EntityNotFoundException("TypeModality", id);
+                }
+
+                 if (!existingModality.Active) // Si ya está inactivo, no hacer nada o loggear
+                {
+                     _logger.LogInformation("La modalidad con ID {ModalityId} ya se encuentra inactiva.", id);
+                     return; // O podrías lanzar una excepción si prefieres indicar que la operación no cambió el estado.
+                }
+
+                existingModality.Active = false;
+                await _typeModalityData.UpdateAsync(existingModality); // Usar Update para cambiar el estado Active
+                 _logger.LogInformation("Modalidad con ID {ModalityId} desactivada (soft-delete) exitosamente", id);
+            }
+             catch (EntityNotFoundException)
+            {
+                throw;
+            }
+             catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                 _logger.LogError(dbEx, "Error de base de datos al realizar soft-delete de la modalidad con ID {ModalityId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al desactivar la modalidad con ID {id}", dbEx);
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error general al realizar soft-delete de la modalidad con ID {ModalityId}", id);
+                 throw new ExternalServiceException("Base de datos", $"Error al desactivar la modalidad con ID {id}", ex);
+            }
+        }
+
         //Funciones de mapeos 
         // Método para mapear de TypeModality a TypeModalityDto
         private TypeModalityDto MapToDTO(TypeModality typeModality)

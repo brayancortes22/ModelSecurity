@@ -124,5 +124,178 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza una persona existente (reemplazo completo).
+        /// </summary>
+        /// <param name="id">ID de la persona a actualizar.</param>
+        /// <param name="personDto">Datos actualizados de la persona.</param>
+        /// <response code="200">Retorna la persona actualizada.</response>
+        /// <response code="400">Si el ID o los datos son inválidos.</response>
+        /// <response code="404">Si no se encuentra la persona.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(PersonDto), 200)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> UpdatePerson(int id, [FromBody] PersonDto personDto)
+        {
+             // Opcional: if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                var updatedPerson = await _PersonBusiness.UpdatePersonAsync(id, personDto);
+                return Ok(updatedPerson);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar persona {PersonId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Persona no encontrada para actualizar con ID: {PersonId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al actualizar persona {PersonId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al actualizar persona {PersonId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente una persona existente.
+        /// </summary>
+        /// <param name="id">ID de la persona a actualizar.</param>
+        /// <param name="personDto">Datos parciales a actualizar.</param>
+        /// <remarks>NOTA: Se recomienda usar JsonPatch.</remarks>
+        /// <response code="200">Retorna la persona con los cambios aplicados.</response>
+        /// <response code="400">Si el ID o los datos son inválidos.</response>
+        /// <response code="404">Si no se encuentra la persona.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(PersonDto), 200)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> PatchPerson(int id, [FromBody] PersonDto personDto)
+        {
+            try
+            {
+                var patchedPerson = await _PersonBusiness.PatchPersonAsync(id, personDto);
+                return Ok(patchedPerson);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al aplicar patch a persona {PersonId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Persona no encontrada para aplicar patch con ID: {PersonId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al aplicar patch a persona {PersonId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al aplicar patch a persona {PersonId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Elimina permanentemente una persona por su ID.
+        /// </summary>
+        /// <param name="id">ID de la persona a eliminar.</param>
+        /// <remarks>ADVERTENCIA: Operación destructiva. Fallará si tiene un Usuario asociado.</remarks>
+        /// <response code="204">Si la eliminación fue exitosa.</response>
+        /// <response code="400">Si el ID es inválido.</response>
+        /// <response code="404">Si no se encuentra la persona.</response>
+        /// <response code="500">Si ocurre un error interno (p.ej., violación de FK).</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> DeletePerson(int id)
+        {
+            try
+            {
+                await _PersonBusiness.DeletePersonAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                 _logger.LogWarning(ex, "Validación fallida al intentar eliminar persona {PersonId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Persona no encontrada para eliminar con ID: {PersonId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex) // Captura errores de BD (FK violation)
+            {
+                _logger.LogError(ex, "Error de servicio externo al eliminar persona {PersonId}", id);
+                return StatusCode(500, new { message = ex.Message }); // Considerar 409 Conflict
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al eliminar persona {PersonId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Desactiva (elimina lógicamente) una persona por su ID.
+        /// </summary>
+        /// <param name="id">ID de la persona a desactivar.</param>
+        /// <response code="204">Si la desactivación fue exitosa o ya estaba inactiva.</response>
+        /// <response code="400">Si el ID es inválido.</response>
+        /// <response code="404">Si no se encuentra la persona.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpDelete("{id}/soft")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> SoftDeletePerson(int id)
+        {
+            try
+            {
+                await _PersonBusiness.SoftDeletePersonAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                 _logger.LogWarning(ex, "Validación fallida al intentar desactivar persona {PersonId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Persona no encontrada para desactivar con ID: {PersonId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al desactivar persona {PersonId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al desactivar persona {PersonId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
     }
 }

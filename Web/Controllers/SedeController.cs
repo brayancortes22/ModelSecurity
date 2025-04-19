@@ -106,5 +106,179 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Actualiza una sede existente (reemplazo completo).
+        /// </summary>
+        /// <param name="id">ID de la sede a actualizar.</param>
+        /// <param name="sedeDto">Datos actualizados de la sede.</param>
+        /// <response code="200">Retorna la sede actualizada.</response>
+        /// <response code="400">Si el ID o los datos son inválidos.</response>
+        /// <response code="404">Si no se encuentra la sede.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(SedeDto), 200)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> UpdateSede(int id, [FromBody] SedeDto sedeDto)
+        {
+            // Opcional: if (!ModelState.IsValid) return BadRequest(ModelState);
+            try
+            {
+                var updatedSede = await _sedeBusiness.UpdateSedeAsync(id, sedeDto);
+                return Ok(updatedSede);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar sede {SedeId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Sede no encontrada para actualizar con ID: {SedeId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al actualizar sede {SedeId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al actualizar sede {SedeId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Actualiza parcialmente una sede existente.
+        /// </summary>
+        /// <param name="id">ID de la sede a actualizar.</param>
+        /// <param name="sedeDto">Datos parciales a actualizar.</param>
+        /// <remarks>NOTA: Se recomienda usar JsonPatch.</remarks>
+        /// <response code="200">Retorna la sede con los cambios aplicados.</response>
+        /// <response code="400">Si el ID o los datos son inválidos.</response>
+        /// <response code="404">Si no se encuentra la sede.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(SedeDto), 200)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> PatchSede(int id, [FromBody] SedeDto sedeDto)
+        {
+            try
+            {
+                var patchedSede = await _sedeBusiness.PatchSedeAsync(id, sedeDto);
+                return Ok(patchedSede);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al aplicar patch a sede {SedeId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Sede no encontrada para aplicar patch con ID: {SedeId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al aplicar patch a sede {SedeId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al aplicar patch a sede {SedeId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Elimina permanentemente una sede por su ID.
+        /// </summary>
+        /// <param name="id">ID de la sede a eliminar.</param>
+        /// <remarks>ADVERTENCIA: Operación destructiva. Fallará si tiene usuarios asociados (UserSedes).</remarks>
+        /// <response code="204">Si la eliminación fue exitosa.</response>
+        /// <response code="400">Si el ID es inválido.</response>
+        /// <response code="404">Si no se encuentra la sede.</response>
+        /// <response code="500">Si ocurre un error interno (p.ej., violación de FK).</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> DeleteSede(int id)
+        {
+            try
+            {
+                await _sedeBusiness.DeleteSedeAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                 _logger.LogWarning(ex, "Validación fallida al intentar eliminar sede {SedeId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Sede no encontrada para eliminar con ID: {SedeId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex) // Captura errores de BD (FK violation)
+            {
+                _logger.LogError(ex, "Error de servicio externo al eliminar sede {SedeId}", id);
+                // Considerar 409 Conflict para FK
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al eliminar sede {SedeId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
+
+        /// <summary>
+        /// Desactiva (elimina lógicamente) una sede por su ID.
+        /// </summary>
+        /// <param name="id">ID de la sede a desactivar.</param>
+        /// <response code="204">Si la desactivación fue exitosa o ya estaba inactiva.</response>
+        /// <response code="400">Si el ID es inválido.</response>
+        /// <response code="404">Si no se encuentra la sede.</response>
+        /// <response code="500">Si ocurre un error interno.</response>
+        [HttpDelete("{id}/soft")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 404)]
+        [ProducesResponseType(typeof(object), 500)]
+        public async Task<IActionResult> SoftDeleteSede(int id)
+        {
+            try
+            {
+                await _sedeBusiness.SoftDeleteSedeAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                 _logger.LogWarning(ex, "Validación fallida al intentar desactivar sede {SedeId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Sede no encontrada para desactivar con ID: {SedeId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error de servicio externo al desactivar sede {SedeId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                 _logger.LogError(ex, "Error inesperado al desactivar sede {SedeId}", id);
+                return StatusCode(500, new { message = "Ocurrió un error inesperado." });
+            }
+        }
     }
 }
