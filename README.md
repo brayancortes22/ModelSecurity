@@ -207,3 +207,30 @@ El `ApplicationDbContext` mantiene las siguientes características principales:
 - Se mantiene la compatibilidad con el código existente
 - No se requieren cambios en las migraciones de base de datos
 - La documentación XML se mantiene actualizada
+
+## Cambios Recientes / Mejoras (CRUD y Borrado Lógico)
+
+En las últimas sesiones de trabajo, se ha implementado la funcionalidad completa de **CRUD (Create, Read, Update, Delete)** y **Borrado Lógico (Soft Delete)** para varias entidades clave del sistema.
+
+Los siguientes controladores ahora exponen los endpoints estándar:
+
+*   `GET /` (Obtener todos)
+*   `GET /{id}` (Obtener por ID)
+*   `POST /` (Crear)
+*   `PUT /{id}` (Actualizar completo)
+*   `PATCH /{id}` (Actualizar parcial)
+*   `DELETE /{id}` (Eliminar persistente)
+*   `DELETE /{id}/soft` (Borrado lógico / Desactivar)
+
+**Controladores Actualizados:**
+
+*   `AprendizProgramController`: Se corrigió la implementación de `PATCH` para usar `AprendizProgramDto` y se verificó la existencia de todos los endpoints CRUD + Soft Delete. Se añadió el método `SoftDeleteAsync` a `AprendizProgramData`.
+*   `CenterController`: Se añadieron los endpoints `PUT`, `PATCH`, `DELETE` y `DELETE /soft`. Se corrigió la implementación de `PATCH` en el controlador y en `CenterBusiness` para usar `CenterDto`. Se añadieron los métodos correspondientes a `CenterBusiness`.
+*   `ConceptController`: Se añadieron los endpoints `PUT`, `PATCH`, `DELETE` y `DELETE /soft`. Se implementaron los métodos correspondientes en `ConceptBusiness`.
+*   `EnterpriseController`: Se añadieron los endpoints `PUT`, `PATCH`, `DELETE` y `DELETE /soft`. Se implementaron los métodos correspondientes en `EnterpriseBusiness`.
+*   `UserRolController`: Se creó el controlador con los endpoints `GET`, `POST`, `PUT` y `DELETE`. Se corrigió e implementó la funcionalidad de borrado lógico (`SoftDeleteUserRolAsync` en `UserRolBusiness`, `SoftDeleteAsync` en `UserRolData`) y se añadió el endpoint `DELETE /{id}/soft`.
+
+**Consideraciones:**
+
+*   La implementación de `PATCH` se ha estandarizado para recibir el DTO principal de la entidad (ej. `ConceptDto`) en lugar de objetos `JsonPatchDocument` o DTOs específicos para PATCH, simplificando la interacción con la API. La lógica de actualización parcial reside en la capa de negocio.
+*   El borrado lógico (`soft delete`) se implementa generalmente cambiando un campo `Active` a `false` y opcionalmente registrando la fecha en `DeleteDate` en la entidad correspondiente.
