@@ -272,7 +272,7 @@ namespace Business
 
                 stateToDeactivate.Active = false;
                 stateToDeactivate.DeleteDate = DateTime.UtcNow;
-                stateToDeactivate.UpdateDate = DateTime.UtcNow;
+                
                 await _stateData.UpdateAsync(stateToDeactivate);
 
                 _logger.LogInformation("Estado con ID {StateId} marcado como inactivo (soft-delete)", id);

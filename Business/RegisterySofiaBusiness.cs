@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateRegisterySofia(registerySofiaDto);
                 var registerySofia = MapToEntity(registerySofiaDto);
+                 registerySofia.CreateDate = DateTime.UtcNow;
                 var registerySofiaCreado = await _registerySofiaData.CreateAsync(registerySofia);
                 return MapToDTO(registerySofiaCreado);
             }
@@ -119,6 +120,7 @@ namespace Business
                 existingRegistery.Description = registerySofiaDto.Description;
                 existingRegistery.Document = registerySofiaDto.Document;
                 existingRegistery.Active = registerySofiaDto.Active;
+                existingRegistery.UpdateDate = DateTime.UtcNow;
 
                 await _registerySofiaData.UpdateAsync(existingRegistery);
                 return MapToDTO(existingRegistery);
@@ -158,6 +160,7 @@ namespace Business
                 }
 
                 bool updated = false;
+                existingRegistery.UpdateDate = DateTime.UtcNow;
 
                 // Actualizar Name si se proporciona y es diferente
                 if (!string.IsNullOrWhiteSpace(registerySofiaDto.Name) && registerySofiaDto.Name != existingRegistery.Name)
@@ -276,6 +279,7 @@ namespace Business
                 }
 
                 existingRegistery.Active = false;
+                existingRegistery.DeleteDate = DateTime.UtcNow;
                 await _registerySofiaData.UpdateAsync(existingRegistery); 
                  _logger.LogInformation("Registro de Sofia con ID {RegisterySofiaId} desactivado (soft-delete) exitosamente", id);
             }

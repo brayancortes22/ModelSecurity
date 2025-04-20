@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateProcess(processDto);
                 var process = MapToEntity(processDto);
+                process.CreateDate = DateTime.UtcNow;
                 var processCreado = await _processData.CreateAsync(process);
                 return MapToDTO(processCreado);
             }
@@ -118,6 +119,7 @@ namespace Business
                 existingProcess.TypeProcess = processDto.TypeProcess;
                 existingProcess.Observation = processDto.Observation;
                 existingProcess.Active = processDto.Active;
+                existingProcess.UpdateDate = DateTime.UtcNow;
 
                 await _processData.UpdateAsync(existingProcess);
                 return MapToDTO(existingProcess);
@@ -157,6 +159,7 @@ namespace Business
                 }
 
                 bool updated = false;
+                existingProcess.UpdateDate = DateTime.UtcNow;
 
                 // Actualizar TypeProcess si se proporciona y es diferente
                 if (!string.IsNullOrWhiteSpace(processDto.TypeProcess) && processDto.TypeProcess != existingProcess.TypeProcess)
@@ -269,6 +272,7 @@ namespace Business
                 }
 
                 existingProcess.Active = false;
+                existingProcess.DeleteDate = DateTime.UtcNow;
                 await _processData.UpdateAsync(existingProcess); 
                  _logger.LogInformation("Proceso con ID {ProcessId} desactivado (soft-delete) exitosamente", id);
             }

@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateForm(formDto);
                 var form = MapToEntity(formDto);
+                form.CreateDate = DateTime.UtcNow;
                 var formCreado = await _formData.CreateAsync(form);
                 return MapToDTO(formCreado);
             }
@@ -122,6 +123,7 @@ namespace Business
                 existingForm.TypeCuestion = formDto.TypeCuestion;
                 existingForm.Answer = formDto.Answer;
                 existingForm.Active = formDto.Active;
+                existingForm.UpdateDate = DateTime.UtcNow;
 
                 await _formData.UpdateAsync(existingForm);
                 return MapToDTO(existingForm);
@@ -162,6 +164,7 @@ namespace Business
                 }
 
                 bool updated = false;
+                existingForm.UpdateDate = DateTime.UtcNow;
 
                 // Actualizar campos si se proporcionan en el DTO y son diferentes
                 if (!string.IsNullOrWhiteSpace(formDto.Name) && formDto.Name != existingForm.Name)
@@ -290,6 +293,7 @@ namespace Business
                 }
 
                 existingForm.Active = false;
+                existingForm.DeleteDate = DateTime.UtcNow;
                 await _formData.UpdateAsync(existingForm); 
                  _logger.LogInformation("Formulario con ID {FormId} desactivado (soft-delete) exitosamente", id);
             }

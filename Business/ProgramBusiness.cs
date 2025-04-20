@@ -284,7 +284,7 @@ namespace Business
 
                 programToDeactivate.Active = false;
                 programToDeactivate.DeleteDate = DateTime.UtcNow;
-                programToDeactivate.UpdateDate = DateTime.UtcNow;
+                
                 await _programData.UpdateAsync(programToDeactivate);
 
                 _logger.LogInformation("Programa con ID {ProgramId} marcado como inactivo (soft-delete)", id);

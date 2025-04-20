@@ -12,6 +12,8 @@ namespace Entity.Model
         public int AprendizId { get; set; }
         public int ProgramId { get; set; }
 
+        public bool Active { get; set; }
+
         // Propiedades de navegación
         public Program Program { get; set; }
         public Aprendiz Aprendiz { get; set; }

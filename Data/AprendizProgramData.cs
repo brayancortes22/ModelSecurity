@@ -117,6 +117,43 @@ namespace Data
                 return false;
             }
         }
+
+        /// <summary>
+        /// Realiza un borrado lógico de un AprendizProgram en la base de datos.
+        /// Asume que la entidad AprendizProgram tiene una propiedad booleana 'Active'.
+        /// </summary>
+        /// <param name="id">Identificador único del AprendizProgram a desactivar.</param>
+        /// <returns>True si la desactivación fue exitosa, False en caso contrario.</returns>
+        public async Task<bool> SoftDeleteAsync(int id)
+        {
+            try
+            {
+                var aprendizProgram = await _context.Set<AprendizProgram>().FindAsync(id);
+                if (aprendizProgram == null)
+                {
+                    _logger.LogInformation("No se encontró AprendizProgram con ID {Id} para borrado lógico.", id);
+                    return false;
+                }
+
+                // Asume la existencia de la propiedad 'Active'. Cambiar si es necesario.
+                if (!aprendizProgram.Active) 
+                {   
+                    _logger.LogInformation("AprendizProgram con ID {Id} ya estaba inactivo.", id);
+                    return true; // Considerar si ya está inactivo como éxito
+                }
+
+                aprendizProgram.Active = false;
+                _context.Entry(aprendizProgram).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Borrado lógico realizado para AprendizProgram con ID {Id}.", id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al realizar borrado lógico del AprendizProgram con ID {id}");
+                return false;
+            }
+        }
     }
 }
 

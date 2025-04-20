@@ -310,7 +310,7 @@ namespace Business
 
                 sedeToDeactivate.Active = false;
                 sedeToDeactivate.DeleteDate = DateTime.UtcNow;
-                sedeToDeactivate.UpdateDate = DateTime.UtcNow; // Marcar como actualizado también
+                
                 await _sedeData.UpdateAsync(sedeToDeactivate);
 
                 _logger.LogInformation("Sede con ID {SedeId} marcada como inactiva (soft-delete)", id);

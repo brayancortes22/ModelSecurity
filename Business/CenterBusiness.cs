@@ -69,6 +69,7 @@ namespace Business
             {
                 ValidateCenter(centerDto);
                 var center = MapToEntity(centerDto);
+                center.CreateDate = DateTime.UtcNow;
                 var centerCreado = await _centerData.CreateAsync(center);
                 return MapToDTO(centerCreado);
             }
@@ -120,6 +121,8 @@ namespace Business
                     throw new EntityNotFoundException("center", id);
                 }
 
+                existingCenter.UpdateDate = DateTime.UtcNow;
+
                 var centerToUpdate = MapToEntity(centerDto);
                 await _centerData.UpdateAsync(centerToUpdate);
                 _logger.LogInformation("Centro actualizado con ID: {Id}", id);
@@ -137,7 +140,8 @@ namespace Business
         }
 
         // Método para actualizar parcialmente un centro (PATCH)
-        public async Task PatchCenterAsync(int id, CenterPatchDto patchDto)
+        // Modificado para aceptar CenterDto en lugar de CenterPatchDto
+        public async Task PatchCenterAsync(int id, CenterDto centerDto)
         {
             if (id <= 0)
             {
@@ -145,7 +149,15 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("id", "El ID del centro debe ser mayor que cero");
             }
 
-            if (patchDto == null)
+            // Aunque PATCH no requiere que el ID coincida, la lógica de negocio puede imponerlo.
+            // Si el DTO trae un ID, validamos que coincida.
+            if (centerDto.Id != 0 && id != centerDto.Id)
+            {
+                 _logger.LogWarning("ID de ruta {RouteId} no coincide con ID de cuerpo {BodyId} en PATCH", id, centerDto.Id);
+                 throw new Utilities.Exceptions.ValidationException("id", "El ID de la ruta no coincide con el ID del cuerpo.");
+            }
+
+            if (centerDto == null)
             {
                 _logger.LogWarning("Patch DTO nulo para el centro con ID: {Id}", id);
                 throw new Utilities.Exceptions.ValidationException("El objeto de patch no puede ser nulo.");
@@ -160,19 +172,49 @@ namespace Business
                     throw new EntityNotFoundException("center", id);
                 }
 
-                // Aplicar los cambios del Patch DTO a la entidad existente
-                // Solo se actualizan las propiedades si se proporcionan en el DTO
-                if (patchDto.Name != null) existingCenter.Name = patchDto.Name.Value;
-                if (patchDto.CodeCenter != null) existingCenter.CodeCenter = patchDto.CodeCenter.Value;
-                if (patchDto.Active != null) existingCenter.Active = patchDto.Active.Value;
-                if (patchDto.RegionalId != null) existingCenter.RegionalId = patchDto.RegionalId.Value;
-                if (patchDto.Address != null) existingCenter.Address = patchDto.Address.Value;
+                bool updated = false;
+                existingCenter.UpdateDate = DateTime.UtcNow;
 
-                // Validar la entidad resultante después del patch
-                ValidateCenter(MapToDTO(existingCenter)); // Reusamos la validación del DTO completo
+                // Aplicar cambios si los valores del DTO son diferentes a los existentes
+                if (centerDto.Name != null && existingCenter.Name != centerDto.Name)
+                {
+                    existingCenter.Name = centerDto.Name;
+                    updated = true;
+                }
+                 if (existingCenter.CodeCenter != centerDto.CodeCenter)
+                {
+                    existingCenter.CodeCenter = centerDto.CodeCenter;
+                    updated = true;
+                }
+                if (existingCenter.Active != centerDto.Active)
+                {
+                    existingCenter.Active = centerDto.Active;
+                    updated = true;
+                }
+                 if (existingCenter.RegionalId != centerDto.RegionalId)
+                {
+                    existingCenter.RegionalId = centerDto.RegionalId;
+                    updated = true;
+                }
+                 if (centerDto.Address != null && existingCenter.Address != centerDto.Address)
+                {
+                    existingCenter.Address = centerDto.Address;
+                    updated = true;
+                }
 
-                await _centerData.UpdateAsync(existingCenter);
-                _logger.LogInformation("Centro actualizado parcialmente (patch) con ID: {Id}", id);
+                // Validar la entidad resultante solo si hubo cambios
+                if (updated)
+                {
+                     // Validar la entidad resultante después del patch
+                     ValidateCenter(MapToDTO(existingCenter)); // Reusamos la validación
+
+                     await _centerData.UpdateAsync(existingCenter);
+                     _logger.LogInformation("Centro actualizado parcialmente (patch) con ID: {Id}", id);
+                }
+                else
+                {
+                    _logger.LogInformation("No se realizaron cambios en el centro con ID {Id} durante el patch.", id);
+                }
             }
             catch (EntityNotFoundException)
             {
@@ -251,6 +293,8 @@ namespace Business
 
 
                 existingCenter.Active = false; // Cambiar estado a inactivo
+                existingCenter.DeleteDate = DateTime.UtcNow;
+                
                 await _centerData.UpdateAsync(existingCenter); // Usar UpdateAsync para cambiar el estado
                 _logger.LogInformation("Borrado lógico realizado para el centro con ID: {Id}", id);
             }

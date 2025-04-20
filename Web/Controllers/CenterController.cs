@@ -199,7 +199,7 @@ namespace Web.Controllers
         /// Actualiza parcialmente un centro existente en el sistema.
         /// </summary>
         /// <param name="id">ID del centro a actualizar parcialmente.</param>
-        /// <param name="patchDto">Datos a actualizar del centro.</param>
+        /// <param name="centerDto">Datos a actualizar del centro.</param>
         /// <returns>Respuesta indicando éxito o fracaso.</returns>
         /// <response code="200">Centro actualizado parcialmente.</response>
         /// <response code="400">ID inválido o datos no válidos.</response>
@@ -210,23 +210,28 @@ namespace Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PatchCenter(int id, [FromBody] CenterPatchDto patchDto) // Usando CenterPatchDto como en Business
+        public async Task<IActionResult> PatchCenter(int id, [FromBody] CenterDto centerDto)
         {
              if (id <= 0)
             {
                 _logger.LogWarning("Intento de aplicar patch a un centro con ID inválido: {CenterId}", id);
                 return BadRequest(new { message = "El ID proporcionado es inválido." });
             }
-            if (patchDto == null)
+            if (centerDto == null)
             {
-                _logger.LogWarning("Intento de aplicar patch a un centro con ID {CenterId} con un documento de patch nulo.", id);
-                return BadRequest(new { message = "El documento de patch no puede ser nulo." });
+                _logger.LogWarning("Intento de aplicar patch a un centro con ID {CenterId} con un DTO nulo.", id);
+                return BadRequest(new { message = "El cuerpo de la solicitud (centro) no puede ser nulo." });
+            }
+
+            if (centerDto.Id != 0 && id != centerDto.Id)
+            {
+                 _logger.LogWarning("ID de ruta {RouteId} no coincide con ID de cuerpo {BodyId} en PATCH", id, centerDto.Id);
+                 return BadRequest(new { message = "El ID de la ruta no coincide con el ID del cuerpo." });
             }
 
             try
             {
-                // CenterBusiness.PatchCenterAsync no devuelve la entidad
-                await _centerBusiness.PatchCenterAsync(id, patchDto);
+                await _centerBusiness.PatchCenterAsync(id, centerDto);
                  _logger.LogInformation("Patch aplicado exitosamente al centro con ID {CenterId}.", id);
                 return Ok(new { message = $"Patch aplicado exitosamente al centro con ID {id}." });
             }

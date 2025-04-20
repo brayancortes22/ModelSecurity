@@ -9,8 +9,6 @@ using Utilities.Exceptions;
 using ValidationException = Utilities.Exceptions.ValidationException;
 using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch.Exceptions;
 
 namespace Web.Controllers
 {
@@ -190,22 +188,28 @@ namespace Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PatchAprendizProgram(int id, [FromBody] JsonPatchDocument<AprendizProgramDto> patchDoc)
+        public async Task<IActionResult> PatchAprendizProgram(int id, [FromBody] AprendizProgramDto aprendizProgramDto)
         {
             if (id <= 0)
             {
                 _logger.LogWarning("Intento de aplicar patch a un programa de aprendizaje con ID inválido: {Id}", id);
                 return BadRequest(new { message = "El ID proporcionado es inválido." });
             }
-            if (patchDoc == null)
+            if (aprendizProgramDto == null)
             {
-                _logger.LogWarning("Intento de aplicar patch a un programa de aprendizaje con ID {Id} con un documento de patch nulo.", id);
-                return BadRequest(new { message = "El documento de patch no puede ser nulo." });
+                _logger.LogWarning("Intento de aplicar patch a un programa de aprendizaje con ID {Id} con un DTO nulo.", id);
+                return BadRequest(new { message = "El cuerpo de la solicitud (programa de aprendizaje) no puede ser nulo." });
+            }
+
+            if (aprendizProgramDto.Id != 0 && id != aprendizProgramDto.Id)
+            {
+                _logger.LogWarning("ID de ruta {RouteId} no coincide con ID de cuerpo {BodyId} en PATCH", id, aprendizProgramDto.Id);
+                return BadRequest(new { message = "El ID de la ruta no coincide con el ID del cuerpo." });
             }
 
             try
             {
-                await _aprendizProgramBusiness.PatchAprendizProgramAsync(id, patchDoc);
+                await _aprendizProgramBusiness.PatchAprendizProgramAsync(id, aprendizProgramDto);
                 _logger.LogInformation("Patch aplicado exitosamente al programa de aprendizaje con ID {Id}.", id);
                 return Ok(new { message = $"Patch aplicado exitosamente al programa de aprendizaje con ID {id}." });
             }
@@ -218,11 +222,6 @@ namespace Web.Controllers
             {
                 _logger.LogInformation("No se encontró el programa de aprendizaje con ID {Id} para aplicar patch.", id);
                 return NotFound(new { message = $"No se encontró el programa de aprendizaje con ID {id}." });
-            }
-            catch (JsonPatchException jpex)
-            {
-                _logger.LogWarning(jpex, "Error al aplicar el documento de patch para el programa de aprendizaje con ID {Id}.", id);
-                return BadRequest(new { message = $"Error al aplicar las operaciones de patch: {jpex.Message}" });
             }
             catch (ExternalServiceException ex)
             {

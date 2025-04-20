@@ -282,7 +282,7 @@ namespace Business
 
                 regionalToDeactivate.Active = false;
                 regionalToDeactivate.DeleteDate = DateTime.UtcNow;
-                regionalToDeactivate.UpdateDate = DateTime.UtcNow;
+               
                 await _regionalData.UpdateAsync(regionalToDeactivate);
 
                 _logger.LogInformation("Regional con ID {RegionalId} marcada como inactiva (soft-delete)", id);

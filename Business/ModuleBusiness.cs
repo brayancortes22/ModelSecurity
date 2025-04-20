@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateModule(moduleDto);
                 var module = MapToEntity(moduleDto);
+                module.CreateDate = DateTime.UtcNow;
                 var moduleCreado = await _moduleData.CreateAsync(module);
                 return MapToDTO(moduleCreado);
             }
@@ -119,6 +120,7 @@ namespace Business
                 existingModule.Name = moduleDto.Name;
                 existingModule.Description = moduleDto.Description;
                 existingModule.Active = moduleDto.Active;
+                existingModule.UpdateDate = DateTime.UtcNow;
 
                 await _moduleData.UpdateAsync(existingModule);
                 return MapToDTO(existingModule);
@@ -159,6 +161,7 @@ namespace Business
                 }
 
                 bool updated = false;
+                existingModule.UpdateDate = DateTime.UtcNow;
 
                 // Actualizar Name si se proporciona y es diferente
                 if (!string.IsNullOrWhiteSpace(moduleDto.Name) && moduleDto.Name != existingModule.Name)
@@ -273,6 +276,7 @@ namespace Business
                 }
 
                 existingModule.Active = false;
+                existingModule.DeleteDate = DateTime.UtcNow;
                 await _moduleData.UpdateAsync(existingModule); 
                  _logger.LogInformation("Módulo con ID {ModuleId} desactivado (soft-delete) exitosamente", id);
             }

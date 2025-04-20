@@ -275,6 +275,7 @@ namespace Business
 
                 // ADVERTENCIA: Fallará si existe un User asociado.
                 bool deleted = await _personData.DeleteAsync(id);
+                
                 if (deleted)
                 {
                     _logger.LogInformation("Persona con ID {PersonId} eliminada exitosamente (persistente)", id);
@@ -326,7 +327,7 @@ namespace Business
 
                 personToDeactivate.Active = false;
                 personToDeactivate.DeleteDate = DateTime.UtcNow;
-                personToDeactivate.UpdateDate = DateTime.UtcNow;
+                
                 await _personData.UpdateAsync(personToDeactivate);
 
                 _logger.LogInformation("Persona con ID {PersonId} marcada como inactiva (soft-delete)", id);

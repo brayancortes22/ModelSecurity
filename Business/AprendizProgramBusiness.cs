@@ -287,6 +287,7 @@ namespace Business
                 Id = program.Id,
                 AprendizId = program.AprendizId,
                 ProgramId = program.ProgramId,
+                Active = program.Active
             };
         }
 
@@ -298,6 +299,7 @@ namespace Business
                 Id = programDto.Id,
                 AprendizId = programDto.AprendizId,
                 ProgramId = programDto.ProgramId,
+                Active = programDto.Active
             };
         }
 
@@ -306,6 +308,7 @@ namespace Business
         {
             existingProgram.AprendizId = dto.AprendizId;
             existingProgram.ProgramId = dto.ProgramId;
+            existingProgram.Active = dto.Active;
             // No actualizamos el Id
             return existingProgram;
         }

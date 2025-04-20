@@ -1,10 +1,13 @@
 ﻿using Data;
 using Entity.DTOautogestion;
 using Entity.DTOautogestion.pivote;
+using Microsoft.EntityFrameworkCore; 
 using Entity.Model;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Exceptions;
+using System;
+
 
 namespace Business
 {
@@ -71,6 +74,7 @@ namespace Business
             {
                 ValidateRolUser(rolUserDto);
                 var rolUser = MapToEntity(rolUserDto);
+                rolUser.CreateDate = DateTime.UtcNow;
                 var rolUserCreado = await _rolUserData.CreateAsync(rolUser);
                 return MapToDTO(rolUserCreado);
             }
@@ -125,6 +129,7 @@ namespace Business
                 // Mapear el DTO a la entidad existente (actualización completa)
                 existingRolUser.UserId = rolUserDto.UserId;
                 existingRolUser.RolId = rolUserDto.RolId;
+                existingRolUser.UpdateDate = DateTime.UtcNow;
 
                 await _rolUserData.UpdateAsync(existingRolUser);
                 return MapToDTO(existingRolUser);
@@ -181,6 +186,47 @@ namespace Business
             {
                  _logger.LogError(ex,"Error general al eliminar la relación rol-usuario con ID {RolUserId}", id);
                  throw new ExternalServiceException("Base de datos", $"Error al eliminar la relación rol-usuario con ID {id}", ex);
+            }
+        }
+
+        // Método para eliminar lógicamente una relación UserRol (soft delete)
+        // Renombrado de SoftDeleteStateAsync y corregido
+        public async Task SoftDeleteUserRolAsync(int id)
+        {
+            if (id <= 0)
+            {
+                _logger.LogWarning("Se intentó realizar soft-delete a una relación UserRol con un ID inválido: {UserRolId}", id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID de la relación UserRol debe ser mayor a 0");
+            }
+            try
+            {
+                // Llamar al método SoftDeleteAsync de la capa de datos
+                bool success = await _rolUserData.SoftDeleteAsync(id);
+
+                if (!success)
+                {
+                     // Si SoftDeleteAsync devuelve false, probablemente no encontró la entidad
+                     _logger.LogWarning("No se pudo realizar el borrado lógico para UserRol con ID {UserRolId}. La entidad no fue encontrada o ya estaba inactiva.", id);
+                     // Lanzar EntityNotFoundException para que el controlador devuelva 404
+                     throw new EntityNotFoundException("UserRol", id); 
+                }
+                 // El log de éxito ya se hace en la capa de datos
+                // _logger.LogInformation("Relación UserRol con ID {UserRolId} marcada como inactiva (soft-delete)", id);
+            }
+            catch (EntityNotFoundException) 
+            {
+                 // Relanzar si SoftDeleteAsync lanzó (aunque no debería si devuelve false)
+                throw; 
+            }
+            catch (DbUpdateException dbEx) // Capturar explícitamente errores de BD
+            {
+                _logger.LogError(dbEx, "Error de base de datos al realizar soft-delete de UserRol {UserRolId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al desactivar la relación UserRol con ID {id}", dbEx);
+            }
+            catch (Exception ex) // Capturar cualquier otro error inesperado
+            {
+                _logger.LogError(ex, "Error general al realizar soft-delete de UserRol {UserRolId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al desactivar la relación UserRol con ID {id}", ex);
             }
         }
 

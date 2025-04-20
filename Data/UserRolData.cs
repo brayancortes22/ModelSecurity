@@ -85,5 +85,42 @@ namespace Data
                 return false;
             }
         }
+
+        /// <summary>
+        /// Realiza un borrado lógico de una relación UserRol.
+        /// </summary>
+        /// <param name="id">ID de la relación UserRol a desactivar.</param>
+        /// <returns>True si la desactivación fue exitosa, False si no se encontró.</returns>
+        public async Task<bool> SoftDeleteAsync(int id)
+        {
+            try
+            {
+                var userRol = await _context.Set<UserRol>().FindAsync(id);
+                if (userRol == null)
+                {
+                     _logger.LogInformation("No se encontró UserRol con ID {Id} para borrado lógico.", id);
+                    return false;
+                }
+
+                if (!userRol.Active)
+                {
+                    _logger.LogInformation("UserRol con ID {Id} ya estaba inactivo.", id);
+                    return true; // Ya está inactivo, considerar éxito
+                }
+
+                userRol.Active = false;
+                userRol.DeleteDate = DateTime.UtcNow; // Establecer fecha de borrado
+                _context.Entry(userRol).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Borrado lógico realizado para UserRol con ID {Id}.", id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al realizar borrado lógico de UserRol con ID {id}");
+                // Podríamos querer lanzar la excepción o devolver false dependiendo del manejo deseado
+                return false; 
+            }
+        }
     }
 }

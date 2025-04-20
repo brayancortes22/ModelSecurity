@@ -70,6 +70,7 @@ namespace Business
             {
                 ValidateVerification(verificationDto);
                 var verification = MapToEntity(verificationDto);
+                verification.CreateDate = DateTime.UtcNow;
                 var verificationCreado = await _verificationData.CreateAsync(verification);
                 return MapToDTO(verificationCreado);
             }
@@ -104,6 +105,7 @@ namespace Business
                 verification.Observation = verificationDto.Observation;
                 verification.Active = verificationDto.Active; // Actualizar Active en PUT
 
+                verification.UpdateDate = DateTime.UtcNow;
                 await _verificationData.UpdateAsync(verification);
                 _logger.LogInformation("Verificacion actualizada con ID: {Id}", id);
                 return MapToDTO(verification); // Devolver el DTO actualizado
@@ -142,7 +144,9 @@ namespace Business
                     throw new EntityNotFoundException("Verification", id);
                 }
 
+                existingVerification.UpdateDate = DateTime.UtcNow;
                 bool updated = false;
+                
 
                 // Actualizar Name si se proporciona y es diferente
                 if (!string.IsNullOrWhiteSpace(verificationDto.Name) && verificationDto.Name != existingVerification.Name)
@@ -157,7 +161,6 @@ namespace Business
                     existingVerification.Observation = verificationDto.Observation;
                     updated = true;
                 }
-
                 // No actualizamos 'Active' en PATCH. Para eso está SoftDelete.
 
                 if (updated)
@@ -232,6 +235,7 @@ namespace Business
                 }
 
                 // Marcar como inactivo (o lógica de borrado lógico)
+                verification.DeleteDate = DateTime.UtcNow;
                 verification.Active = false; // Asume que la entidad tiene una propiedad 'Active'
                 await _verificationData.UpdateAsync(verification); // Reutiliza UpdateAsync para marcar como inactivo
                 _logger.LogInformation("Borrado lógico realizado para verificacion con ID: {Id}", id);
