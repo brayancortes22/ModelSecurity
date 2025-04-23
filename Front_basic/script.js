@@ -1,554 +1,275 @@
-// Espera a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-    // Configuración de navegación entre secciones
-    setupNavigation();
-    
-    // Configuración de botones para mostrar/ocultar formularios
-    setupFormToggling();
-    
-    // Configuración de formularios para crear/editar entidades
-    setupFormSubmissions();
-    
-    // Configuración de carga de datos iniciales
-    setupDataLoading();
-});
-
-// Función para configurar la navegación entre secciones
-function setupNavigation() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Navegación entre secciones
     const navButtons = document.querySelectorAll('.nav-button');
     const sections = document.querySelectorAll('.entity-section');
-    
+
     navButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remueve la clase 'active' de todos los botones y secciones
+        button.addEventListener('click', () => {
+            const targetSection = button.getAttribute('data-section');
+            
+            // Actualiza clase activa en botones
             navButtons.forEach(btn => btn.classList.remove('active'));
-            sections.forEach(section => section.classList.remove('active'));
+            button.classList.add('active');
             
-            // Agrega la clase 'active' al botón clickeado
-            this.classList.add('active');
-            
-            // Encuentra y activa la sección correspondiente
-            const sectionId = this.getAttribute('data-section');
-            document.getElementById(sectionId).classList.add('active');
+            // Muestra la sección correspondiente
+            sections.forEach(section => {
+                if (section.id === targetSection) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
         });
     });
-}
 
-// Función para configurar la visibilidad de formularios
-function setupFormToggling() {
-    // Botones para mostrar formularios
-    document.getElementById('showAprendizForm').addEventListener('click', () => toggleForm('aprendizForm'));
-    document.getElementById('showUsuarioForm').addEventListener('click', () => toggleForm('usuarioForm'));
-    document.getElementById('showCentroForm').addEventListener('click', () => toggleForm('centroForm'));
-    document.getElementById('showRolForm').addEventListener('click', () => toggleForm('rolForm'));
-    document.getElementById('showProgramaForm').addEventListener('click', () => toggleForm('programaForm'));
-    document.getElementById('showSedeForm').addEventListener('click', () => toggleForm('sedeForm'));
-    document.getElementById('showConceptoForm').addEventListener('click', () => toggleForm('conceptoForm'));
-    
-    // Botones para cancelar formularios
-    document.querySelectorAll('.cancel-button').forEach(button => {
-        button.addEventListener('click', function() {
-            // Encuentra el formulario padre y lo oculta
-            const form = this.closest('.entity-form');
-            form.classList.add('hidden');
-            
-            // Resetea el formulario
-            form.querySelector('form').reset();
+    // Configuración de botones y formularios
+    setupEntitySection('aprendices', 'aprendiz', '/api/Aprendiz');
+    setupEntitySection('usuarios', 'usuario', '/api/User');
+    setupEntitySection('centros', 'centro', '/api/Center');
+    setupEntitySection('roles', 'rol', '/api/Rol');
+    setupEntitySection('programas', 'programa', '/api/Program');
+    setupEntitySection('sedes', 'sede', '/api/Sede');
+    setupEntitySection('conceptos', 'concepto', '/api/Concept');
+    setupEntitySection('personas', 'persona', '/api/Person');
+    setupEntitySection('instructores', 'instructor', '/api/Instructor');
+    setupEntitySection('modulos', 'modulo', '/api/Module');
+    setupEntitySection('procesos', 'proceso', '/api/Process');
+    setupEntitySection('regionales', 'regional', '/api/Regional');
+    setupEntitySection('estados', 'estado', '/api/State');
+    setupEntitySection('tiposModalidad', 'tipoModalidad', '/api/TypeModality');
+    setupEntitySection('formularios', 'formulario', '/api/Form');
+    setupEntitySection('empresas', 'empresa', '/api/Enterprise');
+
+    // Función general para configurar cada sección de entidad
+    function setupEntitySection(sectionId, entityName, apiEndpoint) {
+        const section = document.getElementById(sectionId);
+        const loadButton = document.getElementById(`load${capitalize(sectionId)}`);
+        const showFormButton = document.getElementById(`show${capitalize(entityName)}Form`);
+        const entityForm = document.getElementById(`${entityName}Form`);
+        const form = document.getElementById(`form${capitalize(entityName)}`);
+        const entityList = document.getElementById(`${sectionId}List`);
+        const cancelButton = entityForm.querySelector('.cancel-button');
+
+        // Botón para cargar entidades
+        loadButton.addEventListener('click', () => {
+            fetchEntities(apiEndpoint, entityList, entityName);
         });
-    });
-}
 
-// Función para alternar la visibilidad de un formulario
-function toggleForm(formId) {
-    const form = document.getElementById(formId);
-    form.classList.toggle('hidden');
-}
+        // Botón para mostrar formulario
+        showFormButton.addEventListener('click', () => {
+            resetForm(form, entityName);
+            entityForm.classList.remove('hidden');
+        });
 
-// Función para configurar envío de formularios
-function setupFormSubmissions() {
-    // Formulario de Aprendiz
-    setupFormSubmit('formAprendiz', aprendizFormToDto, apiService.createAprendiz.bind(apiService), apiService.updateAprendiz.bind(apiService), loadAprendices);
-    
-    // Formulario de Usuario
-    setupFormSubmit('formUsuario', usuarioFormToDto, apiService.createUsuario.bind(apiService), apiService.updateUsuario.bind(apiService), loadUsuarios);
-    
-    // Formulario de Centro
-    setupFormSubmit('formCentro', centroFormToDto, apiService.createCentro.bind(apiService), apiService.updateCentro.bind(apiService), loadCentros);
-    
-    // Formulario de Rol
-    setupFormSubmit('formRol', rolFormToDto, apiService.createRol.bind(apiService), apiService.updateRol.bind(apiService), loadRoles);
-    
-    // Formulario de Programa
-    setupFormSubmit('formPrograma', programaFormToDto, apiService.createPrograma.bind(apiService), apiService.updatePrograma.bind(apiService), loadProgramas);
-    
-    // Formulario de Sede
-    setupFormSubmit('formSede', sedeFormToDto, apiService.createSede.bind(apiService), apiService.updateSede.bind(apiService), loadSedes);
-    
-    // Formulario de Concepto
-    setupFormSubmit('formConcepto', conceptoFormToDto, apiService.createConcepto.bind(apiService), apiService.updateConcepto.bind(apiService), loadConceptos);
-}
+        // Botón para cancelar formulario
+        cancelButton.addEventListener('click', () => {
+            entityForm.classList.add('hidden');
+        });
 
-// Función genérica para manejar envío de formularios
-function setupFormSubmit(formId, formToDtoFn, createFn, updateFn, reloadDataFn) {
-    const form = document.getElementById(formId);
-    
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
+        // Envío del formulario
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveEntity(form, apiEndpoint, entityList, entityForm, entityName);
+        });
+    }
+
+    // Función para obtener entidades de la API
+    async function fetchEntities(apiEndpoint, listElement, entityName) {
+        try {
+            const response = await apiRequest('GET', apiEndpoint);
+            displayEntities(response, listElement, entityName, apiEndpoint);
+        } catch (error) {
+            showError(`Error al cargar ${entityName}s: ${error.message}`);
+        }
+    }
+
+    // Función para guardar una entidad (crear o actualizar)
+    async function saveEntity(form, apiEndpoint, listElement, formContainer, entityName) {
+        const formData = getFormData(form);
+        const id = parseInt(formData.id);
+        const method = id > 0 ? 'PUT' : 'POST';
+        const url = id > 0 ? `${apiEndpoint}/${id}` : apiEndpoint;
         
         try {
-            const formData = new FormData(form);
-            const dto = formToDtoFn(formData);
-            
-            if (dto.id) {
-                // Si tiene ID, es actualización
-                await updateFn(dto.id, dto);
-                showMessage('Entidad actualizada correctamente');
-            } else {
-                // Si no tiene ID, es creación
-                await createFn(dto);
-                showMessage('Entidad creada correctamente');
-            }
-            
-            // Resetea y oculta el formulario
-            form.reset();
-            form.closest('.entity-form').classList.add('hidden');
-            
-            // Recarga los datos
-            reloadDataFn();
+            await apiRequest(method, url, formData);
+            formContainer.classList.add('hidden');
+            fetchEntities(apiEndpoint, listElement, entityName);
+            showSuccess(`${capitalize(entityName)} guardado correctamente`);
         } catch (error) {
-            showError('Error al guardar: ' + error.message);
+            showError(`Error al guardar ${entityName}: ${error.message}`);
         }
-    });
-}
-
-// Funciones de Conversión de Formulario a DTO
-function aprendizFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        userId: parseInt(formData.get('userId')),
-        previousProgram: formData.get('previousProgram'),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function usuarioFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        personId: parseInt(formData.get('personId')),
-        username: formData.get('username'),
-        password: formData.get('password'),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function centroFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        name: formData.get('name'),
-        regionalId: parseInt(formData.get('regionalId')),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function rolFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        name: formData.get('name'),
-        description: formData.get('description'),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function programaFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        name: formData.get('name'),
-        code: formData.get('code'),
-        duration: parseInt(formData.get('duration')),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function sedeFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        name: formData.get('name'),
-        address: formData.get('address'),
-        centerId: parseInt(formData.get('centerId')),
-        active: formData.get('active') === 'on'
-    };
-}
-
-function conceptoFormToDto(formData) {
-    return {
-        id: parseInt(formData.get('id')) || 0,
-        name: formData.get('name'),
-        description: formData.get('description'),
-        active: formData.get('active') === 'on'
-    };
-}
-
-// Función para configurar la carga de datos
-function setupDataLoading() {
-    // Configurar botones de carga
-    document.getElementById('loadAprendices').addEventListener('click', loadAprendices);
-    document.getElementById('loadUsuarios').addEventListener('click', loadUsuarios);
-    document.getElementById('loadCentros').addEventListener('click', loadCentros);
-    document.getElementById('loadRoles').addEventListener('click', loadRoles);
-    document.getElementById('loadProgramas').addEventListener('click', loadProgramas);
-    document.getElementById('loadSedes').addEventListener('click', loadSedes);
-    document.getElementById('loadConceptos').addEventListener('click', loadConceptos);
-}
-
-// Funciones para cargar datos de las diferentes entidades
-async function loadAprendices() {
-    try {
-        const aprendices = await apiService.getAprendices();
-        const aprendicesList = document.getElementById('aprendicesList');
-        renderEntityList(aprendices, aprendicesList, renderAprendiz, handleAprendizActions);
-    } catch (error) {
-        showError('Error al cargar aprendices: ' + error.message);
     }
-}
 
-async function loadUsuarios() {
-    try {
-        const usuarios = await apiService.getUsuarios();
-        const usuariosList = document.getElementById('usuariosList');
-        renderEntityList(usuarios, usuariosList, renderUsuario, handleUsuarioActions);
-    } catch (error) {
-        showError('Error al cargar usuarios: ' + error.message);
-    }
-}
+    // Función para mostrar entidades en una lista
+    function displayEntities(entities, listElement, entityName, apiEndpoint) {
+        if (!Array.isArray(entities)) {
+            showError(`La respuesta del servidor no tiene el formato esperado.`);
+            return;
+        }
 
-async function loadCentros() {
-    try {
-        const centros = await apiService.getCentros();
-        const centrosList = document.getElementById('centrosList');
-        renderEntityList(centros, centrosList, renderCentro, handleCentroActions);
-    } catch (error) {
-        showError('Error al cargar centros: ' + error.message);
-    }
-}
+        if (entities.length === 0) {
+            listElement.innerHTML = `<p>No se encontraron ${entityName}s.</p>`;
+            return;
+        }
 
-async function loadRoles() {
-    try {
-        const roles = await apiService.getRoles();
-        const rolesList = document.getElementById('rolesList');
-        renderEntityList(roles, rolesList, renderRol, handleRolActions);
-    } catch (error) {
-        showError('Error al cargar roles: ' + error.message);
-    }
-}
-
-async function loadProgramas() {
-    try {
-        const programas = await apiService.getProgramas();
-        const programasList = document.getElementById('programasList');
-        renderEntityList(programas, programasList, renderPrograma, handleProgramaActions);
-    } catch (error) {
-        showError('Error al cargar programas: ' + error.message);
-    }
-}
-
-async function loadSedes() {
-    try {
-        const sedes = await apiService.getSedes();
-        const sedesList = document.getElementById('sedesList');
-        renderEntityList(sedes, sedesList, renderSede, handleSedeActions);
-    } catch (error) {
-        showError('Error al cargar sedes: ' + error.message);
-    }
-}
-
-async function loadConceptos() {
-    try {
-        const conceptos = await apiService.getConceptos();
-        const conceptosList = document.getElementById('conceptosList');
-        renderEntityList(conceptos, conceptosList, renderConcepto, handleConceptoActions);
-    } catch (error) {
-        showError('Error al cargar conceptos: ' + error.message);
-    }
-}
-
-// Función genérica para renderizar listas de entidades
-function renderEntityList(entities, container, renderFn, actionsFn) {
-    // Limpiamos el contenedor
-    container.innerHTML = '';
-    
-    if (!entities || entities.length === 0) {
-        container.innerHTML = '<p class="empty-message">No hay elementos para mostrar</p>';
-        return;
-    }
-    
-    // Creamos un elemento para cada entidad
-    entities.forEach(entity => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'data-item';
+        // Crear contenedor con scroll horizontal
+        let html = '<div class="table-container">';
+        html += '<table><thead><tr>';
         
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'data-content';
-        contentDiv.innerHTML = renderFn(entity);
+        // Obtener encabezados de la primera entidad
+        const firstEntity = entities[0];
+        const headers = Object.keys(firstEntity);
         
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = 'entity-actions';
-        
-        const editButton = document.createElement('button');
-        editButton.className = 'edit-button';
-        editButton.textContent = 'Editar';
-        editButton.addEventListener('click', () => actionsFn.edit(entity));
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'delete-button';
-        deleteButton.textContent = 'Eliminar';
-        deleteButton.addEventListener('click', () => actionsFn.delete(entity.id));
-        
-        actionsDiv.appendChild(editButton);
-        actionsDiv.appendChild(deleteButton);
-        
-        itemDiv.appendChild(contentDiv);
-        itemDiv.appendChild(actionsDiv);
-        
-        container.appendChild(itemDiv);
-    });
-}
-
-// Funciones para renderizar cada tipo de entidad
-function renderAprendiz(aprendiz) {
-    return `
-        <p><strong>ID:</strong> ${aprendiz.id}</p>
-        <p><strong>ID Usuario:</strong> ${aprendiz.userId}</p>
-        <p><strong>Programa Anterior:</strong> ${aprendiz.previousProgram || 'N/A'}</p>
-        <p><strong>Activo:</strong> ${aprendiz.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderUsuario(usuario) {
-    return `
-        <p><strong>ID:</strong> ${usuario.id}</p>
-        <p><strong>ID Persona:</strong> ${usuario.personId}</p>
-        <p><strong>Usuario:</strong> ${usuario.username}</p>
-        <p><strong>Activo:</strong> ${usuario.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderCentro(centro) {
-    return `
-        <p><strong>ID:</strong> ${centro.id}</p>
-        <p><strong>Nombre:</strong> ${centro.name}</p>
-        <p><strong>ID Regional:</strong> ${centro.regionalId}</p>
-        <p><strong>Activo:</strong> ${centro.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderRol(rol) {
-    return `
-        <p><strong>ID:</strong> ${rol.id}</p>
-        <p><strong>Nombre:</strong> ${rol.name}</p>
-        <p><strong>Descripción:</strong> ${rol.description || 'N/A'}</p>
-        <p><strong>Activo:</strong> ${rol.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderPrograma(programa) {
-    return `
-        <p><strong>ID:</strong> ${programa.id}</p>
-        <p><strong>Nombre:</strong> ${programa.name}</p>
-        <p><strong>Código:</strong> ${programa.code}</p>
-        <p><strong>Duración:</strong> ${programa.duration} horas</p>
-        <p><strong>Activo:</strong> ${programa.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderSede(sede) {
-    return `
-        <p><strong>ID:</strong> ${sede.id}</p>
-        <p><strong>Nombre:</strong> ${sede.name}</p>
-        <p><strong>Dirección:</strong> ${sede.address}</p>
-        <p><strong>ID Centro:</strong> ${sede.centerId}</p>
-        <p><strong>Activo:</strong> ${sede.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-function renderConcepto(concepto) {
-    return `
-        <p><strong>ID:</strong> ${concepto.id}</p>
-        <p><strong>Nombre:</strong> ${concepto.name}</p>
-        <p><strong>Descripción:</strong> ${concepto.description || 'N/A'}</p>
-        <p><strong>Activo:</strong> ${concepto.active ? 'Sí' : 'No'}</p>
-    `;
-}
-
-// Funciones para manejar acciones de cada entidad
-const handleAprendizActions = {
-    edit: (aprendiz) => {
-        const form = document.getElementById('formAprendiz');
-        document.getElementById('aprendizId').value = aprendiz.id;
-        document.getElementById('aprendizUserId').value = aprendiz.userId;
-        document.getElementById('aprendizPreviousProgram').value = aprendiz.previousProgram || '';
-        document.getElementById('aprendizActive').checked = aprendiz.active;
-        
-        document.getElementById('aprendizForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este aprendiz?')) {
-            try {
-                await apiService.deleteAprendiz(id);
-                showMessage('Aprendiz eliminado correctamente');
-                loadAprendices();
-            } catch (error) {
-                showError('Error al eliminar aprendiz: ' + error.message);
+        // Mostrar encabezados, excepto los que empiezan con '_'
+        headers.forEach(header => {
+            if (!header.startsWith('_')) {
+                html += `<th>${header}</th>`;
             }
-        }
-    }
-};
-
-const handleUsuarioActions = {
-    edit: (usuario) => {
-        const form = document.getElementById('formUsuario');
-        document.getElementById('usuarioId').value = usuario.id;
-        document.getElementById('usuarioPersonId').value = usuario.personId;
-        document.getElementById('usuarioUsername').value = usuario.username;
-        document.getElementById('usuarioPassword').value = ''; // Por seguridad no mostramos la contraseña
-        document.getElementById('usuarioActive').checked = usuario.active;
+        });
         
-        document.getElementById('usuarioForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-            try {
-                await apiService.deleteUsuario(id);
-                showMessage('Usuario eliminado correctamente');
-                loadUsuarios();
-            } catch (error) {
-                showError('Error al eliminar usuario: ' + error.message);
-            }
-        }
-    }
-};
-
-const handleCentroActions = {
-    edit: (centro) => {
-        const form = document.getElementById('formCentro');
-        document.getElementById('centroId').value = centro.id;
-        document.getElementById('centroName').value = centro.name;
-        document.getElementById('centroRegionalId').value = centro.regionalId;
-        document.getElementById('centroActive').checked = centro.active;
+        // Añadir columna de acciones con clase especial para fijarla
+        html += '<th class="actions-column">Acciones</th></tr></thead><tbody>';
         
-        document.getElementById('centroForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este centro?')) {
-            try {
-                await apiService.deleteCentro(id);
-                showMessage('Centro eliminado correctamente');
-                loadCentros();
-            } catch (error) {
-                showError('Error al eliminar centro: ' + error.message);
-            }
-        }
-    }
-};
-
-const handleRolActions = {
-    edit: (rol) => {
-        const form = document.getElementById('formRol');
-        document.getElementById('rolId').value = rol.id;
-        document.getElementById('rolName').value = rol.name;
-        document.getElementById('rolDescription').value = rol.description || '';
-        document.getElementById('rolActive').checked = rol.active;
+        // Mostrar datos
+        entities.forEach(entity => {
+            html += '<tr>';
+            headers.forEach(header => {
+                if (!header.startsWith('_')) {
+                    const value = entity[header];
+                    if (typeof value === 'boolean') {
+                        html += `<td>${value ? 'Sí' : 'No'}</td>`;
+                    } else if (value === null || value === undefined) {
+                        html += `<td>-</td>`;
+                    } else {
+                        html += `<td>${value}</td>`;
+                    }
+                }
+            });
+            
+            // Columna de acciones con clase especial para fijarla
+            html += `<td class="actions-column">
+                <button class="edit-button" data-id="${entity.id}" data-entity="${entityName}" data-endpoint="${apiEndpoint}">
+                    Editar
+                </button>
+                <button class="delete-button" data-id="${entity.id}" data-entity="${entityName}" data-endpoint="${apiEndpoint}">
+                    Eliminar
+                </button>
+            </td></tr>`;
+        });
         
-        document.getElementById('rolForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este rol?')) {
-            try {
-                await apiService.deleteRol(id);
-                showMessage('Rol eliminado correctamente');
-                loadRoles();
-            } catch (error) {
-                showError('Error al eliminar rol: ' + error.message);
-            }
-        }
-    }
-};
-
-const handleProgramaActions = {
-    edit: (programa) => {
-        const form = document.getElementById('formPrograma');
-        document.getElementById('programaId').value = programa.id;
-        document.getElementById('programaName').value = programa.name;
-        document.getElementById('programaCode').value = programa.code;
-        document.getElementById('programaDuration').value = programa.duration;
-        document.getElementById('programaActive').checked = programa.active;
+        html += '</tbody></table></div>';
+        listElement.innerHTML = html;
         
-        document.getElementById('programaForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este programa?')) {
-            try {
-                await apiService.deletePrograma(id);
-                showMessage('Programa eliminado correctamente');
-                loadProgramas();
-            } catch (error) {
-                showError('Error al eliminar programa: ' + error.message);
-            }
-        }
-    }
-};
-
-const handleSedeActions = {
-    edit: (sede) => {
-        const form = document.getElementById('formSede');
-        document.getElementById('sedeId').value = sede.id;
-        document.getElementById('sedeName').value = sede.name;
-        document.getElementById('sedeAddress').value = sede.address;
-        document.getElementById('sedeCenterId').value = sede.centerId;
-        document.getElementById('sedeActive').checked = sede.active;
+        // Agregar event listeners para editar y eliminar
+        listElement.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const entity = button.getAttribute('data-entity');
+                const endpoint = button.getAttribute('data-endpoint');
+                editEntity(id, entity, endpoint);
+            });
+        });
         
-        document.getElementById('sedeForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar esta sede?')) {
-            try {
-                await apiService.deleteSede(id);
-                showMessage('Sede eliminada correctamente');
-                loadSedes();
-            } catch (error) {
-                showError('Error al eliminar sede: ' + error.message);
-            }
+        listElement.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const entity = button.getAttribute('data-entity');
+                const endpoint = button.getAttribute('data-endpoint');
+                if (confirm(`¿Está seguro que desea eliminar este ${entity}?`)) {
+                    deleteEntity(id, entity, endpoint, listElement);
+                }
+            });
+        });
+    }
+
+    // Función para editar una entidad
+    async function editEntity(id, entityName, apiEndpoint) {
+        try {
+            const entity = await apiRequest('GET', `${apiEndpoint}/${id}`);
+            const form = document.getElementById(`form${capitalize(entityName)}`);
+            const formContainer = document.getElementById(`${entityName}Form`);
+            
+            // Llenar formulario con datos de la entidad
+            populateForm(form, entity);
+            
+            // Mostrar formulario
+            formContainer.classList.remove('hidden');
+            
+            // Hacer scroll al formulario
+            formContainer.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            showError(`Error al cargar ${entityName} para editar: ${error.message}`);
         }
     }
-};
 
-const handleConceptoActions = {
-    edit: (concepto) => {
-        const form = document.getElementById('formConcepto');
-        document.getElementById('conceptoId').value = concepto.id;
-        document.getElementById('conceptoName').value = concepto.name;
-        document.getElementById('conceptoDescription').value = concepto.description || '';
-        document.getElementById('conceptoActive').checked = concepto.active;
+    // Función para eliminar una entidad
+    async function deleteEntity(id, entityName, apiEndpoint, listElement) {
+        try {
+            await apiRequest('DELETE', `${apiEndpoint}/${id}`);
+            fetchEntities(apiEndpoint, listElement, entityName);
+            showSuccess(`${capitalize(entityName)} eliminado correctamente`);
+        } catch (error) {
+            showError(`Error al eliminar ${entityName}: ${error.message}`);
+        }
+    }
+
+    // Función para obtener los datos del formulario
+    function getFormData(form) {
+        const formData = {};
         
-        document.getElementById('conceptoForm').classList.remove('hidden');
-    },
-    delete: async (id) => {
-        if (confirm('¿Estás seguro de que deseas eliminar este concepto?')) {
-            try {
-                await apiService.deleteConcepto(id);
-                showMessage('Concepto eliminado correctamente');
-                loadConceptos();
-            } catch (error) {
-                showError('Error al eliminar concepto: ' + error.message);
+        // Obtener todos los inputs
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            const name = input.name;
+            
+            if (!name) return;
+            
+            if (input.type === 'checkbox') {
+                formData[name] = input.checked;
+            } else if (input.type === 'number') {
+                formData[name] = input.value ? parseInt(input.value) : 0;
+            } else {
+                formData[name] = input.value;
             }
-        }
+        });
+        
+        return formData;
     }
-};
 
-// Funciones para mostrar mensajes
-function showMessage(message) {
-    alert(message); // Versión básica, podría mejorarse con un componente de toast/snackbar
-}
+    // Función para llenar formulario con datos
+    function populateForm(form, data) {
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            const name = input.name;
+            
+            if (!name || !(name in data)) return;
+            
+            if (input.type === 'checkbox') {
+                input.checked = Boolean(data[name]);
+            } else {
+                input.value = data[name] !== null ? data[name] : '';
+            }
+        });
+    }
 
-function showError(message) {
-    alert('Error: ' + message);
-}
+    // Función para resetear formulario
+    function resetForm(form, entityName) {
+        form.reset();
+        document.getElementById(`${entityName}Id`).value = "0";
+    }
+
+    // Utilitarios
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function showSuccess(message) {
+        alert(message); // En una aplicación real, usarías un componente toast
+    }
+
+    function showError(message) {
+        alert(`Error: ${message}`); // En una aplicación real, usarías un componente toast
+    }
+});

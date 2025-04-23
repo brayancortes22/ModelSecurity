@@ -330,7 +330,299 @@ class ApiService {
     async softDeleteConcepto(id) {
         return this.softDelete('/api/concept', id);
     }
+    
+    // ===== PERSONAS =====
+    async getPersonas() {
+        return this.get('/api/person');
+    }
+
+    async getPersonaById(id) {
+        return this.get(`/api/person/${id}`);
+    }
+
+    async createPersona(persona) {
+        return this.post('/api/person', persona);
+    }
+
+    async updatePersona(id, persona) {
+        return this.put('/api/person', id, persona);
+    }
+
+    async patchPersona(id, persona) {
+        return this.patch('/api/person', id, persona);
+    }
+
+    async deletePersona(id) {
+        return this.delete('/api/person', id);
+    }
+
+    async softDeletePersona(id) {
+        return this.softDelete('/api/person', id);
+    }
+    
+    // ===== INSTRUCTORES =====
+    async getInstructores() {
+        return this.get('/api/instructor');
+    }
+
+    async getInstructorById(id) {
+        return this.get(`/api/instructor/${id}`);
+    }
+
+    async createInstructor(instructor) {
+        return this.post('/api/instructor', instructor);
+    }
+
+    async updateInstructor(id, instructor) {
+        return this.put('/api/instructor', id, instructor);
+    }
+
+    async patchInstructor(id, instructor) {
+        return this.patch('/api/instructor', id, instructor);
+    }
+
+    async deleteInstructor(id) {
+        return this.delete('/api/instructor', id);
+    }
+
+    async softDeleteInstructor(id) {
+        return this.softDelete('/api/instructor', id);
+    }
+    
+    // ===== MÓDULOS =====
+    async getModulos() {
+        return this.get('/api/module');
+    }
+
+    async getModuloById(id) {
+        return this.get(`/api/module/${id}`);
+    }
+
+    async createModulo(modulo) {
+        return this.post('/api/module', modulo);
+    }
+
+    async updateModulo(id, modulo) {
+        return this.put('/api/module', id, modulo);
+    }
+
+    async patchModulo(id, modulo) {
+        return this.patch('/api/module', id, modulo);
+    }
+
+    async deleteModulo(id) {
+        return this.delete('/api/module', id);
+    }
+
+    async softDeleteModulo(id) {
+        return this.softDelete('/api/module', id);
+    }
+    
+    // ===== PROCESOS =====
+    async getProcesos() {
+        return this.get('/api/process');
+    }
+
+    async getProcesoById(id) {
+        return this.get(`/api/process/${id}`);
+    }
+
+    async createProceso(proceso) {
+        return this.post('/api/process', proceso);
+    }
+
+    async updateProceso(id, proceso) {
+        return this.put('/api/process', id, proceso);
+    }
+
+    async patchProceso(id, proceso) {
+        return this.patch('/api/process', id, proceso);
+    }
+
+    async deleteProceso(id) {
+        return this.delete('/api/process', id);
+    }
+
+    async softDeleteProceso(id) {
+        return this.softDelete('/api/process', id);
+    }
+    
+    // ===== REGIONALES =====
+    async getRegionales() {
+        return this.get('/api/regional');
+    }
+
+    async getRegionalById(id) {
+        return this.get(`/api/regional/${id}`);
+    }
+
+    async createRegional(regional) {
+        return this.post('/api/regional', regional);
+    }
+
+    async updateRegional(id, regional) {
+        return this.put('/api/regional', id, regional);
+    }
+
+    async patchRegional(id, regional) {
+        return this.patch('/api/regional', id, regional);
+    }
+
+    async deleteRegional(id) {
+        return this.delete('/api/regional', id);
+    }
+
+    async softDeleteRegional(id) {
+        return this.softDelete('/api/regional', id);
+    }
+    
+    // ===== ESTADOS =====
+    async getEstados() {
+        return this.get('/api/state');
+    }
+
+    async getEstadoById(id) {
+        return this.get(`/api/state/${id}`);
+    }
+
+    async createEstado(estado) {
+        return this.post('/api/state', estado);
+    }
+
+    async updateEstado(id, estado) {
+        return this.put('/api/state', id, estado);
+    }
+
+    async patchEstado(id, estado) {
+        return this.patch('/api/state', id, estado);
+    }
+
+    async deleteEstado(id) {
+        return this.delete('/api/state', id);
+    }
+
+    async softDeleteEstado(id) {
+        return this.softDelete('/api/state', id);
+    }
+    
+    // ===== TIPOS MODALIDAD =====
+    async getTiposModalidad() {
+        return this.get('/api/typemodality');
+    }
+
+    async getTipoModalidadById(id) {
+        return this.get(`/api/typemodality/${id}`);
+    }
+
+    async createTipoModalidad(tipoModalidad) {
+        return this.post('/api/typemodality', tipoModalidad);
+    }
+
+    async updateTipoModalidad(id, tipoModalidad) {
+        return this.put('/api/typemodality', id, tipoModalidad);
+    }
+
+    async patchTipoModalidad(id, tipoModalidad) {
+        return this.patch('/api/typemodality', id, tipoModalidad);
+    }
+
+    async deleteTipoModalidad(id) {
+        return this.delete('/api/typemodality', id);
+    }
+
+    async softDeleteTipoModalidad(id) {
+        return this.softDelete('/api/typemodality', id);
+    }
+    
+    // ===== FORMULARIOS =====
+    async getFormularios() {
+        return this.get('/api/form');
+    }
+
+    async getFormularioById(id) {
+        return this.get(`/api/form/${id}`);
+    }
+
+    async createFormulario(formulario) {
+        return this.post('/api/form', formulario);
+    }
+
+    async updateFormulario(id, formulario) {
+        return this.put('/api/form', id, formulario);
+    }
+
+    async patchFormulario(id, formulario) {
+        return this.patch('/api/form', id, formulario);
+    }
+
+    async deleteFormulario(id) {
+        return this.delete('/api/form', id);
+    }
+
+    async softDeleteFormulario(id) {
+        return this.softDelete('/api/form', id);
+    }
+    
+    // ===== EMPRESAS =====
+    async getEmpresas() {
+        return this.get('/api/enterprise');
+    }
+
+    async getEmpresaById(id) {
+        return this.get(`/api/enterprise/${id}`);
+    }
+
+    async createEmpresa(empresa) {
+        return this.post('/api/enterprise', empresa);
+    }
+
+    async updateEmpresa(id, empresa) {
+        return this.put('/api/enterprise', id, empresa);
+    }
+
+    async patchEmpresa(id, empresa) {
+        return this.patch('/api/enterprise', id, empresa);
+    }
+
+    async deleteEmpresa(id) {
+        return this.delete('/api/enterprise', id);
+    }
+
+    async softDeleteEmpresa(id) {
+        return this.softDelete('/api/enterprise', id);
+    }
 }
 
 // Instancia global del servicio de API
 const apiService = new ApiService(API_BASE_URL);
+
+// Función global para simplificar las llamadas a la API desde script.js
+async function apiRequest(method, endpoint, data = null) {
+    method = method.toUpperCase();
+    
+    try {
+        switch (method) {
+            case 'GET':
+                return await apiService.get(endpoint);
+            case 'POST':
+                return await apiService.post(endpoint, data);
+            case 'PUT':
+                const id = endpoint.split('/').pop();
+                const basePath = endpoint.substring(0, endpoint.lastIndexOf('/'));
+                return await apiService.put(basePath, id, data);
+            case 'PATCH':
+                const patchId = endpoint.split('/').pop();
+                const patchBasePath = endpoint.substring(0, endpoint.lastIndexOf('/'));
+                return await apiService.patch(patchBasePath, patchId, data);
+            case 'DELETE':
+                const deleteId = endpoint.split('/').pop();
+                const deleteBasePath = endpoint.substring(0, endpoint.lastIndexOf('/'));
+                return await apiService.delete(deleteBasePath, deleteId);
+            default:
+                throw new Error(`Método HTTP no soportado: ${method}`);
+        }
+    } catch (error) {
+        console.error(`Error en apiRequest (${method} ${endpoint}):`, error);
+        throw error;
+    }
+}

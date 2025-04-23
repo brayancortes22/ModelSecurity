@@ -18,6 +18,15 @@
                 <li><button class="nav-button" data-section="programas">Programas</button></li>
                 <li><button class="nav-button" data-section="sedes">Sedes</button></li>
                 <li><button class="nav-button" data-section="conceptos">Conceptos</button></li>
+                <li><button class="nav-button" data-section="personas">Personas</button></li>
+                <li><button class="nav-button" data-section="instructores">Instructores</button></li>
+                <li><button class="nav-button" data-section="modulos">Módulos</button></li>
+                <li><button class="nav-button" data-section="procesos">Procesos</button></li>
+                <li><button class="nav-button" data-section="regionales">Regionales</button></li>
+                <li><button class="nav-button" data-section="estados">Estados</button></li>
+                <li><button class="nav-button" data-section="tiposModalidad">Tipos de Modalidad</button></li>
+                <li><button class="nav-button" data-section="formularios">Formularios</button></li>
+                <li><button class="nav-button" data-section="empresas">Empresas</button></li>
                 <li><button class="nav-button" data-section="swagger">Swagger Docs</button></li>
             </ul>
         </nav>
@@ -292,6 +301,379 @@
             <div class="entity-list">
                 <h3>Lista de Conceptos</h3>
                 <div id="conceptosList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Personas -->
+        <section id="personas" class="entity-section">
+            <h2>Gestión de Personas</h2>
+            <div class="actions">
+                <button id="loadPersonas" class="load-button">Cargar Personas</button>
+                <button id="showPersonaForm" class="add-button">Agregar Persona</button>
+            </div>
+
+            <div id="personaForm" class="entity-form hidden">
+                <h3>Formulario de Persona</h3>
+                <form id="formPersona">
+                    <input type="hidden" id="personaId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="personaDocumentType">Tipo de Documento:</label>
+                        <input type="text" id="personaDocumentType" name="documentType" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaDocumentNumber">Número de Documento:</label>
+                        <input type="text" id="personaDocumentNumber" name="documentNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaFirstName">Nombres:</label>
+                        <input type="text" id="personaFirstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaLastName">Apellidos:</label>
+                        <input type="text" id="personaLastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaPhoneNumber">Teléfono:</label>
+                        <input type="text" id="personaPhoneNumber" name="phoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="personaEmail">Email:</label>
+                        <input type="email" id="personaEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="personaAddress">Dirección:</label>
+                        <input type="text" id="personaAddress" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="personaActive">Activo:</label>
+                        <input type="checkbox" id="personaActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Personas</h3>
+                <div id="personasList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Instructores -->
+        <section id="instructores" class="entity-section">
+            <h2>Gestión de Instructores</h2>
+            <div class="actions">
+                <button id="loadInstructores" class="load-button">Cargar Instructores</button>
+                <button id="showInstructorForm" class="add-button">Agregar Instructor</button>
+            </div>
+
+            <div id="instructorForm" class="entity-form hidden">
+                <h3>Formulario de Instructor</h3>
+                <form id="formInstructor">
+                    <input type="hidden" id="instructorId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="instructorUserId">ID de Usuario:</label>
+                        <input type="number" id="instructorUserId" name="userId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="instructorProfession">Profesión:</label>
+                        <input type="text" id="instructorProfession" name="profession" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="instructorSpeciality">Especialidad:</label>
+                        <input type="text" id="instructorSpeciality" name="speciality">
+                    </div>
+                    <div class="form-group">
+                        <label for="instructorActive">Activo:</label>
+                        <input type="checkbox" id="instructorActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Instructores</h3>
+                <div id="instructoresList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Módulos -->
+        <section id="modulos" class="entity-section">
+            <h2>Gestión de Módulos</h2>
+            <div class="actions">
+                <button id="loadModulos" class="load-button">Cargar Módulos</button>
+                <button id="showModuloForm" class="add-button">Agregar Módulo</button>
+            </div>
+
+            <div id="moduloForm" class="entity-form hidden">
+                <h3>Formulario de Módulo</h3>
+                <form id="formModulo">
+                    <input type="hidden" id="moduloId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="moduloName">Nombre:</label>
+                        <input type="text" id="moduloName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduloDescription">Descripción:</label>
+                        <textarea id="moduloDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduloDuration">Duración (horas):</label>
+                        <input type="number" id="moduloDuration" name="duration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduloActive">Activo:</label>
+                        <input type="checkbox" id="moduloActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Módulos</h3>
+                <div id="modulosList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Procesos -->
+        <section id="procesos" class="entity-section">
+            <h2>Gestión de Procesos</h2>
+            <div class="actions">
+                <button id="loadProcesos" class="load-button">Cargar Procesos</button>
+                <button id="showProcesoForm" class="add-button">Agregar Proceso</button>
+            </div>
+
+            <div id="procesoForm" class="entity-form hidden">
+                <h3>Formulario de Proceso</h3>
+                <form id="formProceso">
+                    <input type="hidden" id="procesoId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="procesoName">Nombre:</label>
+                        <input type="text" id="procesoName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="procesoDescription">Descripción:</label>
+                        <textarea id="procesoDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="procesoActive">Activo:</label>
+                        <input type="checkbox" id="procesoActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Procesos</h3>
+                <div id="procesosList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Regionales -->
+        <section id="regionales" class="entity-section">
+            <h2>Gestión de Regionales</h2>
+            <div class="actions">
+                <button id="loadRegionales" class="load-button">Cargar Regionales</button>
+                <button id="showRegionalForm" class="add-button">Agregar Regional</button>
+            </div>
+
+            <div id="regionalForm" class="entity-form hidden">
+                <h3>Formulario de Regional</h3>
+                <form id="formRegional">
+                    <input type="hidden" id="regionalId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="regionalName">Nombre:</label>
+                        <input type="text" id="regionalName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regionalCode">Código:</label>
+                        <input type="text" id="regionalCode" name="code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regionalActive">Activo:</label>
+                        <input type="checkbox" id="regionalActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Regionales</h3>
+                <div id="regionalesList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Estados -->
+        <section id="estados" class="entity-section">
+            <h2>Gestión de Estados</h2>
+            <div class="actions">
+                <button id="loadEstados" class="load-button">Cargar Estados</button>
+                <button id="showEstadoForm" class="add-button">Agregar Estado</button>
+            </div>
+
+            <div id="estadoForm" class="entity-form hidden">
+                <h3>Formulario de Estado</h3>
+                <form id="formEstado">
+                    <input type="hidden" id="estadoId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="estadoName">Nombre:</label>
+                        <input type="text" id="estadoName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoDescription">Descripción:</label>
+                        <textarea id="estadoDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoActive">Activo:</label>
+                        <input type="checkbox" id="estadoActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Estados</h3>
+                <div id="estadosList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Tipos de Modalidad -->
+        <section id="tiposModalidad" class="entity-section">
+            <h2>Gestión de Tipos de Modalidad</h2>
+            <div class="actions">
+                <button id="loadTiposModalidad" class="load-button">Cargar Tipos de Modalidad</button>
+                <button id="showTipoModalidadForm" class="add-button">Agregar Tipo de Modalidad</button>
+            </div>
+
+            <div id="tipoModalidadForm" class="entity-form hidden">
+                <h3>Formulario de Tipo de Modalidad</h3>
+                <form id="formTipoModalidad">
+                    <input type="hidden" id="tipoModalidadId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="tipoModalidadName">Nombre:</label>
+                        <input type="text" id="tipoModalidadName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoModalidadDescription">Descripción:</label>
+                        <textarea id="tipoModalidadDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoModalidadActive">Activo:</label>
+                        <input type="checkbox" id="tipoModalidadActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Tipos de Modalidad</h3>
+                <div id="tiposModalidadList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Formularios -->
+        <section id="formularios" class="entity-section">
+            <h2>Gestión de Formularios</h2>
+            <div class="actions">
+                <button id="loadFormularios" class="load-button">Cargar Formularios</button>
+                <button id="showFormularioForm" class="add-button">Agregar Formulario</button>
+            </div>
+
+            <div id="formularioForm" class="entity-form hidden">
+                <h3>Formulario de Formulario</h3>
+                <form id="formFormulario">
+                    <input type="hidden" id="formularioId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="formularioName">Nombre:</label>
+                        <input type="text" id="formularioName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formularioRoute">Ruta:</label>
+                        <input type="text" id="formularioRoute" name="route" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formularioActive">Activo:</label>
+                        <input type="checkbox" id="formularioActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Formularios</h3>
+                <div id="formulariosList" class="data-list"></div>
+            </div>
+        </section>
+        
+        <!-- Sección de Empresas -->
+        <section id="empresas" class="entity-section">
+            <h2>Gestión de Empresas</h2>
+            <div class="actions">
+                <button id="loadEmpresas" class="load-button">Cargar Empresas</button>
+                <button id="showEmpresaForm" class="add-button">Agregar Empresa</button>
+            </div>
+
+            <div id="empresaForm" class="entity-form hidden">
+                <h3>Formulario de Empresa</h3>
+                <form id="formEmpresa">
+                    <input type="hidden" id="empresaId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="empresaName">Nombre:</label>
+                        <input type="text" id="empresaName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaNit">NIT:</label>
+                        <input type="text" id="empresaNit" name="nit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaAddress">Dirección:</label>
+                        <input type="text" id="empresaAddress" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaPhone">Teléfono:</label>
+                        <input type="text" id="empresaPhone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaEmail">Email:</label>
+                        <input type="email" id="empresaEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaActive">Activo:</label>
+                        <input type="checkbox" id="empresaActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Empresas</h3>
+                <div id="empresasList" class="data-list"></div>
             </div>
         </section>
 
