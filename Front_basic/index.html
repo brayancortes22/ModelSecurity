@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>ModelSecurity API Client</title>
+</head>
+<body>
+    <header>
+        <h1>ModelSecurity API Client</h1>
+        <nav>
+            <ul class="nav-menu">
+                <li><button class="nav-button active" data-section="aprendices">Aprendices</button></li>
+                <li><button class="nav-button" data-section="usuarios">Usuarios</button></li>
+                <li><button class="nav-button" data-section="centros">Centros</button></li>
+                <li><button class="nav-button" data-section="roles">Roles</button></li>
+                <li><button class="nav-button" data-section="programas">Programas</button></li>
+                <li><button class="nav-button" data-section="sedes">Sedes</button></li>
+                <li><button class="nav-button" data-section="conceptos">Conceptos</button></li>
+                <li><button class="nav-button" data-section="swagger">Swagger Docs</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Sección de Aprendices -->
+        <section id="aprendices" class="entity-section active">
+            <h2>Gestión de Aprendices</h2>
+            <div class="actions">
+                <button id="loadAprendices" class="load-button">Cargar Aprendices</button>
+                <button id="showAprendizForm" class="add-button">Agregar Aprendiz</button>
+            </div>
+
+            <div id="aprendizForm" class="entity-form hidden">
+                <h3>Formulario de Aprendiz</h3>
+                <form id="formAprendiz">
+                    <input type="hidden" id="aprendizId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="aprendizUserId">ID de Usuario:</label>
+                        <input type="number" id="aprendizUserId" name="userId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="aprendizPreviousProgram">Programa Anterior:</label>
+                        <input type="text" id="aprendizPreviousProgram" name="previousProgram">
+                    </div>
+                    <div class="form-group">
+                        <label for="aprendizActive">Activo:</label>
+                        <input type="checkbox" id="aprendizActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Aprendices</h3>
+                <div id="aprendicesList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Usuarios -->
+        <section id="usuarios" class="entity-section">
+            <h2>Gestión de Usuarios</h2>
+            <div class="actions">
+                <button id="loadUsuarios" class="load-button">Cargar Usuarios</button>
+                <button id="showUsuarioForm" class="add-button">Agregar Usuario</button>
+            </div>
+
+            <div id="usuarioForm" class="entity-form hidden">
+                <h3>Formulario de Usuario</h3>
+                <form id="formUsuario">
+                    <input type="hidden" id="usuarioId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="usuarioPersonId">ID de Persona:</label>
+                        <input type="number" id="usuarioPersonId" name="personId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usuarioUsername">Nombre de usuario:</label>
+                        <input type="text" id="usuarioUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usuarioPassword">Contraseña:</label>
+                        <input type="password" id="usuarioPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usuarioActive">Activo:</label>
+                        <input type="checkbox" id="usuarioActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Usuarios</h3>
+                <div id="usuariosList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Centros -->
+        <section id="centros" class="entity-section">
+            <h2>Gestión de Centros</h2>
+            <div class="actions">
+                <button id="loadCentros" class="load-button">Cargar Centros</button>
+                <button id="showCentroForm" class="add-button">Agregar Centro</button>
+            </div>
+
+            <div id="centroForm" class="entity-form hidden">
+                <h3>Formulario de Centro</h3>
+                <form id="formCentro">
+                    <input type="hidden" id="centroId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="centroName">Nombre:</label>
+                        <input type="text" id="centroName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="centroRegionalId">ID Regional:</label>
+                        <input type="number" id="centroRegionalId" name="regionalId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="centroActive">Activo:</label>
+                        <input type="checkbox" id="centroActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Centros</h3>
+                <div id="centrosList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Roles -->
+        <section id="roles" class="entity-section">
+            <h2>Gestión de Roles</h2>
+            <div class="actions">
+                <button id="loadRoles" class="load-button">Cargar Roles</button>
+                <button id="showRolForm" class="add-button">Agregar Rol</button>
+            </div>
+
+            <div id="rolForm" class="entity-form hidden">
+                <h3>Formulario de Rol</h3>
+                <form id="formRol">
+                    <input type="hidden" id="rolId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="rolName">Nombre:</label>
+                        <input type="text" id="rolName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rolDescription">Descripción:</label>
+                        <textarea id="rolDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rolActive">Activo:</label>
+                        <input type="checkbox" id="rolActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Roles</h3>
+                <div id="rolesList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Programas -->
+        <section id="programas" class="entity-section">
+            <h2>Gestión de Programas</h2>
+            <div class="actions">
+                <button id="loadProgramas" class="load-button">Cargar Programas</button>
+                <button id="showProgramaForm" class="add-button">Agregar Programa</button>
+            </div>
+
+            <div id="programaForm" class="entity-form hidden">
+                <h3>Formulario de Programa</h3>
+                <form id="formPrograma">
+                    <input type="hidden" id="programaId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="programaName">Nombre:</label>
+                        <input type="text" id="programaName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programaCode">Código:</label>
+                        <input type="text" id="programaCode" name="code" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programaDuration">Duración (horas):</label>
+                        <input type="number" id="programaDuration" name="duration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programaActive">Activo:</label>
+                        <input type="checkbox" id="programaActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Programas</h3>
+                <div id="programasList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Sedes -->
+        <section id="sedes" class="entity-section">
+            <h2>Gestión de Sedes</h2>
+            <div class="actions">
+                <button id="loadSedes" class="load-button">Cargar Sedes</button>
+                <button id="showSedeForm" class="add-button">Agregar Sede</button>
+            </div>
+
+            <div id="sedeForm" class="entity-form hidden">
+                <h3>Formulario de Sede</h3>
+                <form id="formSede">
+                    <input type="hidden" id="sedeId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="sedeName">Nombre:</label>
+                        <input type="text" id="sedeName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sedeAddress">Dirección:</label>
+                        <input type="text" id="sedeAddress" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sedeCenterId">ID Centro:</label>
+                        <input type="number" id="sedeCenterId" name="centerId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sedeActive">Activo:</label>
+                        <input type="checkbox" id="sedeActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Sedes</h3>
+                <div id="sedesList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Conceptos -->
+        <section id="conceptos" class="entity-section">
+            <h2>Gestión de Conceptos</h2>
+            <div class="actions">
+                <button id="loadConceptos" class="load-button">Cargar Conceptos</button>
+                <button id="showConceptoForm" class="add-button">Agregar Concepto</button>
+            </div>
+
+            <div id="conceptoForm" class="entity-form hidden">
+                <h3>Formulario de Concepto</h3>
+                <form id="formConcepto">
+                    <input type="hidden" id="conceptoId" name="id" value="0">
+                    <div class="form-group">
+                        <label for="conceptoName">Nombre:</label>
+                        <input type="text" id="conceptoName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="conceptoDescription">Descripción:</label>
+                        <textarea id="conceptoDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="conceptoActive">Activo:</label>
+                        <input type="checkbox" id="conceptoActive" name="active" checked>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit">Guardar</button>
+                        <button type="button" class="cancel-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="entity-list">
+                <h3>Lista de Conceptos</h3>
+                <div id="conceptosList" class="data-list"></div>
+            </div>
+        </section>
+
+        <!-- Sección de Swagger -->
+        <section id="swagger" class="entity-section">
+            <h2>Documentación API - Swagger</h2>
+            <p>Para acceder a la documentación completa de la API, haz clic en el siguiente botón:</p>
+            <a href="http://localhost:5187/swagger" target="_blank" class="swagger-button">Abrir Swagger</a>
+            <div class="swagger-info">
+                <h3>Información sobre Swagger</h3>
+                <p>Swagger proporciona una interfaz visual para explorar y probar todos los endpoints disponibles en la API. Desde allí podrás:</p>
+                <ul>
+                    <li>Ver todos los endpoints organizados por controlador</li>
+                    <li>Visualizar los modelos de datos (DTOs) utilizados en las peticiones</li>
+                    <li>Probar directamente los endpoints con diferentes parámetros</li>
+                    <li>Ver los posibles códigos de respuesta y sus significados</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>ModelSecurity API Client - Desarrollado por BSCL</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

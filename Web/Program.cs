@@ -16,11 +16,11 @@ builder.Services.AddSwaggerGen();
 // Configurar CORS
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -150,8 +150,8 @@ try
         app.UseSwaggerUI();
     }
 
+    app.UseCors("AllowAll");
     app.UseHttpsRedirection();
-    app.UseCors();
     app.UseAuthorization();
     app.MapControllers();
 
