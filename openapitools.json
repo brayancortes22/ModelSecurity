@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.12.0",
+    "generators": {
+      "csharp-client": {
+        "generatorName": "csharp",
+        "inputSpec": "./swagger.json",
+        "output": "./ClientAPI",
+        "additionalProperties": {
+          "packageName": "ModelSecurity.Client",
+          "netCoreProjectFile": true,
+          "targetFramework": "net8.0"
+        }
+      }
+    }
+  }
+}

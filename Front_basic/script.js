@@ -69,7 +69,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Envío del formulario
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            saveEntity(form, apiEndpoint, entityList, entityForm, entityName);
+            const formData = getFormData(form);
+            const id = parseInt(formData.id);
+            
+            // Determinar si es crear, actualizar completo o actualizar parcial
+            if (id > 0) {
+                // Si es una edición, preguntamos si quiere hacer actualización parcial (PATCH) o completa (PUT)
+                const usePartialUpdate = confirm(`¿Desea realizar una actualización parcial de ${entityName}? 
+                - Sí: Solo actualiza los campos modificados (PATCH)
+                - No: Actualiza todos los campos (PUT)`);
+                
+                if (usePartialUpdate) {
+                    saveEntityPartial(form, apiEndpoint, entityList, entityForm, entityName, id);
+                } else {
+                    saveEntity(form, apiEndpoint, entityList, entityForm, entityName);
+                }
+            } else {
+                // Si es creación, siempre usamos POST
+                saveEntity(form, apiEndpoint, entityList, entityForm, entityName);
+            }
         });
     }
 
@@ -97,6 +115,60 @@ document.addEventListener('DOMContentLoaded', () => {
             showSuccess(`${capitalize(entityName)} guardado correctamente`);
         } catch (error) {
             showError(`Error al guardar ${entityName}: ${error.message}`);
+        }
+    }
+
+    // Función para guardar parcialmente una entidad (PATCH)
+    async function saveEntityPartial(form, apiEndpoint, listElement, formContainer, entityName, id) {
+        // Obtiene el formulario actual
+        const currentFormData = getFormData(form);
+        
+        try {
+            // Obtenemos los datos originales para comparar
+            const originalData = await apiRequest('GET', `${apiEndpoint}/${id}`);
+            
+            // Creamos un objeto solo con los campos modificados
+            const changedData = {};
+            // Siempre incluimos el ID
+            changedData.id = id;
+            
+            // Comparamos cada campo para detectar cambios
+            Object.keys(currentFormData).forEach(key => {
+                // Si es un campo boolean (checkbox)
+                if (typeof currentFormData[key] === 'boolean') {
+                    if (currentFormData[key] !== originalData[key]) {
+                        changedData[key] = currentFormData[key];
+                    }
+                } 
+                // Si es un campo numérico
+                else if (typeof currentFormData[key] === 'number') {
+                    if (currentFormData[key] !== originalData[key]) {
+                        changedData[key] = currentFormData[key];
+                    }
+                }
+                // Para campos string
+                else {
+                    if (currentFormData[key] !== originalData[key]) {
+                        changedData[key] = currentFormData[key];
+                    }
+                }
+            });
+            
+            // Si no hay cambios, mostramos mensaje y salimos
+            if (Object.keys(changedData).length <= 1) { // Solo contiene el ID
+                showInfo("No se detectaron cambios para actualizar");
+                formContainer.classList.add('hidden');
+                return;
+            }
+            
+            // Enviamos solo los campos modificados con PATCH
+            await apiRequest('PATCH', `${apiEndpoint}/${id}`, changedData);
+            formContainer.classList.add('hidden');
+            fetchEntities(apiEndpoint, listElement, entityName);
+            showSuccess(`${capitalize(entityName)} actualizado parcialmente`);
+            
+        } catch (error) {
+            showError(`Error al actualizar parcialmente ${entityName}: ${error.message}`);
         }
     }
 
@@ -154,6 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="delete-button" data-id="${entity.id}" data-entity="${entityName}" data-endpoint="${apiEndpoint}">
                     Eliminar
                 </button>
+                <button class="soft-delete-button" data-id="${entity.id}" data-entity="${entityName}" data-endpoint="${apiEndpoint}">
+                    Desactivar
+                </button>
             </td></tr>`;
         });
         
@@ -175,8 +250,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id = button.getAttribute('data-id');
                 const entity = button.getAttribute('data-entity');
                 const endpoint = button.getAttribute('data-endpoint');
-                if (confirm(`¿Está seguro que desea eliminar este ${entity}?`)) {
+                if (confirm(`¿Está seguro que desea ELIMINAR PERMANENTEMENTE este ${entity}? Esta acción no se puede deshacer.`)) {
                     deleteEntity(id, entity, endpoint, listElement);
+                }
+            });
+        });
+        
+        // Agregar event listeners para soft delete (desactivar)
+        listElement.querySelectorAll('.soft-delete-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const id = button.getAttribute('data-id');
+                const entity = button.getAttribute('data-entity');
+                const endpoint = button.getAttribute('data-endpoint');
+                if (confirm(`¿Está seguro que desea DESACTIVAR este ${entity}? El registro quedará marcado como inactivo pero no se eliminará.`)) {
+                    softDeleteEntity(id, entity, endpoint, listElement);
                 }
             });
         });
@@ -210,6 +297,18 @@ document.addEventListener('DOMContentLoaded', () => {
             showSuccess(`${capitalize(entityName)} eliminado correctamente`);
         } catch (error) {
             showError(`Error al eliminar ${entityName}: ${error.message}`);
+        }
+    }
+    
+    // Función para desactivar una entidad (soft delete)
+    async function softDeleteEntity(id, entityName, apiEndpoint, listElement) {
+        try {
+            // Usar el método softDelete del servicio API
+            await apiService.softDelete(apiEndpoint, id);
+            fetchEntities(apiEndpoint, listElement, entityName);
+            showSuccess(`${capitalize(entityName)} desactivado correctamente`);
+        } catch (error) {
+            showError(`Error al desactivar ${entityName}: ${error.message}`);
         }
     }
 
@@ -267,6 +366,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showSuccess(message) {
         alert(message); // En una aplicación real, usarías un componente toast
+    }
+    
+    function showInfo(message) {
+        alert(`Info: ${message}`); // En una aplicación real, usarías un componente toast
     }
 
     function showError(message) {

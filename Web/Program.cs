@@ -151,7 +151,8 @@ try
     }
 
     app.UseCors("AllowAll");
-    app.UseHttpsRedirection();
+    // Comentamos la redirección HTTPS para permitir acceso por HTTP
+    // app.UseHttpsRedirection();
     app.UseAuthorization();
     app.MapControllers();
 

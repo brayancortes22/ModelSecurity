@@ -1,0 +1,6154 @@
+openapi: 3.0.4
+info:
+  title: Web
+  version: "1.0"
+servers:
+- url: /
+paths:
+  /api/Aprendiz:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AprendizDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+  /api/Aprendiz/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+  /api/Aprendiz/soft-delete/{id}:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Aprendiz
+  /api/AprendizProcessInstructor:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AprendizProcessInstructorDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProcessInstructor
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProcessInstructor
+  /api/AprendizProcessInstructor/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - AprendizProcessInstructor
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProcessInstructor
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizProcessInstructorDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizProcessInstructorDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - AprendizProcessInstructor
+  /api/AprendizProgram:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AprendizProgramDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizProgramDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+  /api/AprendizProgram/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AprendizProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AprendizProgramDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+  /api/AprendizProgram/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - AprendizProgram
+  /api/Center:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CenterDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CenterDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+  /api/Center/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CenterDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CenterDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+  /api/Center/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Center
+  /api/Concept:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ConceptDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+  /api/Concept/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ConceptDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+  /api/Concept/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Concept
+  /api/Enterprise:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/EnterpriseDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+  /api/Enterprise/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+  /api/Enterprise/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Enterprise
+  /api/Form:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FormDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+  /api/Form/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+  /api/Form/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Form
+  /api/FormModule:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FormModuleDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormModuleDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+  /api/FormModule/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/FormModuleDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - FormModule
+  /api/Instructor:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/InstructorDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+  /api/Instructor/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InstructorDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+  /api/Instructor/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Instructor
+  /api/InstructorProgram:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/InstructorProgramDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - InstructorProgram
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorProgramDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - InstructorProgram
+  /api/InstructorProgram/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - InstructorProgram
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - InstructorProgram
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/InstructorProgramDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - InstructorProgram
+  /api/Module:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModuleDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+  /api/Module/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ModuleDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+  /api/Module/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Module
+  /api/Person:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PersonDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Person
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Person
+  /api/Person/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Person
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Person
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Person
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PersonDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Person
+  /api/Person/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Person
+  /api/Process:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProcessDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+  /api/Process/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProcessDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+  /api/Process/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Process
+  /api/Program:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProgramDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Program
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Program
+  /api/Program/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Program
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Program
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Program
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProgramDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgramDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Program
+  /api/Program/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Program
+  /api/Regional:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RegionalDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Regional
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Regional
+  /api/Regional/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Regional
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Regional
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Regional
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegionalDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegionalDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Regional
+  /api/Regional/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Regional
+  /api/RegisterySofia:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RegisterySofiaDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterySofiaDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+  /api/RegisterySofia/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterySofiaDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterySofiaDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RegisterySofiaDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterySofiaDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+  /api/RegisterySofia/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RegisterySofia
+  /api/Rol:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RolDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+  /api/Rol/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolData'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+  /api/Rol/soft-delete/{id}:
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Rol
+  /api/RolForm:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/RolFormDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolFormDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+  /api/RolForm/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolFormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolFormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/RolFormDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolFormDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolForm
+  /api/RolUser:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserRolDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolUser
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolUser
+  /api/RolUser/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolUser
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolUser
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - RolUser
+  /api/Sede:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SedeDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Sede
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SedeDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Sede
+  /api/Sede/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Sede
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Sede
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Sede
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SedeDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Sede
+  /api/Sede/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - Sede
+  /api/State:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/StateDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+  /api/State/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/StateDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+  /api/State/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - State
+  /api/TypeModality:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/TypeModalityDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeModalityDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+  /api/TypeModality/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeModalityDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeModalityDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TypeModalityDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeModalityDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+  /api/TypeModality/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - TypeModality
+  /api/User:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - User
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - User
+  /api/User/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - User
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - User
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - User
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - User
+  /api/User/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - User
+  /api/User/{id}/activate:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema: {}
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema: {}
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema: {}
+          description: Internal Server Error
+      tags:
+      - User
+  /api/UserRol:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserRolDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+  /api/UserRol/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRolDto'
+      responses:
+        "200":
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+  /api/UserRol/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserRol
+  /api/UserSede:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserSedeDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSedeDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+  /api/UserSede/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserSedeDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSedeDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - UserSede
+  /api/Verification:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/VerificationDto'
+                type: array
+          description: OK
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationDto'
+          description: Created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+  /api/Verification/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+    patch:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/VerificationDto'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationDto'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+  /api/Verification/{id}/soft:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Verification
+components:
+  schemas:
+    AprendizDto:
+      additionalProperties: false
+      example:
+        active: true
+        id: 0
+        previousProgram: previousProgram
+        userId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        previousProgram:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+        userId:
+          format: int32
+          type: integer
+      type: object
+    AprendizProcessInstructorDto:
+      additionalProperties: false
+      example:
+        aprendizId: 6
+        processId: 7
+        stateId: 3
+        conceptId: 5
+        typeModalityId: 9
+        id: 0
+        registerySofiaId: 5
+        enterpriseId: 2
+        verificationId: 2
+        instructorId: 1
+      properties:
+        id:
+          format: int32
+          type: integer
+        aprendizId:
+          format: int32
+          type: integer
+        instructorId:
+          format: int32
+          type: integer
+        registerySofiaId:
+          format: int32
+          type: integer
+        conceptId:
+          format: int32
+          type: integer
+        enterpriseId:
+          format: int32
+          type: integer
+        processId:
+          format: int32
+          type: integer
+        typeModalityId:
+          format: int32
+          type: integer
+        stateId:
+          format: int32
+          type: integer
+        verificationId:
+          format: int32
+          type: integer
+      type: object
+    AprendizProgramDto:
+      additionalProperties: false
+      example:
+        aprendizId: 1
+        active: true
+        id: 0
+        programId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        programId:
+          format: int32
+          type: integer
+        aprendizId:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+      type: object
+    CenterDto:
+      additionalProperties: false
+      example:
+        address: address
+        codeCenter: codeCenter
+        name: name
+        active: true
+        id: 0
+        regionalId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        codeCenter:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+        regionalId:
+          format: int32
+          type: integer
+        address:
+          nullable: true
+          type: string
+      type: object
+    ConceptDto:
+      additionalProperties: false
+      example:
+        observation: observation
+        name: name
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        observation:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    EnterpriseDto:
+      additionalProperties: false
+      example:
+        locate: locate
+        nameEnterprise: nameEnterprise
+        observation: observation
+        nitEnterprise: nitEnterprise
+        active: true
+        id: 0
+        emailEnterprise: emailEnterprise
+        phoneEnterprise: phoneEnterprise
+      properties:
+        id:
+          format: int32
+          type: integer
+        observation:
+          nullable: true
+          type: string
+        nameEnterprise:
+          nullable: true
+          type: string
+        phoneEnterprise:
+          nullable: true
+          type: string
+        locate:
+          nullable: true
+          type: string
+        nitEnterprise:
+          nullable: true
+          type: string
+        emailEnterprise:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    FormDto:
+      additionalProperties: false
+      example:
+        answer: answer
+        cuestion: cuestion
+        name: name
+        description: description
+        active: true
+        typeCuestion: typeCuestion
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        cuestion:
+          nullable: true
+          type: string
+        typeCuestion:
+          nullable: true
+          type: string
+        answer:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    FormModuleDto:
+      additionalProperties: false
+      example:
+        formId: 6
+        statusProcedure: statusProcedure
+        id: 0
+        moduleId: 1
+      properties:
+        id:
+          format: int32
+          type: integer
+        statusProcedure:
+          nullable: true
+          type: string
+        formId:
+          format: int32
+          type: integer
+        moduleId:
+          format: int32
+          type: integer
+      type: object
+    InstructorDto:
+      additionalProperties: false
+      example:
+        active: true
+        id: 0
+        userId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        userId:
+          format: int32
+          type: integer
+      type: object
+    InstructorProgramDto:
+      additionalProperties: false
+      example:
+        id: 0
+        programId: 1
+        instructorId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        instructorId:
+          format: int32
+          type: integer
+        programId:
+          format: int32
+          type: integer
+      type: object
+    ModuleDto:
+      additionalProperties: false
+      example:
+        name: name
+        active: true
+        description: description
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+      type: object
+    PersonDto:
+      additionalProperties: false
+      example:
+        firstName: firstName
+        secondLastName: secondLastName
+        firstLastName: firstLastName
+        typeIdentification: typeIdentification
+        phoneNumber: phoneNumber
+        numberIdentification: 6
+        name: name
+        active: true
+        id: 0
+        email: email
+        signig: true
+        secondName: secondName
+      properties:
+        id:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        name:
+          nullable: true
+          type: string
+        firstName:
+          nullable: true
+          type: string
+        secondName:
+          nullable: true
+          type: string
+        firstLastName:
+          nullable: true
+          type: string
+        secondLastName:
+          nullable: true
+          type: string
+        phoneNumber:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        typeIdentification:
+          nullable: true
+          type: string
+        numberIdentification:
+          format: int32
+          type: integer
+        signig:
+          type: boolean
+      type: object
+    ProblemDetails:
+      additionalProperties: {}
+      example:
+        instance: instance
+        detail: detail
+        type: type
+        title: title
+        status: 0
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+    ProcessDto:
+      additionalProperties: false
+      example:
+        startAprendiz: startAprendiz
+        typeProcess: typeProcess
+        observation: observation
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        startAprendiz:
+          nullable: true
+          type: string
+        typeProcess:
+          nullable: true
+          type: string
+        observation:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    ProgramDto:
+      additionalProperties: false
+      example:
+        codeProgram: 6.027456183070403
+        name: name
+        description: description
+        active: true
+        id: 0
+        typeProgram: typeProgram
+      properties:
+        id:
+          format: int32
+          type: integer
+        codeProgram:
+          format: double
+          type: number
+        name:
+          nullable: true
+          type: string
+        typeProgram:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    RegionalDto:
+      additionalProperties: false
+      example:
+        address: address
+        name: name
+        description: description
+        active: true
+        id: 0
+        codeRegional: codeRegional
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        codeRegional:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        address:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    RegisterySofiaDto:
+      additionalProperties: false
+      example:
+        document: document
+        name: name
+        description: description
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        document:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    RolData:
+      additionalProperties: false
+      type: object
+    RolDto:
+      additionalProperties: false
+      example:
+        typeRol: typeRol
+        description: description
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        typeRol:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    RolFormDto:
+      additionalProperties: false
+      example:
+        rolId: 6
+        formId: 1
+        permission: permission
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        permission:
+          nullable: true
+          type: string
+        rolId:
+          format: int32
+          type: integer
+        formId:
+          format: int32
+          type: integer
+      type: object
+    SedeDto:
+      additionalProperties: false
+      example:
+        centerId: 6
+        codeSede: codeSede
+        address: address
+        name: name
+        active: true
+        id: 0
+        phoneSede: phoneSede
+        emailContact: emailContact
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        codeSede:
+          nullable: true
+          type: string
+        address:
+          nullable: true
+          type: string
+        phoneSede:
+          nullable: true
+          type: string
+        emailContact:
+          nullable: true
+          type: string
+        centerId:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+      type: object
+    StateDto:
+      additionalProperties: false
+      example:
+        description: description
+        active: true
+        id: 0
+        typeState: typeState
+      properties:
+        id:
+          format: int32
+          type: integer
+        typeState:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    TypeModalityDto:
+      additionalProperties: false
+      example:
+        name: name
+        description: description
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        description:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+    UserDto:
+      additionalProperties: false
+      example:
+        password: password
+        active: true
+        personId: 6
+        id: 0
+        email: email
+        username: username
+      properties:
+        id:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        username:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        password:
+          nullable: true
+          type: string
+        personId:
+          format: int32
+          type: integer
+      type: object
+    UserRolDto:
+      additionalProperties: false
+      example:
+        rolId: 6
+        id: 0
+        userId: 1
+      properties:
+        id:
+          format: int32
+          type: integer
+        rolId:
+          format: int32
+          type: integer
+        userId:
+          format: int32
+          type: integer
+      type: object
+    UserSedeDto:
+      additionalProperties: false
+      example:
+        statusProcedure: statusProcedure
+        sedeId: 1
+        id: 0
+        userId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        statusProcedure:
+          nullable: true
+          type: string
+        userId:
+          format: int32
+          type: integer
+        sedeId:
+          format: int32
+          type: integer
+      type: object
+    VerificationDto:
+      additionalProperties: false
+      example:
+        observation: observation
+        name: name
+        active: true
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        observation:
+          nullable: true
+          type: string
+        active:
+          type: boolean
+      type: object
+

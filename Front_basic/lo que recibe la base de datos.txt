@@ -1,0 +1,194 @@
+Schemas
+AprendizDto{
+id	[...]
+previousProgram	[...]
+active	[...]
+userId	[...]
+}
+AprendizProcessInstructorDto{
+id	[...]
+aprendizId	[...]
+instructorId	[...]
+registerySofiaId	[...]
+conceptId	[...]
+enterpriseId	[...]
+processId	[...]
+typeModalityId	[...]
+stateId	[...]
+verificationId	[...]
+}
+AprendizProgramDto{
+id	[...]
+programId	[...]
+aprendizId	[...]
+active	[...]
+}
+CenterDto{
+id	[...]
+name	[...]
+codeCenter	[...]
+active	[...]
+regionalId	[...]
+address	[...]
+}
+ConceptDto{
+id	[...]
+name	[...]
+observation	[...]
+active	[...]
+}
+EnterpriseDto{
+id	[...]
+observation	[...]
+nameEnterprise	[...]
+phoneEnterprise	[...]
+locate	[...]
+nitEnterprise	[...]
+emailEnterprise	[...]
+active	[...]
+}
+FormDto{
+id	[...]
+name	[...]
+description	[...]
+cuestion	[...]
+typeCuestion	[...]
+answer	[...]
+active	[...]
+}
+FormModuleDto{
+id	[...]
+statusProcedure	[...]
+formId	[...]
+moduleId	[...]
+}
+InstructorDto{
+id	[...]
+active	[...]
+userId	[...]
+}
+InstructorProgramDto{
+id	[...]
+instructorId	[...]
+programId	[...]
+}
+ModuleDto{
+id	[...]
+active	[...]
+name	[...]
+description	[...]
+}
+PersonDto{
+id	[...]
+active	[...]
+name	[...]
+firstName	[...]
+secondName	[...]
+firstLastName	[...]
+secondLastName	[...]
+phoneNumber	[...]
+email	[...]
+typeIdentification	[...]
+numberIdentification	[...]
+signig	[...]
+}
+ProblemDetails{
+type	[...]
+title	[...]
+status	[...]
+detail	[...]
+instance	[...]
+}
+ProcessDto{
+id	[...]
+startAprendiz	[...]
+typeProcess	[...]
+observation	[...]
+active	[...]
+}
+ProgramDto{
+id	[...]
+codeProgram	[...]
+name	[...]
+typeProgram	[...]
+description	[...]
+active	[...]
+}
+RegionalDto{
+id	[...]
+name	[...]
+codeRegional	[...]
+description	[...]
+address	[...]
+active	[...]
+}
+RegisterySofiaDto{
+id	[...]
+name	[...]
+description	[...]
+document	[...]
+active	[...]
+}
+RolData{
+}
+RolDto{
+id	[...]
+typeRol	[...]
+description	[...]
+active	[...]
+}
+RolFormDto{
+id	[...]
+permission	[...]
+rolId	[...]
+formId	[...]
+}
+SedeDto{
+id	[...]
+name	[...]
+codeSede	[...]
+address	[...]
+phoneSede	[...]
+emailContact	[...]
+centerId	[...]
+active	[...]
+}
+StateDto{
+id	[...]
+typeState	[...]
+description	[...]
+active	[...]
+}
+TypeModalityDto{
+id	[...]
+description	[...]
+name	[...]
+active	[...]
+}
+UserDto{
+id	[...]
+active	[...]
+username	[...]
+email	[...]
+password	[...]
+personId	[...]
+}
+UserRolDto{
+id	[...]
+rolId	[...]
+userId	[...]
+}
+
+UserSedeDto{
+id	[...]
+statusProcedure	[...]
+userId	[...]
+sedeId	[...]
+}
+
+VerificationDto{
+id	[...]
+name	[...]
+observation	[...]
+active	[...]
+}

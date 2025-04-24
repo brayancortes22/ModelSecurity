@@ -91,6 +91,10 @@
                         <input type="text" id="usuarioUsername" name="username" required>
                     </div>
                     <div class="form-group">
+                        <label for="usuarioEmail">Email:</label>
+                        <input type="email" id="usuarioEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
                         <label for="usuarioPassword">Contraseña:</label>
                         <input type="password" id="usuarioPassword" name="password" required>
                     </div>
@@ -128,6 +132,14 @@
                         <input type="text" id="centroName" name="name" required>
                     </div>
                     <div class="form-group">
+                        <label for="centroCode">Código del Centro:</label>
+                        <input type="text" id="centroCode" name="codeCenter" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="centroAddress">Dirección:</label>
+                        <input type="text" id="centroAddress" name="address" required>
+                    </div>
+                    <div class="form-group">
                         <label for="centroRegionalId">ID Regional:</label>
                         <input type="number" id="centroRegionalId" name="regionalId" required>
                     </div>
@@ -161,8 +173,8 @@
                 <form id="formRol">
                     <input type="hidden" id="rolId" name="id" value="0">
                     <div class="form-group">
-                        <label for="rolName">Nombre:</label>
-                        <input type="text" id="rolName" name="name" required>
+                        <label for="rolName">Tipo de Rol:</label>
+                        <input type="text" id="rolName" name="typeRol" required>
                     </div>
                     <div class="form-group">
                         <label for="rolDescription">Descripción:</label>
@@ -202,12 +214,16 @@
                         <input type="text" id="programaName" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="programaCode">Código:</label>
-                        <input type="text" id="programaCode" name="code" required>
+                        <label for="programaCode">Código del Programa:</label>
+                        <input type="text" id="programaCode" name="codeProgram" required>
                     </div>
                     <div class="form-group">
-                        <label for="programaDuration">Duración (horas):</label>
-                        <input type="number" id="programaDuration" name="duration" required>
+                        <label for="programaType">Tipo de Programa:</label>
+                        <input type="text" id="programaType" name="typeProgram" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="programaDescription">Descripción:</label>
+                        <textarea id="programaDescription" name="description"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="programaActive">Activo:</label>
@@ -243,8 +259,20 @@
                         <input type="text" id="sedeName" name="name" required>
                     </div>
                     <div class="form-group">
+                        <label for="sedeCode">Código de Sede:</label>
+                        <input type="text" id="sedeCode" name="codeSede" required>
+                    </div>
+                    <div class="form-group">
                         <label for="sedeAddress">Dirección:</label>
                         <input type="text" id="sedeAddress" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sedePhone">Teléfono:</label>
+                        <input type="text" id="sedePhone" name="phoneSede">
+                    </div>
+                    <div class="form-group">
+                        <label for="sedeEmail">Email de contacto:</label>
+                        <input type="email" id="sedeEmail" name="emailContact">
                     </div>
                     <div class="form-group">
                         <label for="sedeCenterId">ID Centro:</label>
@@ -284,8 +312,8 @@
                         <input type="text" id="conceptoName" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="conceptoDescription">Descripción:</label>
-                        <textarea id="conceptoDescription" name="description"></textarea>
+                        <label for="conceptoObservation">Observación:</label>
+                        <textarea id="conceptoObservation" name="observation"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="conceptoActive">Activo:</label>
@@ -317,20 +345,32 @@
                 <form id="formPersona">
                     <input type="hidden" id="personaId" name="id" value="0">
                     <div class="form-group">
-                        <label for="personaDocumentType">Tipo de Documento:</label>
-                        <input type="text" id="personaDocumentType" name="documentType" required>
+                        <label for="personaName">Nombre Completo:</label>
+                        <input type="text" id="personaName" name="name">
                     </div>
                     <div class="form-group">
-                        <label for="personaDocumentNumber">Número de Documento:</label>
-                        <input type="text" id="personaDocumentNumber" name="documentNumber" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="personaFirstName">Nombres:</label>
+                        <label for="personaFirstName">Primer Nombre:</label>
                         <input type="text" id="personaFirstName" name="firstName" required>
                     </div>
                     <div class="form-group">
-                        <label for="personaLastName">Apellidos:</label>
-                        <input type="text" id="personaLastName" name="lastName" required>
+                        <label for="personaSecondName">Segundo Nombre:</label>
+                        <input type="text" id="personaSecondName" name="secondName">
+                    </div>
+                    <div class="form-group">
+                        <label for="personaFirstLastName">Primer Apellido:</label>
+                        <input type="text" id="personaFirstLastName" name="firstLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaSecondLastName">Segundo Apellido:</label>
+                        <input type="text" id="personaSecondLastName" name="secondLastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="personaTypeIdentification">Tipo de Documento:</label>
+                        <input type="text" id="personaTypeIdentification" name="typeIdentification" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personaNumberIdentification">Número de Documento:</label>
+                        <input type="text" id="personaNumberIdentification" name="numberIdentification" required>
                     </div>
                     <div class="form-group">
                         <label for="personaPhoneNumber">Teléfono:</label>
@@ -341,8 +381,8 @@
                         <input type="email" id="personaEmail" name="email">
                     </div>
                     <div class="form-group">
-                        <label for="personaAddress">Dirección:</label>
-                        <input type="text" id="personaAddress" name="address">
+                        <label for="personaSignig">Firma:</label>
+                        <input type="text" id="personaSignig" name="signig">
                     </div>
                     <div class="form-group">
                         <label for="personaActive">Activo:</label>
@@ -376,14 +416,6 @@
                     <div class="form-group">
                         <label for="instructorUserId">ID de Usuario:</label>
                         <input type="number" id="instructorUserId" name="userId" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorProfession">Profesión:</label>
-                        <input type="text" id="instructorProfession" name="profession" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructorSpeciality">Especialidad:</label>
-                        <input type="text" id="instructorSpeciality" name="speciality">
                     </div>
                     <div class="form-group">
                         <label for="instructorActive">Activo:</label>
@@ -423,10 +455,6 @@
                         <textarea id="moduloDescription" name="description"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="moduloDuration">Duración (horas):</label>
-                        <input type="number" id="moduloDuration" name="duration" required>
-                    </div>
-                    <div class="form-group">
                         <label for="moduloActive">Activo:</label>
                         <input type="checkbox" id="moduloActive" name="active" checked>
                     </div>
@@ -456,12 +484,16 @@
                 <form id="formProceso">
                     <input type="hidden" id="procesoId" name="id" value="0">
                     <div class="form-group">
-                        <label for="procesoName">Nombre:</label>
-                        <input type="text" id="procesoName" name="name" required>
+                        <label for="procesoTypeProcess">Tipo de Proceso:</label>
+                        <input type="text" id="procesoTypeProcess" name="typeProcess" required>
                     </div>
                     <div class="form-group">
-                        <label for="procesoDescription">Descripción:</label>
-                        <textarea id="procesoDescription" name="description"></textarea>
+                        <label for="procesoStartAprendiz">Fecha de Inicio Aprendiz:</label>
+                        <input type="date" id="procesoStartAprendiz" name="startAprendiz">
+                    </div>
+                    <div class="form-group">
+                        <label for="procesoObservation">Observación:</label>
+                        <textarea id="procesoObservation" name="observation"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="procesoActive">Activo:</label>
@@ -497,8 +529,16 @@
                         <input type="text" id="regionalName" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="regionalCode">Código:</label>
-                        <input type="text" id="regionalCode" name="code" required>
+                        <label for="regionalCode">Código Regional:</label>
+                        <input type="text" id="regionalCode" name="codeRegional" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regionalDescription">Descripción:</label>
+                        <textarea id="regionalDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="regionalAddress">Dirección:</label>
+                        <input type="text" id="regionalAddress" name="address">
                     </div>
                     <div class="form-group">
                         <label for="regionalActive">Activo:</label>
@@ -530,8 +570,8 @@
                 <form id="formEstado">
                     <input type="hidden" id="estadoId" name="id" value="0">
                     <div class="form-group">
-                        <label for="estadoName">Nombre:</label>
-                        <input type="text" id="estadoName" name="name" required>
+                        <label for="estadoTypeState">Tipo de Estado:</label>
+                        <input type="text" id="estadoTypeState" name="typeState" required>
                     </div>
                     <div class="form-group">
                         <label for="estadoDescription">Descripción:</label>
@@ -608,8 +648,20 @@
                         <input type="text" id="formularioName" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="formularioRoute">Ruta:</label>
-                        <input type="text" id="formularioRoute" name="route" required>
+                        <label for="formularioDescription">Descripción:</label>
+                        <textarea id="formularioDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="formularioCuestion">Pregunta:</label>
+                        <textarea id="formularioCuestion" name="cuestion"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="formularioTypeCuestion">Tipo de Pregunta:</label>
+                        <input type="text" id="formularioTypeCuestion" name="typeCuestion">
+                    </div>
+                    <div class="form-group">
+                        <label for="formularioAnswer">Respuesta:</label>
+                        <textarea id="formularioAnswer" name="answer"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="formularioActive">Activo:</label>
@@ -642,23 +694,27 @@
                     <input type="hidden" id="empresaId" name="id" value="0">
                     <div class="form-group">
                         <label for="empresaName">Nombre:</label>
-                        <input type="text" id="empresaName" name="name" required>
+                        <input type="text" id="empresaName" name="nameEnterprise" required>
                     </div>
                     <div class="form-group">
                         <label for="empresaNit">NIT:</label>
-                        <input type="text" id="empresaNit" name="nit" required>
+                        <input type="text" id="empresaNit" name="nitEnterprise" required>
                     </div>
                     <div class="form-group">
                         <label for="empresaAddress">Dirección:</label>
-                        <input type="text" id="empresaAddress" name="address">
+                        <input type="text" id="empresaAddress" name="locate">
                     </div>
                     <div class="form-group">
                         <label for="empresaPhone">Teléfono:</label>
-                        <input type="text" id="empresaPhone" name="phone">
+                        <input type="text" id="empresaPhone" name="phoneEnterprise">
                     </div>
                     <div class="form-group">
                         <label for="empresaEmail">Email:</label>
-                        <input type="email" id="empresaEmail" name="email">
+                        <input type="email" id="empresaEmail" name="emailEnterprise">
+                    </div>
+                    <div class="form-group">
+                        <label for="empresaObservation">Observación:</label>
+                        <textarea id="empresaObservation" name="observation"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="empresaActive">Activo:</label>
@@ -681,11 +737,7 @@
         <section id="swagger" class="entity-section">
             <h2>Documentación API - Swagger</h2>
             <p>Para acceder a la documentación completa de la API, haz clic en el siguiente botón:</p>
-            <a href="http://localhost:5187/swagger" target="_blank" class="swagger-button">Abrir Swagger</a>
-            <div class="swagger-info">
-                <h3>Información sobre Swagger</h3>
-                <p>Swagger proporciona una interfaz visual para explorar y probar todos los endpoints disponibles en la API. Desde allí podrás:</p>
-                <ul>
+            <a href="http://localhost:5187/swagger" target="_blank" class
                     <li>Ver todos los endpoints organizados por controlador</li>
                     <li>Visualizar los modelos de datos (DTOs) utilizados en las peticiones</li>
                     <li>Probar directamente los endpoints con diferentes parámetros</li>
